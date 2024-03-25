@@ -1,17 +1,24 @@
-const express = require('express'); 
+const express = require('express');
+const sequelize = require('./util/database');
+const Employee = require('./models/employee');
+const Team = require('./models/team');
+const mongoConnect = require('./util/mongoCon')
+const app = express();
+const PORT = 3000;
 
-const app = express(); 
-const PORT = 3000; 
+console.log(sequelize.models);
 
-app.get('/', (req, res)=>{ 
-    res.status(200); 
-    res.send("Welcome to root URL of Server"); 
-}); 
+sequelize.sync({ logging: console.log })
+  .then(() => {
+    console.log('Database synchronized successfully');
+    app.listen(PORT, () => {
+      console.log(`Server is running and listening on port ${PORT}`);
+    });
+  })
+  .catch(error => {
+    console.error('Error occurred while synchronizing database:', error);
+  });
 
-app.listen(PORT, (error) =>{ 
-    if(!error) {
-        console.log("Server is Successfully Running, and App is listening on port "+ PORT);
-    } else {
-        console.log("Error occurred, server can't start", error);
-    }
-}); 
+  mongoConnect(() => {
+    console.log('Connected to MongoDB');
+  });
