@@ -14,13 +14,17 @@ const Employee = sequelize.define('employee', {
     phone: Sequelize.STRING,
     teamId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Team, 
             key: 'id'
         }
     },
-    salary: Sequelize.DOUBLE
+    salary: Sequelize.DOUBLE,
+    password : {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
 });
 
 module.exports = Employee;
