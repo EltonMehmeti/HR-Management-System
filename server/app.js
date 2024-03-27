@@ -4,6 +4,7 @@ const sequelize = require('./util/database');
 const mongoConnect = require('./util/mongoCon');
 const employeeRoutes = require('./routes/employee');
 const employeeAuthRoutes = require('./routes/auth/employee');
+const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
 const employee = require('./models/employee');
@@ -20,10 +21,11 @@ async function startServer() {
   }
 }
 
-mongoConnect(() => {
-  console.log('Connected to MongoDB');
-});
+// mongoConnect(() => {
+//   console.log('Connected to MongoDB');
+// });
 
-app.use('/employee', employeeRoutes);
+app.use('/employee', authenticate(employee), employeeRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
+
 startServer();
