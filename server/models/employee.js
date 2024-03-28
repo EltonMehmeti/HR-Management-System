@@ -1,3 +1,5 @@
+// employee.js
+
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const Team = require('./team');
@@ -12,19 +14,16 @@ const Employee = sequelize.define('employee', {
     name: Sequelize.STRING,
     email: Sequelize.STRING,
     phone: Sequelize.STRING,
-    teamId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-            model: Team, 
-            key: 'id'
-        }
-    },
     salary: Sequelize.DOUBLE,
-    password : {
+    password: {
         type: Sequelize.STRING,
         allowNull: false
-    },
+    }
 });
+
+// Define associations
+Employee.belongsToMany(Team, { through: 'EmployeeTeam' }); // Many-to-many relationship with Team
+Team.belongsToMany(Employee, { through: 'EmployeeTeam' }); // Many-to-many relationship with Employee
+Team.belongsTo(Employee, { foreignKey: 'teamLeaderId', as: 'teamLeader' }); // Team leader association
 
 module.exports = Employee;

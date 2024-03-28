@@ -1,9 +1,9 @@
-// team.js
+// jobApplicant.js
 
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const Team = sequelize.define('team', {
+const JobApplicant = sequelize.define('jobApplicant', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -11,7 +11,11 @@ const Team = sequelize.define('team', {
         primaryKey: true
     },
     name: Sequelize.STRING,
-    description: Sequelize.STRING
+    email: Sequelize.STRING,
+
+    phone: Sequelize.STRING,
+    resume: Sequelize.STRING,
+    jobTitle: Sequelize.STRING,
 });
 
-module.exports = Team;
+module.exports = JobApplicant;
