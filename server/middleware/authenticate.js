@@ -23,4 +23,5 @@ const authenticate = (Model) => async (req, res, next) => {
     }
 };
 
+
 module.exports = authenticate;
