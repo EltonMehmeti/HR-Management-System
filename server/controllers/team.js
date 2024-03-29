@@ -6,6 +6,7 @@ const getAllTeams = async (req, res) => {
     const teams = await Team.findAll()
     res.json(teams)
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: "Internal server error" })
   }
 }
