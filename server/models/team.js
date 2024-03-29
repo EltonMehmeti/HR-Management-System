@@ -10,10 +10,6 @@ const Team = sequelize.define("team", {
   },
   name: Sequelize.STRING,
   description: Sequelize.STRING,
-  leaderId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
 })
 
 module.exports = Team
