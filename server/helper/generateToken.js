@@ -4,9 +4,10 @@ dotenv.config();
 
 
 
-const generateToken = (id) => {
-    return jwt.sign({ _id: id }, process.env.SECRET_KEY);
+const generateToken = (userInfo) => {
+    console.log(userInfo);
+    return jwt.sign(userInfo, process.env.SECRET_KEY);
 };
 
 
-module.exports = generateToken;
+module.exports = generateToken; 

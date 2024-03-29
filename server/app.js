@@ -6,6 +6,7 @@ const sequelize = require('./util/database');
 const mongoConnect = require('./util/mongoCon');
 const employeeRoutes = require('./routes/employee');
 const employeeAuthRoutes = require('./routes/auth/employee');
+const hrPersonnelRoutes = require('./routes/auth/hrPersonnel');
 const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
@@ -14,7 +15,7 @@ const interview = require('./models/interview');
 const jobApplicant = require('./models/jobApplicant');
 const hrPersonnel = require('./models/hrPersonnel');  
 const team = require('./models/team');
-
+const jobApplicanRoutes = require('./routes/jobApplicant');  
 app.use(bodyParser.json());
 
 
@@ -39,5 +40,6 @@ app.use("/team", teamRoutes)
 
 app.use('/employee', authenticate(employee), employeeRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
-
+app.use('/auth/hr', hrPersonnelRoutes);
+ app.use('/jobapplicants', authenticate(hrPersonnel), jobApplicanRoutes);
 startServer();
