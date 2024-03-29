@@ -1,32 +1,30 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcrypt');
-const Employee = require('../../models/employee');
+const jwt = require('jsonwebtoken');
+const HrPersonnel = require('../../models/hrPersonnel');
+const router = express.Router();
 const generateToken = require('../../helper/generateToken');
-
 router.post('/register', async (req, res) => {
     try {
-        const { name, email, password, phone, salary } = req.body;
+        const { name, email, password, role, joiningDate } = req.body;
 
-        const existingEmployee = await Employee.findOne({ where: { email } });
-        
-        if (existingEmployee) {
+        const existingPersonnel = await HrPersonnel.findOne({ where: { email } });
+        if (existingPersonnel) {
             return res.status(400).json({ error: 'Email already exists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const employee = await Employee.create({
+        const personnel = await HrPersonnel.create({
             name,
             email,
             password: hashedPassword,
-            phone,
-            salary
+            role,
+            joiningDate
         });
+        const token = generateToken(personnel.id);
 
-        const token = generateToken(employee.id);
-
-        res.status(201).json({ token, employee });
+        res.status(201).json({ token , personnel });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -37,23 +35,24 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const employee = await Employee.findOne({ where: { email } });
-        if (!employee) {
+        const personnel = await HrPersonnel.findOne({ where: { email } });
+        if (!personnel) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        const passwordMatch = await bcrypt.compare(password, employee.password);
+        const passwordMatch = await bcrypt.compare(password, personnel.password);
         if (!passwordMatch) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        const token = generateToken(employee);
+        const token = generateToken({ id: personnel.id, role: personnel.role });
 
-        res.status(200).json({ token, employee });
+        res.status(200).json({ token, personnel });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 module.exports = router;
