@@ -5,11 +5,13 @@ import './index.css';
 import Signin from './Layouts/Dashboard/pages/Signin';
 import Signup from './Layouts/Dashboard/pages/Signup';
 
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/signup" element={<Signup />} />
         {/* Add more routes here if needed */}
         <Route path="/dashboard/signin" element={<Signin />} />
         <Route path="/dashboard/signup" element={<Signup />} />

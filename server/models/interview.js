@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const HrPersonnel = require('./hrPersonnel'); 
-const JobApplicant = require('./jobApplicant'); 
+const JobApplicant = require('./interviewee'); 
 
 const Interview = sequelize.define('interview', {
     id: {
