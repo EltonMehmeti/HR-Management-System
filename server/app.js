@@ -13,7 +13,11 @@ const interview = require('./models/interview');
 const jobApplicant = require('./models/jobApplicant');
 const hrPersonnel = require('./models/hrPersonnel');  
 const team = require('./models/team');
+const leaveRequest = require('./models/leaveRequest')
+const attendanceRecord = require('./models/attendaceRecord')
+
 const jobApplicanRoutes = require('./routes/jobApplicant');  
+
 app.use(bodyParser.json());
 
 

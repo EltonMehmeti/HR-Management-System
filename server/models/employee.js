@@ -3,6 +3,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const Team = require('./team');
+const Performance = require('./performance'); 
 
 const Employee = sequelize.define('employee', {
     id: {
@@ -21,9 +22,9 @@ const Employee = sequelize.define('employee', {
     }
 });
 
-// Define associations
-Employee.belongsToMany(Team, { through: 'EmployeeTeam' }); // Many-to-many relationship with Team
-Team.belongsToMany(Employee, { through: 'EmployeeTeam' }); // Many-to-many relationship with Employee
-Team.belongsTo(Employee, { foreignKey: 'teamLeaderId', as: 'teamLeader' }); // Team leader association
+Employee.belongsToMany(Team, { through: 'EmployeeTeam' });
+Team.belongsToMany(Employee, { through: 'EmployeeTeam' });
+Team.belongsTo(Employee, { foreignKey: 'teamLeaderId', as: 'teamLeader' });
+Employee.hasMany(Performance); 
 
 module.exports = Employee;
