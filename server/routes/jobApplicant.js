@@ -1,15 +1,17 @@
+
 const express = require('express');
 const router = express.Router();
 const jobApplicantController = require('../controllers/jobApplicant');
-const authorizeRole = require('../middleware/authorizeRole');
-router.post('/', authorizeRole(['recruiter']), jobApplicantController.createJobApplicant);
 
-router.get('/', authorizeRole(['recruiter']), jobApplicantController.getAllJobApplicants);
 
-router.get('/:id', authorizeRole(['recruiter']), jobApplicantController.getJobApplicantById);
+router.post('/', jobApplicantController.createJobApplicant);
 
-router.put('/:id', authorizeRole(['recruiter']), jobApplicantController.updateJobApplicant);
+router.get('/', jobApplicantController.getAllJobApplicants);
 
-router.delete('/:id', authorizeRole(['recruiter']), jobApplicantController.deleteJobApplicant);
+router.get('/:id', jobApplicantController.getJobApplicantById);
+
+router.put('/:id', jobApplicantController.updateJobApplicantById);
+
+router.delete('/:id', jobApplicantController.deleteJobApplicantById);
 
 module.exports = router;

@@ -1,21 +1,20 @@
-// jobApplicant.js
 
-const Sequelize = require('sequelize');
-const sequelize = require('../util/database');
+const mongoose = require('mongoose');
 
-const JobApplicant = sequelize.define('jobApplicant', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+const jobApplicantSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    name: Sequelize.STRING,
-    email: Sequelize.STRING,
-
-    phone: Sequelize.STRING,
-    resume: Sequelize.STRING,
-    jobTitle: Sequelize.STRING,
+    email: {
+        type: String,
+        required: true
+    },
+    phone: String,
+    resume: String,
+    jobTitle: String
 });
+
+const JobApplicant = mongoose.model('JobApplicant', jobApplicantSchema);
 
 module.exports = JobApplicant;
