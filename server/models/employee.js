@@ -16,7 +16,6 @@ const Employee = sequelize.define("employee", {
   name: Sequelize.STRING,
   email: Sequelize.STRING,
   phone: Sequelize.STRING,
-  salary: Sequelize.DOUBLE,
   password: {
     type: Sequelize.STRING,
     allowNull: false,
