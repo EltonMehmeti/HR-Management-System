@@ -43,7 +43,6 @@ export default function Signin() {
         <form className="md:w-1/3 max-w-sm" onSubmit={handleSubmit}>
           <div className="text-center md:text-left">
             <label className="mr-1">Sign in with</label>
-            {/* Buttons for social sign-in */}
           </div>
           <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
             <p className="mx-4 mb-0 text-center font-semibold text-slate-500">Or</p>
