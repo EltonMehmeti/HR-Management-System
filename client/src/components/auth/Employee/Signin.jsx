@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Login = () => {
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
-
+const EmpSignin = () => {
   const [formData, setFormData] = useState({
-    email:"",
+    email: "",
     password: ""
-
   });
 
   const handleChange = (e) => {
@@ -19,22 +13,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      console.log(formData)
       const response = await axios.post(
         "http://localhost:3001/auth/employee/login",
         formData
       );
 
-      console.log("User registered successfully:", response.data);
+      console.log("User logged in successfully:", response.data);
 
       setFormData({
         email: "",
         password: ""
-       
       });
     } catch (error) {
-      console.error("Error registering user:", error);
+      console.error("Error logging in:", error);
     }
   };
 
@@ -56,11 +49,12 @@ const Login = () => {
 
             <input
               id="email"
+              name="email"
               type="email"
               autoComplete="email"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500"
               placeholder="Enter your email address"
             />
@@ -76,11 +70,12 @@ const Login = () => {
 
             <input
               id="password"
+              name="password"
               type="password"
               autoComplete="current-password"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500"
               placeholder="Enter your password"
             />
@@ -109,4 +104,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default EmpSignin;
