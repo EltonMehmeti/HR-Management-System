@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function Signup() {
+export default function HrSignup() {
   const [formData, setFormData] = useState({
     name: "",
     role:'',
