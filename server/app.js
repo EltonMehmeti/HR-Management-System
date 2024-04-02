@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const employeeRoutes = require('./routes/employee');
 const employeeAuthRoutes = require('./routes/auth/employee');
 const hrPersonnelRoutes = require('./routes/auth/hrPersonnel');
+const superAdminRoutes = require('./routes/auth/superAdmin');
 const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
@@ -52,6 +53,6 @@ app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant', jobApplicantRoutes);
-
+app.use('/auth/superAdmin', superAdminRoutes);
 
 startServer();
