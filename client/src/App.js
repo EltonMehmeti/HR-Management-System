@@ -5,6 +5,7 @@ import './index.css';
 import Signup from './components/auth/Employee/Signup';
 import Login from './components/auth/Employee/Login';
 
+
 function App() {
   return (
     <Router>
@@ -14,6 +15,8 @@ function App() {
         <Route path="/employee/login" element={<Login/>} />
 
         {/* Add more routes here if needed */}
+        <Route path="/dashboard/signin" element={<Signin />} />
+        <Route path="/dashboard/signup" element={<Signup />} />
       </Routes>
     </Router>
   );

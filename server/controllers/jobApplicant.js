@@ -1,65 +1,62 @@
+
 const JobApplicant = require('../models/jobApplicant');
 
-const createJobApplicant = async (req, res) => {
+exports.createJobApplicant = async (req, res) => {
     try {
-        const { name, email, phone, resume, jobTitle } = req.body;
-        const jobApplicant = await JobApplicant.create({ name, email, phone, resume, jobTitle });
+        const jobApplicant = await JobApplicant.create(req.body);
         res.status(201).json(jobApplicant);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(400).json({ message: error.message });
     }
 };
 
-const getAllJobApplicants = async (req, res) => {
+exports.getAllJobApplicants = async (req, res) => {
     try {
-        const jobApplicants = await JobApplicant.findAll();
-        res.json(jobApplicants);
+        const jobApplicants = await JobApplicant.find();
+        res.status(200).json(jobApplicants);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: error.message });
     }
 };
 
-const getJobApplicantById = async (req, res) => {
+exports.getJobApplicantById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-        const jobApplicant = await JobApplicant.findByPk(id);
-        if (!jobApplicant) {
-            return res.status(404).json({ error: 'Job applicant not found' });
+        const jobApplicant = await JobApplicant.findById(id);
+        if (jobApplicant) {
+            res.status(200).json(jobApplicant);
+        } else {
+            res.status(404).json({ message: 'Job applicant not found' });
         }
-        res.json(jobApplicant);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: error.message });
     }
 };
 
-const updateJobApplicant = async (req, res) => {
+exports.updateJobApplicantById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-        const { name, email, phone, resume, jobTitle } = req.body;
-        const updatedJobApplicant = await JobApplicant.update(
-            { name, email, phone, resume, jobTitle },
-            { where: { id } }
-        );
-        res.json(updatedJobApplicant);
+        const updatedJobApplicant = await JobApplicant.findByIdAndUpdate(id, req.body, { new: true });
+        if (updatedJobApplicant) {
+            res.status(200).json(updatedJobApplicant);
+        } else {
+            res.status(404).json({ message: 'Job applicant not found' });
+        }
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: error.message });
     }
 };
 
-const deleteJobApplicant = async (req, res) => {
+exports.deleteJobApplicantById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-        await JobApplicant.destroy({ where: { id } });
-        res.json({ message: 'Job applicant deleted successfully' });
+        const deletedJobApplicant = await JobApplicant.findByIdAndDelete(id);
+        if (deletedJobApplicant) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ message: 'Job applicant not found' });
+        }
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: error.message });
     }
-};
-
-module.exports = {
-    createJobApplicant,
-    getAllJobApplicants,
-    getJobApplicantById,
-    updateJobApplicant,
-    deleteJobApplicant
 };
