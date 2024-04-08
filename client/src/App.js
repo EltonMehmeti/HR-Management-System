@@ -7,9 +7,10 @@ import EmpSignup from './components/auth/Employee/Signup';
 import EmpSignin from './components/auth/Employee/Signin';
 import HrSignin from './Layouts/Dashboard/pages/Signin';
 import HrSignup from './Layouts/Dashboard/pages/Signup';
-import EmployeeList from './Layouts/Dashboard/pages/EmployeeList';
+import EmployeeList from './Layouts/Dashboard/components/Employee/EmployeeList';
 import DashboardLayout from './Layouts/Dashboard/DashboardLayout';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
+
 
 
 function App() {
