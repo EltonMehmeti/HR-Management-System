@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EmpSignin = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +23,11 @@ const EmpSignin = () => {
         formData
       );
 
-      console.log("User logged in successfully:", response.data);
-
+      console.log("User logged in successfully:", {...response.data.employee, role:'employee'});
+      Cookies.set('token', response.data.token, { expires: 7, secure: true });
+      Cookies.set('user',JSON.stringify({...response.data.employee, role:'employee'}), { expires: 7, secure: true });
+      toast.success("Login successful! Welcome " +formData.email);
+      window.location.href = "/dashboard";
       setFormData({
         email: "",
         password: ""
@@ -91,14 +97,7 @@ const EmpSignin = () => {
           </div>
         </form>
 
-        <div className="text-center mt-4">
-          <p>
-            Don't have an account?{" "}
-            <a href="/signup" className="text-blue-500 hover:underline">
-              Sign up
-            </a>
-          </p>
-        </div>
+    
       </div>
     </div>
   );
