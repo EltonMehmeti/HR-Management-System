@@ -3,6 +3,7 @@ import logo from "../../../../Image/logo (1).png";
 import CreateEmployee from "./CreateEmployee";
 import EditEmployee from "./EditEmployee";
 import axios from "axios";
+import "../../css/modal.css"
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
@@ -48,7 +49,16 @@ function EmployeeList() {
   };
 
   return (
+    <div>
+       <button
+            onClick={() => setIsCreateModalOpen(true)}
+            type="button"
+            class="m-5 text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Create new
+          </button>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5 mx-2">
+      
       {employees.map((item, index) => (
         <div
           key={index}
@@ -124,6 +134,7 @@ function EmployeeList() {
       {(isCreateModalOpen || isEditModalOpen) && (
         <div className="modal-backdrop"></div>
       )}
+    </div>
     </div>
   );
 }
