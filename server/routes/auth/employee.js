@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
             salary
         });
 
-        const token = generateToken(employee.id);
+        const token = generateToken(employee);
 
         res.status(201).json({ token, employee });
     } catch (error) {
