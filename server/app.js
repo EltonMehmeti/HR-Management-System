@@ -12,7 +12,7 @@ const superAdminRoutes = require('./routes/auth/superAdmin');
 const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
-const cors = require('cors');
+
 const employee = require('./models/employee');
 const interview = require('./models/interview');
 const interviewee = require('./models/interviewee');
@@ -40,8 +40,6 @@ async function startServer() {
     mongoose.connect('mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/').
     then(() => { console.log('Connected to MongoDB') })
     .catch((err) => { console.log(err) });
-    // Enable CORS for all routes
-   
     app.listen(PORT, () => {
       console.log(`Server is running and listening on port ${PORT}`)
     })
@@ -50,7 +48,7 @@ async function startServer() {
   }
 }
 
-app.use(cors());
+
 app.use("/team", teamRoutes)
 app.use('/employee', authenticate(employee), employeeRoutes);
 
