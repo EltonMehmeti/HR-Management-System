@@ -12,6 +12,7 @@ const superAdminRoutes = require('./routes/auth/superAdmin');
 const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
+const cors = require('cors');
 const employee = require('./models/employee');
 const interview = require('./models/interview');
 const interviewee = require('./models/interviewee');
@@ -27,6 +28,7 @@ const salary = require('./models/salary');
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
+const HrPersonnel = require("./models/hrPersonnel");
 app.use(bodyParser.json());
 
 
@@ -38,6 +40,8 @@ async function startServer() {
     mongoose.connect('mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/').
     then(() => { console.log('Connected to MongoDB') })
     .catch((err) => { console.log(err) });
+    // Enable CORS for all routes
+   
     app.listen(PORT, () => {
       console.log(`Server is running and listening on port ${PORT}`)
     })
@@ -46,9 +50,11 @@ async function startServer() {
   }
 }
 
-
+app.use(cors());
 app.use("/team", teamRoutes)
 app.use('/employee', authenticate(employee), employeeRoutes);
+
+app.use('/employee', authenticate(hrPersonnel), employeeRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);

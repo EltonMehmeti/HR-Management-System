@@ -1,5 +1,5 @@
 const Employee = require('../models/employee');
-
+const bcrypt = require('bcrypt')
 // Controller methods for employee model
 
 // Get all employees
@@ -29,33 +29,60 @@ const getEmployeeById = async (req, res) => {
 // Create a new employee
 const createEmployee = async (req, res) => {
     console.log(req.body);
-    const { name, email, phone, teamId, salary } = req.body; 
-    try {
-        const employee = await Employee.create({ name, email, phone, teamId, salary }); 
+    const { name, email, phone, teamId, salary,password } = req.body; 
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+        try {
+        console.log(req.body)
+        const employee = await Employee.create({
+            name,
+            email,
+            password: hashedPassword,
+            phone,
+            teamId,
+            salary
+        });
         res.status(201).json(employee);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.log(error)
+        res.status(500).json({ error: 'Internal server error   ' });
     }
 };
 
 // Update an employee
 const updateEmployee = async (req, res) => {
     const { id } = req.params;
-    const { name, email, phone, teamId, salary } = req.body; 
+    const { name, email, phone, teamId, salary, password } = req.body; // Include password here if needed
     try {
-        const [updated] = await Employee.update(
-            { name, email, phone, teamId, salary }, 
-            { where: { id } }
-        );
-        if (!updated) {
+        const employee = await Employee.findByPk(id);
+        if (!employee) {
             return res.status(404).json({ error: 'Employee not found' });
         }
-        const updatedEmployee = await Employee.findByPk(id);
-        res.json(updatedEmployee);
+
+        // Check if password is included and hash it
+        let hashedPassword;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        // Update employee fields
+        await employee.update({
+            name: name || employee.name,
+            email: email || employee.email,
+            phone: phone || employee.phone,
+            teamId: teamId || employee.teamId,
+            salary: salary || employee.salary,
+            password: hashedPassword || employee.password, // Update password only if provided
+        });
+
+        res.json(employee);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 // Delete an employee
 const deleteEmployee = async (req, res) => {
