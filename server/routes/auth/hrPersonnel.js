@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
             role,
             joiningDate
         });
-        const token = generateToken(personnel.id);
+        const token = generateToken({ id: personnel.id, role: personnel.role });
 
         res.status(201).json({ token , personnel });
     } catch (error) {
