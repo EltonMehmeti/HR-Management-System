@@ -4,14 +4,14 @@ const router = express.Router();
 const jobApplicantController = require('../controllers/jobApplicant');
 
 
-router.post('/', jobApplicantController.createJobApplicant);
+router.post('/post', jobApplicantController.createJobApplicant);
 
-router.get('/', jobApplicantController.getAllJobApplicants);
+router.get('/get', jobApplicantController.getAllJobApplicants);
 
-router.get('/:id', jobApplicantController.getJobApplicantById);
+router.get('/get/:_id', jobApplicantController.getJobApplicantById);
 
-router.put('/:id', jobApplicantController.updateJobApplicantById);
+router.put('/update/:_id', jobApplicantController.updateJobApplicantById);
 
-router.delete('/:id', jobApplicantController.deleteJobApplicantById);
+router.delete('/delete/:_id', jobApplicantController.deleteJobApplicantById);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 
 const JobApplicant = require('../models/jobApplicant');
 
-exports.createJobApplicant = async (req, res) => {
+const createJobApplicant = async (req, res) => {
     try {
         const jobApplicant = await JobApplicant.create(req.body);
         res.status(201).json(jobApplicant);
@@ -10,7 +10,7 @@ exports.createJobApplicant = async (req, res) => {
     }
 };
 
-exports.getAllJobApplicants = async (req, res) => {
+const getAllJobApplicants = async (req, res) => {
     try {
         const jobApplicants = await JobApplicant.find();
         res.status(200).json(jobApplicants);
@@ -19,10 +19,10 @@ exports.getAllJobApplicants = async (req, res) => {
     }
 };
 
-exports.getJobApplicantById = async (req, res) => {
-    const { id } = req.params;
+const getJobApplicantById = async (req, res) => {
+    const { _id } = req.params;
     try {
-        const jobApplicant = await JobApplicant.findById(id);
+        const jobApplicant = await JobApplicant.findById(_id);
         if (jobApplicant) {
             res.status(200).json(jobApplicant);
         } else {
@@ -33,10 +33,10 @@ exports.getJobApplicantById = async (req, res) => {
     }
 };
 
-exports.updateJobApplicantById = async (req, res) => {
-    const { id } = req.params;
+const updateJobApplicantById = async (req, res) => {
+    const { _id } = req.params;
     try {
-        const updatedJobApplicant = await JobApplicant.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedJobApplicant = await JobApplicant.findByIdAndUpdate(_id, req.body, { new: true });
         if (updatedJobApplicant) {
             res.status(200).json(updatedJobApplicant);
         } else {
@@ -46,11 +46,10 @@ exports.updateJobApplicantById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-exports.deleteJobApplicantById = async (req, res) => {
-    const { id } = req.params;
+const deleteJobApplicantById = async (req, res) => {
+    const { _id } = req.params;
     try {
-        const deletedJobApplicant = await JobApplicant.findByIdAndDelete(id);
+        const deletedJobApplicant = await JobApplicant.findByIdAndDelete(_id);
         if (deletedJobApplicant) {
             res.status(204).send();
         } else {
@@ -60,3 +59,11 @@ exports.deleteJobApplicantById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+module.exports={
+    createJobApplicant,
+    getAllJobApplicants,
+    getJobApplicantById,
+    updateJobApplicantById,
+    deleteJobApplicantById,
+}

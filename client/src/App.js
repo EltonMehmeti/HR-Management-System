@@ -9,6 +9,7 @@ import HrSignin from './Layouts/Dashboard/pages/Signin';
 import HrSignup from './Layouts/Dashboard/pages/Signup';
 import EmployeeList from './Layouts/Dashboard/pages/EmployeeList';
 import DashboardLayout from './Layouts/Dashboard/DashboardLayout';
+import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
          <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<EmployeeList />} />
+          <Route path="jobApplicant" element={<JobApplicantList />} />
          
         </Route>
        
