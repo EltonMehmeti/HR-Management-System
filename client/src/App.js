@@ -24,7 +24,7 @@ function App() {
         <Route path="/hr/signup" element={<HrSignup />} />
         
          {/* DashboardLayout will contain nested routes */}
-         <Route path="/dashboard" element={<DashboardLayout />}>
+         <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<EmployeeList />} />
          

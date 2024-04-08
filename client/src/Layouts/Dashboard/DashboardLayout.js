@@ -1,29 +1,24 @@
-import React from 'react'
+
+import React from 'react';
 import DashboardView from './DashboardView';
 import { Outlet } from 'react-router-dom';
-import SideBar from './DashboardSidebar';
+import Sidebar from './DashboardSidebar';
 
-
-
-export default function DashboardLayout() {
+function DashboardLayout() {
     return (
         <div className='bg-blue-100 relative max-w-screen-2xl flex flex-col min-h-screen'>
-       
-        
-        {/* Content */}
-        <div className="flex flex-grow">
-          {/* Sidebar */}
-          <SideBar />
-          
-          {/* Main content */}
-          <div className="flex-grow">
-            <DashboardView/>
-            <Outlet />
-          </div>
+            {/* Content */}
+            <div className="flex flex-grow">
+                {/* Sidebar */}
+                <Sidebar />
+                {/* Main content */}
+                <div className="flex flex-col flex-grow">
+                    <DashboardView/>
+                    <Outlet />
+                </div>
+            </div>
         </div>
-    
-        
-      </div>
-    
-      )
+    );
 }
+
+export default DashboardLayout;
