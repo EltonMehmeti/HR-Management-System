@@ -10,6 +10,7 @@ import HrSignup from './Layouts/Dashboard/pages/Signup';
 import EmployeeList from './Layouts/Dashboard/components/Employee/EmployeeList';
 import DashboardLayout from './Layouts/Dashboard/DashboardLayout';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
+import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDetails';
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="employee" element={<EmployeeList />} />
           <Route path="jobApplicant" element={<JobApplicantList />} />
          
+          <Route path="/employee/:id" element={<EmployeeDetails />} />
         </Route>
        
        
