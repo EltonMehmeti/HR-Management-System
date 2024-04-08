@@ -7,8 +7,9 @@ import EmpSignup from './components/auth/Employee/Signup';
 import EmpSignin from './components/auth/Employee/Signin';
 import HrSignin from './Layouts/Dashboard/pages/Signin';
 import HrSignup from './Layouts/Dashboard/pages/Signup';
-import EmployeeList from './Layouts/Dashboard/pages/EmployeeList';
+import EmployeeList from './Layouts/Dashboard/components/Employee/EmployeeList';
 import DashboardLayout from './Layouts/Dashboard/DashboardLayout';
+
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
          <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<EmployeeList />} />
-         
+       
         </Route>
        
        
