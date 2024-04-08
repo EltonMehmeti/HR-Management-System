@@ -10,4 +10,4 @@ const generateToken = (userInfo) => {
 };
 
 
-module.exports = generateToken; 
+module.exports = generateToken;
