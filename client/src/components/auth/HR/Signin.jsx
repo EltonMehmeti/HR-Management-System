@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Signin() {
+export default function HrSignin() {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -23,9 +23,9 @@ export default function Signin() {
         formData
       );
       Cookies.set('token', response.data.token, { expires: 7, secure: true });
-      Cookies.set('personnel',JSON.stringify( response.data.personnel), { expires: 7, secure: true });
+      Cookies.set('user',JSON.stringify(response.data.personnel), { expires: 7, secure: true });
       toast.success("Login successful! Welcome " +formData.email);
-      window.location.href = "/hr/dashboard";
+      window.location.href = "/dashboard";
       setFormData({
         email: "",
         password: ""

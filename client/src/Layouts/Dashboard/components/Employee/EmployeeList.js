@@ -4,18 +4,17 @@ import CreateEmployee from "./CreateEmployee";
 import EditEmployee from "./EditEmployee";
 import axios from "axios";
 import "../../css/modal.css"
+import { useUser } from "../../../../helper/UserContext";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for create employee modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for edit employee modal
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null); // State to store the id of the employee being edited
+  const { token } = useUser();
 
-  // Define fetchAllEmployees function outside of useEffect hook
   const fetchAllEmployees = async () => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,13 +28,13 @@ function EmployeeList() {
   };
 
   useEffect(() => {
-    fetchAllEmployees();
-  }, []);
-
+    if (token) {
+      fetchAllEmployees();
+    }
+  }, [token]);
   const handleDelete = async (id) => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+ 
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,

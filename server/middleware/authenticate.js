@@ -7,9 +7,12 @@ dotenv.config();
 const authenticate = (Model) => async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
+        console.log(token);
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(decoded.id,decoded.role);
+
         const modelInstance = await Model.findOne({
-            _id: decoded._id,
+            _id: decoded.id,
             'tokens.token': token
         });
         if (!modelInstance) {
@@ -19,7 +22,7 @@ const authenticate = (Model) => async (req, res, next) => {
         req.token = token;
         next();
     } catch (error) {
-        res.status(401).send({ error: 'Authentication failed' });
+        res.status(401).send(error.message);
     }
 };
 

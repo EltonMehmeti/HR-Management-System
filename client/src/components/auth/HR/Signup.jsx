@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function HrSignup() {
   const [formData, setFormData] = useState({
     name: "",
@@ -24,6 +26,11 @@ export default function HrSignup() {
       );
 
       console.log("User registered successfully:", response.data);
+
+      Cookies.set('token', response.data.token, { expires: 7, secure: true });
+      Cookies.set('user',JSON.stringify( response.data.personnel), { expires: 7, secure: true });
+      toast.success("Signup successful! Welcome " +formData.email);
+      window.location.href = "/dashboard";
 
       setFormData({
         name: "",
