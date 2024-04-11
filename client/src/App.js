@@ -4,7 +4,6 @@ import Dashboard from './Layouts/Dashboard/pages/Dashboard';
 import './index.css';
 
 import EmpSignin from './components/auth/employee/Signin';
-
 import EmployeeList from './Layouts/Dashboard/components/Employee/EmployeeList';
 import DashboardLayout from './Layouts/Dashboard/DashboardLayout';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
@@ -14,8 +13,6 @@ import HrSignup from './components/auth/hr/Signup';
 import { UserProvider } from './helper/UserContext';
 import RequireAuth from './helper/RequireAuth';
 import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDetails';
-
-
 
 function App() {
   return (
@@ -28,19 +25,16 @@ function App() {
           <Route path="/hr/signup" element={<HrSignup />} />
 
           {/* DashboardLayout will contain nested routes */}
-          <Route path="/" element={<DashboardLayout />}>
-          <Route element={<RequireAuth />}>
-
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="employee" element={<EmployeeList />} />
-            <Route path="jobApplicant" element={<JobApplicantList />} />
-              
-          <Route path="/employee/:id" element={<EmployeeDetails />} />
+          <Route path="/" element={<RequireAuth />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="employee" element={<EmployeeList />} />
+              <Route path="jobApplicant" element={<JobApplicantList />} />
+              <Route path="/employee/:id" element={<EmployeeDetails />} />
             </Route>
           </Route>
         </Routes>
       </UserProvider>
-
     </Router>
   );
 }

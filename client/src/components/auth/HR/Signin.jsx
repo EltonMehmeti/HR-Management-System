@@ -32,6 +32,7 @@ export default function HrSignin() {
       });
 
     } catch (error) {
+      toast.error("Invalid email or password");
       console.error("Error logging in:", error);
     }
   };

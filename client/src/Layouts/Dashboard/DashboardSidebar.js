@@ -32,7 +32,7 @@ console.log(role);
             </li>
             <li>
               <a
-                href="#"
+                href="/jobapplicant"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <HiShoppingBag className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -88,6 +88,22 @@ console.log(role);
     >
       <div className="h-full px-3 py-4">
         <ul className="space-y-2 font-medium">
+        <li>
+              
+            <img
+            src='https://avehr.com/assets/sidebarLogo.6721cf2e.svg'
+            className='w-24 py-2 '
+            />
+            </li>
+            <li>
+              <span
+                
+                className="flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+<img width={20} src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0idy02IGgtNiB0ZXh0LWluZGlnby02MDAgbWF4LWgtNSBtYXgtdy01IiBhcmlhLWhpZGRlbj0idHJ1ZSI+PHBhdGggZD0iTTEyLjc1IDEyLjc1YS43NS43NSAwIDEgMS0xLjUgMCAuNzUuNzUgMCAwIDEgMS41IDBaTTcuNSAxNS43NWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVaTTguMjUgMTcuMjVhLjc1Ljc1IDAgMSAxLTEuNSAwIC43NS43NSAwIDAgMSAxLjUgMFpNOS43NSAxNS43NWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVaTTEwLjUgMTcuMjVhLjc1Ljc1IDAgMSAxLTEuNSAwIC43NS43NSAwIDAgMSAxLjUgMFpNMTIgMTUuNzVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk0xMi43NSAxNy4yNWEuNzUuNzUgMCAxIDEtMS41IDAgLjc1Ljc1IDAgMCAxIDEuNSAwWk0xNC4yNSAxNS43NWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVaTTE1IDE3LjI1YS43NS43NSAwIDEgMS0xLjUgMCAuNzUuNzUgMCAwIDEgMS41IDBaTTE2LjUgMTUuNzVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk0xNSAxMi43NWEuNzUuNzUgMCAxIDEtMS41IDAgLjc1Ljc1IDAgMCAxIDEuNSAwWk0xNi41IDEzLjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41WiI+PC9wYXRoPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNzUgMi4yNUEuNzUuNzUgMCAwIDEgNy41IDN2MS41aDlWM0EuNzUuNzUgMCAwIDEgMTggM3YxLjVoLjc1YTMgMyAwIDAgMSAzIDN2MTEuMjVhMyAzIDAgMCAxLTMgM0g1LjI1YTMgMyAwIDAgMS0zLTNWNy41YTMgMyAwIDAgMSAzLTNINlYzYS43NS43NSAwIDAgMSAuNzUtLjc1Wm0xMy41IDlhMS41IDEuNSAwIDAgMC0xLjUtMS41SDUuMjVhMS41IDEuNSAwIDAgMC0xLjUgMS41djcuNWExLjUgMS41IDAgMCAwIDEuNSAxLjVoMTMuNWExLjUgMS41IDAgMCAwIDEuNS0xLjV2LTcuNVoiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PC9wYXRoPjwvc3ZnPg=='/>
+                <span className="flex-1 ms-3 whitespace-nowrap">Calendar</span>
+              </span>
+            </li>
           {renderSidebarItems()}
           {user && (
             <li>
