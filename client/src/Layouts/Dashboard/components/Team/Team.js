@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
+import { useModal } from "react-hooks-use-modal"
+import { useUser } from "../../../../helper/UserContext"
 
 const Team = () => {
   const [teams, setTeams] = useState([])
@@ -7,7 +9,41 @@ const Team = () => {
   const [description, setDescription] = useState("")
   const [leaderId, setLeaderId] = useState("")
   const [editingId, setEditingId] = useState(null)
+  const [employees, setEmployees] = useState([])
+  const { token } = useUser()
 
+  const [CreateModal, openCreate, closeCreate, isOpenCreate] = useModal(
+    "root",
+    {
+      preventScroll: true,
+      closeOnOverlayClick: true,
+    }
+  )
+
+  const [EditModal, openEdit, closeEdit, isOpenEdit] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: true,
+  })
+
+  const fetchEmployees = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      const res = await axios.get("http://localhost:3001/employee", config)
+      setEmployees(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+      fetchEmployees()
+    }
+  }, [token])
   useEffect(() => {
     fetchTeams()
   }, [])
@@ -15,6 +51,7 @@ const Team = () => {
   const fetchTeams = async () => {
     try {
       const response = await axios.get("http://localhost:3001/team")
+      console.log("Fetched Teams:", response.data)
       setTeams(response.data)
     } catch (error) {
       console.error("Error fetching teams:", error)
@@ -23,11 +60,16 @@ const Team = () => {
 
   const handleCreate = async () => {
     try {
-      await axios.post("http://localhost:3001/team", { name, description })
+      await axios.post("http://localhost:3001/team", {
+        name,
+        description,
+        leaderId,
+      })
       setName("")
       setDescription("")
       setLeaderId("")
       fetchTeams()
+      closeCreate()
     } catch (error) {
       console.error("Error creating team:", error)
     }
@@ -36,7 +78,9 @@ const Team = () => {
   const handleEdit = team => {
     setName(team.name)
     setDescription(team.description)
+    setLeaderId(team.leaderId)
     setEditingId(team.id)
+    openEdit()
   }
 
   const handleUpdate = async () => {
@@ -44,12 +88,14 @@ const Team = () => {
       await axios.put(`http://localhost:3001/team/${editingId}`, {
         name,
         description,
+        leaderId,
       })
       setName("")
       setDescription("")
       setLeaderId("")
       setEditingId(null)
       fetchTeams()
+      closeEdit()
     } catch (error) {
       console.error("Error updating team:", error)
     }
@@ -67,6 +113,7 @@ const Team = () => {
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
       <button
+        onClick={openCreate}
         type="button"
         class="flex items-center justify-center text-white m-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
       >
@@ -95,6 +142,9 @@ const Team = () => {
               Description
             </th>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
+              Team Leader
+            </th>
+            <th scope="col" className="px-6 py-4 font-medium text-gray-900">
               Actions
             </th>
           </tr>
@@ -106,6 +156,9 @@ const Team = () => {
                 {team.name}
               </td>
               <td className="px-6 py-4">{team.description}</td>
+              <td className="px-6 py-4">
+                {team.teamLeader?.name || "No leader assigned"}
+              </td>
               <td className="px-6 py-4">
                 <div className="flex">
                   <a
@@ -156,6 +209,174 @@ const Team = () => {
           ))}
         </tbody>
       </table>
+      <CreateModal>
+        <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            Create Team
+          </h3>
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              handleCreate()
+            }}
+          >
+            <div className="mb-4">
+              <label
+                htmlFor="team-name"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Name
+              </label>
+              <input
+                id="team-name"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Team Name"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="team-description"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Description
+              </label>
+              <textarea
+                id="team-description"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="A brief description of the team"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="team-leader"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Team Leader
+              </label>
+              <select
+                id="team-leader"
+                value={leaderId}
+                onChange={e => setLeaderId(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                required
+              >
+                <option value="">Select a Leader</option>
+                {employees.map(employee => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center justify-end space-x-4">
+              <button
+                type="button"
+                onClick={closeCreate}
+                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Create Team
+              </button>
+            </div>
+          </form>
+        </div>
+      </CreateModal>
+      <EditModal>
+        <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            Edit Team
+          </h3>
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              handleUpdate()
+            }}
+          >
+            <div className="mb-4">
+              <label
+                htmlFor="team-name"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Name
+              </label>
+              <input
+                id="team-name"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Team Name"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="team-description"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Description
+              </label>
+              <textarea
+                id="team-description"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="A brief description of the team"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="team-leader"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Team Leader
+              </label>
+              <select
+                id="team-leader"
+                value={leaderId}
+                onChange={e => setLeaderId(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                required
+              >
+                <option value="">Select a Leader</option>
+                {employees.map(employee => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center justify-end space-x-4">
+              <button
+                type="button"
+                onClick={closeEdit}
+                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                Edit Team
+              </button>
+            </div>
+          </form>
+        </div>
+      </EditModal>
     </div>
   )
 }

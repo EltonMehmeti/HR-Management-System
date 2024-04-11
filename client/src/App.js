@@ -3,17 +3,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Dashboard from "./Layouts/Dashboard/pages/Dashboard"
 import "./index.css"
 
-import EmpSignin from "./components/auth/employee/Signin"
+import EmpSignin from "./components/auth/Employee/Signin"
 
 import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList"
 import DashboardLayout from "./Layouts/Dashboard/DashboardLayout"
 import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList"
 
-import HrSignin from "./components/auth/hr/Signin"
-import HrSignup from "./components/auth/hr/Signup"
+import HrSignin from "./components/auth/HR/Signin"
+import HrSignup from "./components/auth/HR/Signup"
 import { UserProvider } from "./helper/UserContext"
 import RequireAuth from "./helper/RequireAuth"
 import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDetails"
+import Team from "./Layouts/Dashboard/components/Team/Team"
 
 function App() {
   return (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react"
+import axios from "axios"
 
 function CreateEmployee({ onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -8,27 +8,28 @@ function CreateEmployee({ onClose, onSave }) {
     password: "",
     phone: "",
     salary: "",
-  });
+  })
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleChange = event => {
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSave = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ"
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      await axios.post("http://localhost:3001/employee", formData, config);
-      onSave();
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      await axios.post("http://localhost:3001/employee", formData, config)
+      onSave()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
@@ -54,7 +55,6 @@ function CreateEmployee({ onClose, onSave }) {
                     value={formData.name}
                     onChange={handleChange}
                   />
-                 
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
@@ -115,7 +115,7 @@ function CreateEmployee({ onClose, onSave }) {
                   />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                <label
+                  <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="phone"
                   >
@@ -132,7 +132,7 @@ function CreateEmployee({ onClose, onSave }) {
                   />
                 </div>
               </div>
-             
+
               <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                 <button
                   onClick={onClose}
@@ -154,7 +154,7 @@ function CreateEmployee({ onClose, onSave }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CreateEmployee;
+export default CreateEmployee
