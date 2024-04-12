@@ -3,11 +3,14 @@ import axios from "axios";
 import "../css/modal.css";
 import CreateJobApplicant from "../components/JobApplicant/CreateJobApplicant";
 import EditJobApplicant from "../components/JobApplicant/EditJobApplicant";
+import ScheduleMetting from "../components/Recruitment/ScheduleMetting";
 
 function JobApplicantList() {
   const [jobApplicants, setJobApplicants] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for create employee modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for edit employee modal
+  const [isScheduleModalOpen, setScheduleModalOpen] = useState(false); // State for edit employee modal
+
   const [selectedJobApplicantId, setSelectedJobApplicantId] = useState(null); // State to store the id of the employee being edited
 
   // Define fetchAllEmployees function outside of useEffect hook
@@ -171,6 +174,10 @@ function JobApplicantList() {
                     Delete
                   </button>
                   <button
+                    onClick={() => {
+                      setScheduleModalOpen(true); // Open the EditEmployee modal
+                      setSelectedJobApplicantId(item._id); // Set the selected employee ID
+                    }}
                     type="button"
                     className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2"
                   >
@@ -206,6 +213,20 @@ function JobApplicantList() {
         </div>
       )}
       {/* Render EditEmployee modal when isEditModalOpen is true */}
+      {isScheduleModalOpen && (
+        <div className="modal-container">
+          <div className="modal-content">
+            <ScheduleMetting
+              jobApplicantId={selectedJobApplicantId} // Pass selectedEmployeeId as a prop
+              onClose={() => setScheduleModalOpen(false)}
+              onSave={() => {
+                setScheduleModalOpen(false);
+                fetchAllJobAplicants();
+              }}
+            />
+          </div>
+        </div>
+      )}
       {isEditModalOpen && (
         <div className="modal-container">
           <div className="modal-content">

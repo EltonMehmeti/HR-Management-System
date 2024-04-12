@@ -1,9 +1,17 @@
 const Interviewee = require('../models/interviewee');
-
+const zoomMeeting = require('../helper/zoomMeeting');
 const createInterviewee = async (req, res) => {
     try {
-        const { name, email, phone, resume, jobTitle } = req.body;
+        const { name, email, phone, resume, jobTitle, hrEmail,title, date, time, duration, agenda } = req.body;
         const interviewee = await Interviewee.create({ name, email, phone, resume, jobTitle });
+        const start_time = new Date(`${date}T${time}:00`);
+        zoomMeeting.createMeeting(title, start_time, duration,agenda).then((response) => {
+            console.log(response);
+          }).catch((error) => {
+            console.error(error);
+          });
+
+
         res.status(201).json(interviewee);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });

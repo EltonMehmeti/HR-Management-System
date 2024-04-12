@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const HrPersonnel = require('./hrPersonnel'); 
-const JobApplicant = require('./interviewee'); 
+const Interviewee = require('./interviewee');
 
 const Interview = sequelize.define('interview', {
     id: {
@@ -13,10 +13,13 @@ const Interview = sequelize.define('interview', {
         primaryKey: true
     },
     datetime: Sequelize.DATE,
-    location: Sequelize.STRING,
+    duration: Sequelize.INTEGER,
+    agenda: Sequelize.STRING,
+    status: Sequelize.STRING,
+    join_url: Sequelize.STRING,
 });
 
 Interview.belongsTo(HrPersonnel, { foreignKey: 'recruiterId' });
-Interview.belongsTo(JobApplicant, { foreignKey: 'applicantId' });
+Interview.belongsTo(Interviewee, { foreignKey: 'intervieweeId' });
 
 module.exports = Interview;

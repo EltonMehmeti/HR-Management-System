@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/EltonMehmeti/HR-Management-System-#readme",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -28,12 +29,15 @@
     "ejs": "^3.1.9",
     "express": "^4.19.1",
     "express-handlebars": "^7.1.2",
+    "googleapis": "^134.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.4",
     "mysql2": "^3.9.2",
+    "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
     "pug": "^3.0.2",
-    "sequelize": "^6.37.1"
+    "sequelize": "^6.37.1",
+    "uuid": "^9.0.1"
   }
 }
