@@ -27,6 +27,7 @@ const salary = require('./models/salary');
 const zoomMetting = require('./helper/zoomMeeting');
 const HrPersonnel = require("./models/hrPersonnel");
 const axios = require('axios');
+const recruitmentsRoutes = require('./routes/recruitment');
 require('dotenv').config()
 
 
@@ -35,22 +36,17 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.use(bodyParser.json());
 
-zoomMetting.getMeetings().then((response) => {
-  console.log(response);
-}).catch((error) => {
-  console.error(error);
-});
-const participantEmails = ['eltonmeh1@gmail.com', 'eltonmhmt@gmail.com'];
-zoomMetting.createMeeting('Interview', '2024-04-11T15:22:00', 60, 'Asia/Kuala_Lumpur', 'Interview for the position of Software Engineer',participantEmails).then((response) => {
-  console.log(response);
-}).catch((error) => {
-  console.error(error);
-});
+// zoomMetting.getMeetings().then((response) => {
+//  console.log(response);
+// }).catch((error) => {
+//   console.error(error);
+// });
+
   
 
 async function startServer() {
   try {
-    await sequelize.sync({ logging: console.log})
+    await sequelize.sync({ logging: console.log })
     console.log("Database synchronized successfully")
     mongoose.connect('mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/').
     then(() => { console.log('Connected to MongoDB') })
@@ -72,6 +68,7 @@ app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant', jobApplicantRoutes);
+app.use('/recruitment', recruitmentsRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
 

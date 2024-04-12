@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "proud-skein-346323",
+  "private_key_id": "abdfd760fa024a0077c4b9b7f9f1f5f30371da61",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDURHMHBsWRnTou\nFifQO34g/kMci1W39xsK3Kgt1h2RbfjRVqiUkADQt0ZccZIEn9iCFkOjs3eZLVtc\nQ9wHxVFTVihqzuMHd2D84mNx8YrdLOK0xelORccCR1jVDjSPCXjcjzICpG/qAIiC\nF70ZIXyFdxaUaL9p7ONjo7XDGaTM3jp/RRQY460U/2NxXFlWGVxBA7QusRFpOnNZ\n75h/8qXHrQampULxCJ0lRTj8EyWO7q+8yNblDO9/sHYasJkuACUvAvGvDjhbCMP/\n+YfondiACGwuQP6A2yvTOSEAkexcljof6mX+gLQkQtzhVx3jPB+uUKOV6alfnFTv\n6CFdhO+DAgMBAAECggEACsGhNpTwRA28mgNDZzjsjk10JykkYdsiwq0l1JTKEMmK\n10jV6BlYATuYVCzpIlTbStRH/y6j+94hiA5kQvyLv3ZZO/hZ5tH01zu9oFOGHukc\nX967kNzWVdY5uSosHad0OXEELsAYb7oxMK51RaW9wqGjQkgAkySO7UipeEZ/ZGYy\nzajoGC2NLcNN2OGi+Xxsw+K7/xNU+2s3UEIMQyy6IQYChc6X3SJiP98AckVd4kok\n74xPbpX/HEucYg+JRx3/v7Z5A8De2bpkYMdBoPOjcHkhpUksPz3AfNWFzviYH8tF\n7Myb9TQeOy1Nba4jX0QRQGiRYE9Od8Vys2e+OUEKSQKBgQD7MPSLCDnxT9jFar6w\nAWBDKElmKO6BtZZBj3wPfc1fs1Y9biuf+/kfLep1Go1R20pLdVFWzujuET6vXGZK\nksDcq3u+Obl90OSbc7qF947BK9V7ThCTMoRxvPy5PlxcS7LqEa4X3m3se5cYgQ6X\ns2jztvC93fgrMGEFpLriXsBFPQKBgQDYVLwqUiK60iQagRElbb60tSwXdfiEPDia\nqtGJ/krKdDjpdNLtNhnyMOr3lYf5MQ7Afy4xnypF3E/18d3ScukJBI08Ew5hYgnJ\nfRapH5kLJA3G1QaZEA3TP6FCpIAYyQOOVbq+YDPQ4ugARcyk6aS5/2fG0Rj6SSOH\n9m0GLwDTvwKBgGOqKe0cJ3lSmAzEbMKC2UHsMytApFl8xhBfMPcokBsfmeEn3FFO\n9apkWnl6PoYy/whvlQVfdVY4K2oCvGdsUO99bsysNKfyATKYuXI8Jj0I+lxBPhxZ\nV+mU9aU+VAEe2+85cpzv2SeSZgIH+tVADy1b8asz7iqcuHI3yRrWQ211AoGALC0J\ni77gFrRo6PyoSrNheTdx/Ix7pk1B5duyFHLYRQV8xbe0hvpATCPPJ6XicXGiKI8Q\nGNP+5us5bOjqOlp62fuS98yQaDSD+SBRK1Inh43iPlMsGL+dgyEARkKfYfBSiJNb\nIhs1GZfsdnnKc3a+y7irMX9rkVi0J8SbuOKKUbMCgYBTCbwicYQ0JjZUrdwkTVjn\nEP2JDY9UjLYTe+EtvKmVkI1qTmaC6dOOc5VB6GKwJUCRkK/tt6R12KLv8TK8bi3s\nfQ5TyZX3qSxKQdZ3MytLXUe1zXP/pqRvb+1JnjUmBMGjujAE06xKs9DddQcR6V3q\nFamXTupxO9XAIBdvIEZsIg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "elton-hr@proud-skein-346323.iam.gserviceaccount.com",
+  "client_id": "107609714935488727759",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/elton-hr%40proud-skein-346323.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

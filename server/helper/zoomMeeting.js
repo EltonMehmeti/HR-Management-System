@@ -1,13 +1,11 @@
 require('dotenv').config();
 const axios = require('axios');
-const jwt = require('jsonwebtoken');
-const token = process.env.TOKEN;
-
-
+const generateAccessToken = require('./oAuthAccessToken');
 
 
 const getMeetings = async () => {
     try {
+        const token =  await generateAccessToken();
         const response = await axios({
             method: 'get',
             url: 'https://api.zoom.us/v2/users/me/meetings',
@@ -24,7 +22,9 @@ const getMeetings = async () => {
 
 
 
-const createMeeting = async (topic, startTime, duration, timezone, agenda) => {
+const createMeeting = async (topic, startTime, duration, agenda) => {
+    const token =  await generateAccessToken();
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
         const response = await axios({
             method: 'post',
@@ -60,6 +60,7 @@ const createMeeting = async (topic, startTime, duration, timezone, agenda) => {
         console.error(error);
     }
 }
+
 
 module.exports = {
     getMeetings,
