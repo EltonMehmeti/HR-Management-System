@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Dashboard from "./Layouts/Dashboard/pages/Dashboard"
 import "./index.css"
 
+
 import EmpSignin from "./components/auth/Employee/Signin"
 
 import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList"
@@ -16,6 +17,7 @@ import RequireAuth from "./helper/RequireAuth"
 import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDetails"
 import Team from "./Layouts/Dashboard/components/Team/Team"
 
+
 function App() {
   return (
     <Router>
@@ -28,6 +30,7 @@ function App() {
           <Route path="/hr/signup" element={<HrSignup />} />
 
           {/* DashboardLayout will contain nested routes */}
+
           <Route path="/" element={<DashboardLayout />}>
             <Route element={<RequireAuth />}>
               <Route path="dashboard" element={<Dashboard />} />

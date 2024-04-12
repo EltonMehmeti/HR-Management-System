@@ -24,14 +24,29 @@ const jobApplicant = require('./models/jobApplicant');
 const intervieweeRoutes = require('./routes/interviewee');  
 const jobApplicantRoutes = require('./routes/jobApplicant');
 const salary = require('./models/salary');
+const zoomMetting = require('./helper/zoomMeeting');
+const HrPersonnel = require("./models/hrPersonnel");
+const axios = require('axios');
+require('dotenv').config()
+
 
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
-const HrPersonnel = require("./models/hrPersonnel");
 app.use(bodyParser.json());
 
-
+zoomMetting.getMeetings().then((response) => {
+  console.log(response);
+}).catch((error) => {
+  console.error(error);
+});
+const participantEmails = ['eltonmeh1@gmail.com', 'eltonmhmt@gmail.com'];
+zoomMetting.createMeeting('Interview', '2024-04-11T15:22:00', 60, 'Asia/Kuala_Lumpur', 'Interview for the position of Software Engineer',participantEmails).then((response) => {
+  console.log(response);
+}).catch((error) => {
+  console.error(error);
+});
+  
 
 async function startServer() {
   try {
@@ -58,5 +73,8 @@ app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant', jobApplicantRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
+
+
+
 
 startServer();
