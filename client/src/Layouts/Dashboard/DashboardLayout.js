@@ -6,7 +6,7 @@ import Sidebar from './DashboardSidebar';
 
 function DashboardLayout() {
     return (
-        <div className='bg-blue-100 relative max-w-screen-2xl flex flex-col min-h-screen'>
+        <div className='bg-blue-100 min-h-screen'>
             {/* Content */}
             <div className="flex flex-grow">
                 {/* Sidebar */}
