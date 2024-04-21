@@ -13,6 +13,7 @@ import HrSignup from './components/auth/hr/Signup';
 import { UserProvider } from './helper/UserContext';
 import RequireAuth from './helper/RequireAuth';
 import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDetails';
+import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
               <Route path="employee" element={<EmployeeList />} />
               <Route path="jobApplicant" element={<JobApplicantList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
+              <Route path="/recruit" element={<Interviews />} />
+              
             </Route>
           </Route>
         </Routes>

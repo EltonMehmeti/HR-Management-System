@@ -27,8 +27,8 @@ export default function HrSignup() {
 
       console.log("User registered successfully:", response.data);
 
-      Cookies.set('token', response.data.token, { expires: 7, secure: true });
-      Cookies.set('user',JSON.stringify( response.data.personnel), { expires: 7, secure: true });
+      Cookies.set('token', response.data.token, { expires: 1, secure: true });
+      Cookies.set('user',JSON.stringify( response.data.personnel), { expires: 1, secure: true });
       toast.success("Signup successful! Welcome " +formData.email);
       window.location.href = "/dashboard";
 

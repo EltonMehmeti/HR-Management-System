@@ -28,6 +28,7 @@ const zoomMetting = require('./helper/zoomMeeting');
 const HrPersonnel = require("./models/hrPersonnel");
 const axios = require('axios');
 const recruitmentsRoutes = require('./routes/recruitment');
+const authorizeRole = require("./middleware/authorizeRole");
 require('dotenv').config()
 
 
@@ -68,7 +69,7 @@ app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant', jobApplicantRoutes);
-app.use('/recruitment', recruitmentsRoutes);
+app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
 

@@ -22,8 +22,8 @@ export default function HrSignin() {
         "http://localhost:3001/auth/hr/login",
         formData
       );
-      Cookies.set('token', response.data.token, { expires: 7, secure: true });
-      Cookies.set('user',JSON.stringify(response.data.personnel), { expires: 7, secure: true });
+      Cookies.set('token', response.data.token, { expires: 1, secure: true });
+      Cookies.set('user',JSON.stringify(response.data.personnel), { expires: 1, secure: true });
       toast.success("Login successful! Welcome " +formData.email);
       window.location.href = "/dashboard";
       setFormData({
