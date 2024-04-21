@@ -2,7 +2,7 @@ import React from 'react';
 import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable } from "react-icons/hi";
 import { useUser } from '../../helper/UserContext';
 import Cookies from 'js-cookie';
-
+import logo from './images/logo2.png'
 function Sidebar() {
   const { user } = useUser();
 
@@ -23,7 +23,7 @@ console.log(role);
           <>
             <li>
               <a
-                href="#"
+                href="/recruit"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <HiUser className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -88,12 +88,17 @@ console.log(role);
     >
       <div className="h-full px-3 py-4">
         <ul className="space-y-2 font-medium">
-        <li>
+        <li className='flex flex-row  gap-4 items-center'>
               
             <img
-            src='https://avehr.com/assets/sidebarLogo.6721cf2e.svg'
-            className='w-24 py-2 '
+            src={logo}
+            className='w-10 py-2 '
+            
             />
+           <h1 className='font-bold'>
+  Cora<span className='text-[#7b68ff]'>HR</span>
+</h1>
+
             </li>
             <li>
               <span

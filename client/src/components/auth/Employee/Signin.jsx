@@ -24,8 +24,8 @@ const EmpSignin = () => {
       );
 
       console.log("User logged in successfully:", {...response.data.employee, role:'employee'});
-      Cookies.set('token', response.data.token, { expires: 7, secure: true });
-      Cookies.set('user',JSON.stringify({...response.data.employee, role:'employee'}), { expires: 7, secure: true });
+      Cookies.set('token', response.data.token, { expires: 1, secure: true });
+      Cookies.set('user',JSON.stringify({...response.data.employee, role:'employee'}), { expires: 1, secure: true });
       toast.success("Login successful! Welcome " +formData.email);
       window.location.href = "/dashboard";
       setFormData({
