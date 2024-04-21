@@ -6,9 +6,8 @@ function CreateJobApplicant({ onClose, onSave }) {
     name: "",
     email: "",
     phone: "",
-    resume: "",
+    resume: null, // Initialize resume as null
     jobTitle: "",
-
   });
 
   const handleChange = (event) => {
@@ -16,15 +15,34 @@ function CreateJobApplicant({ onClose, onSave }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFormData({ ...formData, resume: file });
+  };
+
   const handleSave = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Ensure content type is set to multipart/form-data for file upload
+        },
       };
-      await axios.post("http://localhost:3001/jobApplicant/post", formData, config);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("resume", formData.resume);
+      formDataToSend.append("jobTitle",formData.jobTitle) // Append the file to FormData
+
+      await axios.post(
+        "http://localhost:3001/jobApplicant/post",
+        formDataToSend,
+        config
+      );
       onSave();
     } catch (err) {
       console.log(err);
@@ -55,7 +73,6 @@ function CreateJobApplicant({ onClose, onSave }) {
                     value={formData.name}
                     onChange={handleChange}
                   />
-                 
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
@@ -76,8 +93,8 @@ function CreateJobApplicant({ onClose, onSave }) {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3">
-                <label
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="phone"
                   >
@@ -93,9 +110,7 @@ function CreateJobApplicant({ onClose, onSave }) {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
-              <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="resume"
@@ -105,15 +120,15 @@ function CreateJobApplicant({ onClose, onSave }) {
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="resume"
-                    type="text"
-                    placeholder="Resume"
+                    type="file" // Change type to file for file input
                     name="resume"
-                    value={formData.resume}
-                    onChange={handleChange}
+                    onChange={handleFileChange} // Use handleFileChange to update the file state
                   />
                 </div>
+              </div>
+              <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3">
-                <label
+                  <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="jobTitle"
                   >
@@ -130,7 +145,6 @@ function CreateJobApplicant({ onClose, onSave }) {
                   />
                 </div>
               </div>
-             
               <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                 <button
                   onClick={onClose}

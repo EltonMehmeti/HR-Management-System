@@ -1,9 +1,21 @@
 
 const JobApplicant = require('../models/jobApplicant');
+const upload = require('../middleware/multer'); 
 
 const createJobApplicant = async (req, res) => {
     try {
-        const jobApplicant = await JobApplicant.create(req.body);
+        // Get the file path or filename from the uploaded file
+        const resume = req.file.filename;
+
+        // Create the job applicant record with the resume filename or path
+        const jobApplicant = await JobApplicant.create({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            resume: resume, // Store the filename or path in the resume field
+            jobTitle: req.body.jobTitle
+        });
+
         res.status(201).json(jobApplicant);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -36,7 +48,19 @@ const getJobApplicantById = async (req, res) => {
 const updateJobApplicantById = async (req, res) => {
     const { _id } = req.params;
     try {
-        const updatedJobApplicant = await JobApplicant.findByIdAndUpdate(_id, req.body, { new: true });
+        let updateFields = {
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            jobTitle: req.body.jobTitle
+        };
+
+        if (req.file) {
+            updateFields.resume = req.file.filename; // If a new file is uploaded, update the resume field
+        }
+
+        const updatedJobApplicant = await JobApplicant.findByIdAndUpdate(_id, updateFields, { new: true });
+
         if (updatedJobApplicant) {
             res.status(200).json(updatedJobApplicant);
         } else {
@@ -46,6 +70,8 @@ const updateJobApplicantById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
 const deleteJobApplicantById = async (req, res) => {
     const { _id } = req.params;
     try {

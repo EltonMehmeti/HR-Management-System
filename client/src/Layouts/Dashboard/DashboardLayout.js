@@ -12,6 +12,7 @@ function DashboardLayout() {
             <div className="flex-grow flex flex-col">
                 <DashboardView/>
                 <Outlet />
+
             </div>
         </div>
     );

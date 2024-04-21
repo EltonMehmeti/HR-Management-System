@@ -1,9 +1,17 @@
 const Team = require("../models/team")
-
+const Employee = require("../models/employee")
 //Get all Teams
 const getAllTeams = async (req, res) => {
   try {
-    const teams = await Team.findAll()
+    const teams = await Team.findAll({
+      include: [
+        {
+          model: Employee,
+          as: "teamLeader",
+          attributes: ["name"],
+        },
+      ],
+    })
     res.json(teams)
   } catch (error) {
     console.log(error)
@@ -15,7 +23,15 @@ const getAllTeams = async (req, res) => {
 const getTeamById = async (req, res) => {
   const { id } = req.params
   try {
-    const team = await Team.findByPk(id)
+    const team = await Team.findByPk(id, {
+      include: [
+        {
+          model: Employee,
+          as: "teamLeader",
+          attributes: ["name"],
+        },
+      ],
+    })
     if (!team) {
       return res.status(404).json({ error: "Team not found" })
     }
@@ -49,7 +65,15 @@ const updateTeam = async (req, res) => {
     if (!updated) {
       return res.status(404).json({ error: "Team not found" })
     }
-    const updatedTeam = await Team.findByPk(id)
+    const updatedTeam = await Team.findByPk(id, {
+      include: [
+        {
+          model: Employee,
+          as: "teamLeader",
+          attributes: ["name"],
+        },
+      ],
+    })
     res.json(updatedTeam)
   } catch (error) {
     res.status(500).json({ error: "Internal server error" })

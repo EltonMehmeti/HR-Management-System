@@ -1,10 +1,9 @@
 // employee.js
 
-const Sequelize = require('sequelize');
-const sequelize = require('../util/database');
-const Team = require('./team');
-const Performance = require('./performance'); 
-
+const Sequelize = require("sequelize")
+const sequelize = require("../util/database")
+const Team = require("./team")
+const Performance = require("./performance")
 
 const Employee = sequelize.define("employee", {
   id: {
@@ -22,10 +21,9 @@ const Employee = sequelize.define("employee", {
   },
 })
 
-Employee.belongsToMany(Team, { through: 'EmployeeTeam' });
-Team.belongsToMany(Employee, { through: 'EmployeeTeam' });
-Team.belongsTo(Employee, { foreignKey: 'teamLeaderId', as: 'teamLeader' });
-Employee.hasMany(Performance); 
-
+Employee.belongsToMany(Team, { through: "EmployeeTeam" })
+Team.belongsToMany(Employee, { through: "EmployeeTeam" })
+Team.belongsTo(Employee, { foreignKey: "leaderId", as: "teamLeader" })
+Employee.hasMany(Performance)
 
 module.exports = Employee

@@ -242,7 +242,7 @@ function JobApplicantList() {
         </div>
       )}
       {/* Backdrop for EditEmployee modal */}
-      {(isCreateModalOpen || isEditModalOpen) && (
+      {(isCreateModalOpen || isEditModalOpen || isScheduleModalOpen) && (
         <div className="modal-backdrop"></div>
       )}
     </div>

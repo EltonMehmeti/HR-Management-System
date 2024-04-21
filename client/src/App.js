@@ -14,23 +14,27 @@ import { UserProvider } from './helper/UserContext';
 import RequireAuth from './helper/RequireAuth';
 import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDetails';
 import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
+import Team from "./Layouts/Dashboard/components/Team/Team"
 
 function App() {
   return (
     <Router>
-      <UserProvider> 
+      <UserProvider>
         <Routes>
           <Route path="/employee/signin" element={<EmpSignin />} />
+          <Route path="/teams" element={<Team />} />
 
           <Route path="/hr/signin" element={<HrSignin />} />
           <Route path="/hr/signup" element={<HrSignup />} />
 
           {/* DashboardLayout will contain nested routes */}
-          <Route path="/" element={<RequireAuth />}>
-            <Route element={<DashboardLayout />}>
+
+          <Route path="/" element={<DashboardLayout />}>
+            <Route element={<RequireAuth />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="employee" element={<EmployeeList />} />
               <Route path="jobApplicant" element={<JobApplicantList />} />
+
               <Route path="/employee/:id" element={<EmployeeDetails />} />
               <Route path="/recruit" element={<Interviews />} />
               
@@ -39,7 +43,7 @@ function App() {
         </Routes>
       </UserProvider>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

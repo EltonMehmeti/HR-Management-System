@@ -6,21 +6,25 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
     name: "",
     email: "",
     phone: "",
-    resume: "",
+    resume: null, // Initialize resume as null
     jobTitle: "",
   });
 
   useEffect(() => {
     const fetchJobApplicantData = async () => {
       try {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         };
-        const res = await axios.get(`http://localhost:3001/jobApplicant/get/${jobApplicantId}`, config);
-  
+        const res = await axios.get(
+          `http://localhost:3001/jobApplicant/get/${jobApplicantId}`,
+          config
+        );
+
         console.log("API response:", res.data);
         setFormData(res.data);
       } catch (err) {
@@ -29,22 +33,41 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
     };
     fetchJobApplicantData();
   }, [jobApplicantId]);
-  
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log("Selected file:", file);
+    setFormData({ ...formData, resume: file });
+  };
+
   const handleSave = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Ensure content type is set to multipart/form-data for file upload
+        },
       };
-      await axios.put(`http://localhost:3001/jobApplicant/update/${jobApplicantId}`, formData, config);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("resume", formData.resume); // Append the file to FormData
+      formDataToSend.append("jobTitle", formData.jobTitle);
+
+      await axios.put(
+        `http://localhost:3001/jobApplicant/update/${jobApplicantId}`,
+        formDataToSend,
+        config
+      );
       onSave();
     } catch (err) {
       console.log(err);
@@ -57,6 +80,7 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
         <div className="relative w-auto my-6 mx-auto max-w-3xl ">
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-blue-50 p-10 outline-none focus:outline-none">
             <h2 className="text-xl font-semibold mb-4">Edit Item</h2>
+
             <form className="w-full max-w-lg">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -75,7 +99,6 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
                     value={formData.name}
                     onChange={handleChange}
                   />
-                 
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
@@ -96,8 +119,8 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3">
-                <label
+                <div className="w-full md:w-1/2 px-3">
+                  <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="phone"
                   >
@@ -125,15 +148,14 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="resume"
-                    type="text"
-                    placeholder="Resume"
+                    type="file" // Ensure the type is set to "file"
                     name="resume"
-                    value={formData.resume}
-                    onChange={handleChange}
+                    onChange={handleFileChange}
                   />
+                 
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                <label
+                  <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="jobTitle"
                   >
@@ -150,7 +172,7 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
                   />
                 </div>
               </div>
-             
+
               <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                 <button
                   onClick={onClose}
