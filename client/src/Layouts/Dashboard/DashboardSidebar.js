@@ -82,23 +82,13 @@ console.log(role);
   };
 
   return (
-    <aside
-      id="default-sidebar"
-      className="top-0 left-0 z-40 w-64 h-screen overflow-y-auto bg-gray-50 dark:bg-gray-800"
-    >
-      <div className="h-full px-3 py-4">
-        <ul className="space-y-2 font-medium">
-        <li className='flex flex-row  gap-4 items-center'>
-              
-            <img
-            src={logo}
-            className='w-10 py-2 '
-            
-            />
-           <h1 className='font-bold'>
-  Cora<span className='text-[#7b68ff]'>HR</span>
-</h1>
-
+    <div className="flex">
+<aside className="top-0 left-0 z-40 w-64 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <div className="h-full px-3 py-4">
+          <ul className="space-y-2 font-medium">
+            <li className="flex flex-row gap-4 items-center">
+              <img src="/static/media/logo2.b170189c90789401638e.png" className="w-10 py-2" alt="logo" />
+              <h1 className="font-bold">Cora<span className="text-[#7b68ff]">HR</span></h1>
             </li>
             <li>
               <span
@@ -124,6 +114,8 @@ console.log(role);
         </ul>
       </div>
     </aside>
+    </div>
+    
   );
 }
 
