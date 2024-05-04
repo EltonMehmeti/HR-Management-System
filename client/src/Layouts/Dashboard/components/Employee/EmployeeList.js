@@ -23,6 +23,7 @@ function EmployeeList() {
         },
       };
       const res = await axios.get("http://localhost:3001/employee", config);
+      console.log(res.data);
       setEmployees(res.data);
     } catch (err) {
       console.log(err);

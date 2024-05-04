@@ -30,15 +30,17 @@ function App() {
           {/* DashboardLayout will contain nested routes */}
 
           <Route path="/" element={<DashboardLayout />}>
-            <Route element={<RequireAuth />}>
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="employee" element={<EmployeeList />} />
-              <Route path="jobApplicant" element={<JobApplicantList />} />
 
+          <Route element={<RequireAuth allowedRole={"datamanager"} />}>
+              <Route path="employee" element={<EmployeeList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
+          </Route>
+            <Route element={<RequireAuth allowedRole={"recruiter"} />}>
+              <Route path="jobApplicant" element={<JobApplicantList />} />
               <Route path="/recruit" element={<Interviews />} />
-              
             </Route>
+              
           </Route>
         </Routes>
       </UserProvider>

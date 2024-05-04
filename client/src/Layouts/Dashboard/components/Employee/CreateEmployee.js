@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import axios from "axios"
+import { useUser } from "../../../../helper/UserContext";
 
 function CreateEmployee({ onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -14,11 +15,10 @@ function CreateEmployee({ onClose, onSave }) {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
   }
+  const { token } = useUser();
 
   const handleSave = async () => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ"
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,

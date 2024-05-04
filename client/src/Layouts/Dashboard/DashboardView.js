@@ -5,7 +5,6 @@ import { useUser } from '../../helper/UserContext';
 export default function DashboardView() {
 const {user} = useUser();
   return (
-    <div className="flex-grow overflow-y-auto">
     <div className="flex items-center justify-end bg-[#F9F5F6] h-[70px] shadow-lg px-[25px]">
       <div className="flex items-center gap-[15px] relative">
         <div className="flex items-center gap-[25px] border-r-[3px] pr-[25px]"></div>
@@ -16,6 +15,5 @@ const {user} = useUser();
       </div>
     </div>
     
-  </div>
   );
 }
