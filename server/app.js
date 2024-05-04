@@ -62,9 +62,8 @@ async function startServer() {
 
 
 app.use("/team", teamRoutes)
-app.use('/employee', authenticate(employee), employeeRoutes);
 
-app.use('/employee', authenticate(hrPersonnel), employeeRoutes);
+app.use('/employee', authenticate(hrPersonnel),authorizeRole(['datamanager']), employeeRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
