@@ -32,7 +32,7 @@ function App() {
           <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
 
-          <Route element={<RequireAuth allowedRole={"datamanager"} />}>
+          <Route element={<RequireAuth allowedRole={"data_manager"} />}>
               <Route path="employee" element={<EmployeeList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
           </Route>

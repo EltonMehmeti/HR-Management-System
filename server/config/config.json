@@ -1,0 +1,10 @@
+{
+    "development": {
+      "username": "root",
+      "password": "eltoni123",
+      "database": "HR-Managment-System",
+      "host": "localhost",
+      "dialect": "mysql"
+    }
+  }
+  

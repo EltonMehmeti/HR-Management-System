@@ -1,5 +1,7 @@
 import React from 'react';
 import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable } from "react-icons/hi";
+import { GoOrganization } from "react-icons/go";
+
 import { useUser } from '../../helper/UserContext';
 import Cookies from 'js-cookie';
 import logo from './images/logo2.png'
@@ -41,7 +43,7 @@ console.log(role);
             </li>
           </>
         );
-      case 'datamanager':
+      case 'data_manager':
         return (
           <>
             <li>
@@ -66,6 +68,7 @@ console.log(role);
         );
       case 'employee':
         return (
+          <>
           <li>
             <a
               href="dashboard"
@@ -75,6 +78,17 @@ console.log(role);
               <span className="ms-3">Dashboard</span>
             </a>
           </li>
+          <li>
+            <a
+              href="dashboard"
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <GoOrganization  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+              <span className="ms-3">Org</span>
+            </a>
+          </li>
+          </>
+
         );
       default:
         return null;

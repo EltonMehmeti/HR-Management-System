@@ -19,6 +19,14 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  reportsTo: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      model: "Employee",
+      key: "id",
+    },
+  },
 })
 
 Employee.belongsToMany(Team, { through: "EmployeeTeam" })
