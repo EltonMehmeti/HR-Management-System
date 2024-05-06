@@ -15,7 +15,7 @@ import RequireAuth from './helper/RequireAuth';
 import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDetails';
 import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
 import Team from "./Layouts/Dashboard/components/Team/Team"
-
+import Calendar from "./Layouts/Dashboard/components/Calendar"
 function App() {
   return (
     <Router>
@@ -31,6 +31,7 @@ function App() {
 
           <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
+          
 
           <Route element={<RequireAuth allowedRole={"data_manager"} />}>
               <Route path="employee" element={<EmployeeList />} />
@@ -40,7 +41,9 @@ function App() {
               <Route path="jobApplicant" element={<JobApplicantList />} />
               <Route path="/recruit" element={<Interviews />} />
             </Route>
-              
+            <Route element={<RequireAuth allowedRole={"recruiter"} />}>
+            <Route path="calendar" element={<Calendar />} />
+          </Route>
           </Route>
         </Routes>
       </UserProvider>
