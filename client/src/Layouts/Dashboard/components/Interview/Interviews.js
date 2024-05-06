@@ -51,7 +51,7 @@ const Interviews = () => {
   const jobOffer = interviews.filter(interview => interview.status === 'job_offer');
   const hired = interviews.filter(interview => interview.status === 'hired');
   const rejected = interviews.filter(interview => interview.status === 'rejected');
-
+console.log(firstInterview);
 
   return (
     <div className='flex flex-col lg:flex-row gap-4 justify-center h-full font-sans font-medium m-10'>
@@ -59,6 +59,7 @@ const Interviews = () => {
                 <span className='bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br text-white py-4 rounded-xl text-center'>First Interview</span>
                 <div className='bg-white p-4 m-2'>
 {firstInterview?.map((interview)=>{
+    console.log(interview);
   return(
 <div class="relative py-8 px-4 mt-1 sm:px-8 border-2 border-gray-200 dark:border-gray-700 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
 
@@ -109,6 +110,12 @@ const Interviews = () => {
                 minute: '2-digit',
             })}
         </span>
+       <a href={interview?.join_url} target="_blank" rel="noreferrer">
+        <span class=" pointer bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+       
+        Join
+        </span>
+        </a>
     </div>
 </div>
 

@@ -17,7 +17,7 @@ const HrPersonnel = sequelize.define('hrPersonnel', {
     {
         type:Sequelize.STRING,
         allowNull: false,
-        isIn: [['recruiter','payroll','datamanager']]
+        isIn: [['recruiter','payroll','data_manager']]
     }, 
     joiningDate: Sequelize.DATE,
     password: {
