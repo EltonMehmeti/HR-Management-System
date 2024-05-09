@@ -11,14 +11,23 @@ export const UserProvider = ({ children }) => {
     const getUserFromCookies = () => {
       const userData = Cookies.get('user');
       const token = Cookies.get('token');
-    if(userData){
+      let parsedUser = null;
+      let parsedToken = null;
+  
+      if (userData) {
+        try {
+          parsedUser = JSON.parse(userData); // Attempt to parse JSON
+        } catch (e) {
+          console.error("Failed to parse user data:", e);
+        }
+      }
 
-        setUser(JSON.parse(userData));
-    }
-    if(token){
-
-        setToken(token);
-    }
+      if (token) {
+        parsedToken = token; // No parsing needed if it's a simple string
+      }
+  
+      setUser(parsedUser); // Set the parsed user
+      setToken(parsedToken); // Set the token
     };
 
     getUserFromCookies();
