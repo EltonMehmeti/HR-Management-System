@@ -1,6 +1,7 @@
 import React from 'react';
 import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable } from "react-icons/hi";
 import { GoOrganization } from "react-icons/go";
+import { RiTeamFill } from "react-icons/ri";
 
 import { useUser } from '../../helper/UserContext';
 import Cookies from 'js-cookie';
@@ -62,6 +63,15 @@ console.log(role);
               >
                 <HiInbox className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="flex-1 ms-3 whitespace-nowrap">Leaves</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/teams"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <RiTeamFill className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Teams</span>
               </a>
             </li>
           </>
