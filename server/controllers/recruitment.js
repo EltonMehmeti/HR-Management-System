@@ -7,6 +7,7 @@ const Sequelize = require('sequelize');
 const createInterviewe = async (req, res) => {
     try {
         const { name, email, phone, resume, jobTitle, recruiterId, title, date, time, duration, agenda } = req.body;
+        console.log(req.body)
 
         const start_time = new Date(`${date}T${time}:00`);
         const end_time = new Date(start_time.getTime() + duration * 60000);
@@ -14,7 +15,7 @@ const createInterviewe = async (req, res) => {
         let interviewee = await Interviewee.findOne({ where: { email } });
 
         if (!interviewee) {
-            interviewee = await Interviewee.create({ name, email, phone, resume, jobTitle });
+            interviewee = await Interviewee.create({ name, email, phone, resume, jobTitle});
             if (!interviewee) {
                 return res.status(500).json({ error: 'Failed to create interviewee' });
             }
@@ -65,7 +66,7 @@ const createInterviewe = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create interview' });
         }
 
-        sendEmail(title, email, join_url);
+        sendEmail(title, name, email,join_url, `${date} ${time}`);
 
         res.status(201).json({ interviewee, interview });
     } catch (error) {

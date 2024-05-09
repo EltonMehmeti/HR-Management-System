@@ -22,7 +22,6 @@ function App() {
       <UserProvider>
         <Routes>
           <Route path="/employee/signin" element={<EmpSignin />} />
-          <Route path="/teams" element={<Team />} />
 
           <Route path="/hr/signin" element={<HrSignin />} />
           <Route path="/hr/signup" element={<HrSignup />} />
@@ -33,6 +32,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
 
           <Route element={<RequireAuth allowedRole={"data_manager"} />}>
+          <Route path="/teams" element={<Team />} />
               <Route path="employee" element={<EmployeeList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
           </Route>
