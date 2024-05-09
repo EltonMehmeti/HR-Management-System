@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import logo from "../../../../Image/logo (1).png";
+import { useUser } from "../../../../helper/UserContext";
 
 function EmployeeDetails() {
   const { id } = useParams(); // Accessing route parameters using useParams hook
-
+  const { token } = useUser();
   const [employee, setEmployee] = useState(null);
-
+  
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
