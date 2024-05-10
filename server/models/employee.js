@@ -19,6 +19,10 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  image: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
 })
 
 Employee.belongsToMany(Team, { through: "EmployeeTeam" })
