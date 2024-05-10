@@ -4,32 +4,6 @@ const bcrypt = require('bcrypt');
 const SuperAdminModel = require('../../models/superAdmin');
 const generateToken = require('../../helper/generateToken');
 
-router.post('/register', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        const existingSuperAdmin = await SuperAdminModel.findOne({ where: { email } });
-
-        if(existingSuperAdmin){
-            return res.status(400).json({ error: 'Email already exists' });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newSuperAdmin = await SuperAdminModel.create({
-            name,
-            email,
-            password: hashedPassword,
-        });
-
-        const token = generateToken(newSuperAdmin.id); // Corrected this line
-
-        res.status(201).json({ token, superAdmin: newSuperAdmin }); // Changed superAdmin to newSuperAdmin
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 
 
@@ -41,12 +15,15 @@ router.post('/login', async (req, res) => {
         if (!superAdmin) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
-        const passwordMatch = await bcrypt.compare(password, superAdmin.password);
-        if (!passwordMatch) {
+
+        if (password !== superAdmin.password) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
-        const token = generateToken(superAdmin.id);
-        res.status(200).json({ token, superAdmin });
+        else if(password==password){
+            console.log("password matched")
+            const token = generateToken(superAdmin.id);
+            res.status(200).json({ token, superAdmin });
+        }
         
     } catch (error) {
         console.error(error);
