@@ -191,21 +191,43 @@ function JobApplicantList() {
       {isCreateModalOpen && (
         <div className="modal-container">
           <div className="modal-content">
-            {/* CreateJobApplicant modal content */}
+            <CreateJobApplicant
+              onClose={() => setIsCreateModalOpen(false)}
+              onSave={() => {
+                setIsCreateModalOpen(false);
+                // Fetch employees again to update the list after creating a new one
+                fetchAllJobAplicants();
+              }}
+            />
           </div>
         </div>
       )}
+      {/* Render EditEmployee modal when isEditModalOpen is true */}
       {isScheduleModalOpen && (
         <div className="modal-container">
           <div className="modal-content">
-            {/* ScheduleMeeting modal content */}
+            <ScheduleMetting
+              jobApplicantId={selectedJobApplicantId} // Pass selectedEmployeeId as a prop
+              onClose={() => setScheduleModalOpen(false)}
+              onSave={() => {
+                setScheduleModalOpen(false);
+                fetchAllJobAplicants();
+              }}
+            />
           </div>
         </div>
       )}
       {isEditModalOpen && (
         <div className="modal-container">
           <div className="modal-content">
-            {/* EditJobApplicant modal content */}
+            <EditJobApplicant
+              jobApplicantId={selectedJobApplicantId} // Pass selectedEmployeeId as a prop
+              onClose={() => setIsEditModalOpen(false)}
+              onSave={() => {
+                setIsEditModalOpen(false);
+                fetchAllJobAplicants();
+              }}
+            />
           </div>
         </div>
       )}
