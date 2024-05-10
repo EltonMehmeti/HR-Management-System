@@ -110,19 +110,19 @@ const editInterviewStatus = async (req, res) => {
 const jobOffer = async (req, res) => {
     try {
         const { resume, intervieweeId } = req.body;
-        console.log(resume,intervieweeId)
-        // const newJobOffer = await JobOffer.create({
-        //     resume: resume
-        // });
+        console.log(resume, intervieweeId)
+        const newJobOffer = await JobOffer.create({
+            resume: resume
+        });
 
-        // await Interviewee.update({ status:'job_offer' }, {
-        //     where: { id: intervieweeId }
-        // });
+        await Interviewee.update({ status:'job_offer' }, {
+            where: { id: intervieweeId }
+        });
 
-        // const interviewee = await Interviewee.findByPk(intervieweeId);
-        // interviewee.setJobOffer(newJobOffer); // Assuming the association is defined correctly
+        const interviewee = await Interviewee.findByPk(intervieweeId);
+        interviewee.setJobOffer(newJobOffer); // Assuming the association is defined correctly
 
-        // res.status(201).json({ message: 'Job offer created successfully.' });
+        res.status(201).json({ message: 'Job offer created successfully.' });
     } catch (error) {
         console.error('Error creating job offer:', error);
         res.status(500).json({ message: 'Error creating job offer.' });

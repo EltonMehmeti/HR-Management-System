@@ -18,7 +18,10 @@ const JobOffer = ({ onClose, intervieweeId }) => {
       const formData = new FormData();
       formData.append('resume', resume);
       formData.append('intervieweeId', intervieweeId);
-      const response = await axios.post('http://localhost:3001/recruitment/interviewee/jobOffer', formData, config);
+      const response = await axios.post('http://localhost:3001/recruitment/interviewee/jobOffer', {
+        resume:resume,
+        intervieweeId:intervieweeId
+      }, config);
 
       console.log('Job offer created:', response.data);
       onClose();
@@ -28,7 +31,10 @@ const JobOffer = ({ onClose, intervieweeId }) => {
   };
 
   const handleFileChange = (event) => {
-    setResume(event.target.files[0]);
+    const file = event.target.files[0];
+    if (file) {
+      setResume(file.name); // Assuming you want to save the file name as the path
+    }
   };
 
   return (
