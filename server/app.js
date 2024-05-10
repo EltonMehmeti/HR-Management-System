@@ -47,7 +47,7 @@ app.use(bodyParser.json());
 
 async function startServer() {
   try {
-    await sequelize.sync({ logging: console.log })
+    await sequelize.sync({ logging: console.log , force:true})
     console.log("Database synchronized successfully")
     mongoose.connect('mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/').
     then(() => { console.log('Connected to MongoDB') })
