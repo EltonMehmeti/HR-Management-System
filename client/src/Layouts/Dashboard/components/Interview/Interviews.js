@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useUser } from '../../../../helper/UserContext';
 import axios from 'axios';
 import { Dropdown } from "flowbite-react";
+import JobOffer from './JobOffer';
 const Interviews = () => {
   const [interviews, setInterviews] = useState([]);
   const { user, token } = useUser();
-  
+  const [jobOfferModal,setJobOfferModal] = useState(null)
   useEffect(() => {
     const fetchData = async () => {
         try {
@@ -29,17 +30,19 @@ const Interviews = () => {
   
 
   const [interviewId, setInterviewId] = useState(null);
+  const [intervieweeId, setIntervieweeId] = useState(null)
   const [status, setStatus] = useState('');
   const editInterviewStatus = async (newStatus, id) => {
     try {
-        if (!token) return; // Ensure token exists
+        console.log(status, intervieweeId)
+        if (!token) return; 
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         };
-        const response = await axios.put(`http://localhost:3001/recruitment/interviews/${id}`, { status: newStatus }, config);
-        setInterviews(interviews.map(interview => interview.id === id ? response.data : interview));
+        // const response = await axios.put(`http://localhost:3001/recruitment/interviews/${id}`, { status: newStatus }, config);
+        // setInterviews(interviews.map(interview => interview.id === id ? response.data : interview));
     } catch (error) {
         console.error('Error updating interview status:', error);
     }
@@ -73,7 +76,7 @@ console.log(firstInterview);
     <Dropdown.Header>
         <span className="block text-sm">Move To:</span>
     </Dropdown.Header>
-    <Dropdown.Item onClick={() => { setStatus('job_offer'); setInterviewId(interview.id); editInterviewStatus('job_offer', interview.id); }}>
+    <Dropdown.Item onClick={() => { setStatus('job_offer'); setInterviewId(interview.id); editInterviewStatus('job_offer', interview.id); setJobOfferModal(true); setIntervieweeId(interview?.interviewee?.id)}}>
         <span className='bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br w-1 rounded-full h-1 mr-2'></span>Job Offer
     </Dropdown.Item>
     <Dropdown.Item onClick={() => { setStatus('hired'); setInterviewId(interview.id); editInterviewStatus('hired', interview.id); }}>
@@ -254,6 +257,23 @@ console.log(firstInterview);
 })}        
                 </div>
             </div>
+            {jobOfferModal && (
+        <div className="modal-container">
+          <div className="modal-content">
+            <JobOffer
+            onClose={()=>setJobOfferModal(false)}
+            onSave={()=>{
+                setJobOfferModal(false);   
+            }
+            }
+            intervieweeId={intervieweeId}
+            />
+          </div>    
+        </div>
+      )}
+        {(jobOfferModal) && (
+        <div className="modal-backdrop"></div>
+      )}
         </div>
   )
 }

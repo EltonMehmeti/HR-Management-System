@@ -19,13 +19,9 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  reportsTo: {
-    type: Sequelize.INTEGER,
+  image: {
+    type: Sequelize.STRING,
     allowNull: true,
-    references: {
-      model: "Employee",
-      key: "id",
-    },
   },
 })
 
