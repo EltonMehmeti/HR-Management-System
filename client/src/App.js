@@ -16,12 +16,17 @@ import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDet
 import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
 import Team from "./Layouts/Dashboard/components/Team/Team"
 import Calendar from "./Layouts/Dashboard/components/Calendar"
+import SuperAdminSignin from './Layouts/Dashboard/components/SuperAdmin/SuperAdminSignin';
 function App() {
   return (
     <Router>
       <UserProvider>
         <Routes>
           <Route path="/employee/signin" element={<EmpSignin />} />
+          <Route path="/teams" element={<Team />} />
+          
+          <Route path="/superadmin/signin" element={<SuperAdminSignin />} />
+
 
           <Route path="/hr/signin" element={<HrSignin />} />
           <Route path="/hr/signup" element={<HrSignup />} />
