@@ -1,18 +1,18 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer")
 
-const sendEmail = (subject,name, to, join_url,datetime) => {
-console.log(subject, name, to , join_url, datetime)
+const sendEmail = (subject, name, to, join_url, datetime) => {
+  console.log(subject, name, to, join_url, datetime)
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
-      user: 'corahr38@gmail.com',
-      pass: 'pthsochrmqubcwzm' 
-       }
-  });
+      user: "corahr38@gmail.com",
+      pass: "pthsochrmqubcwzm",
+    },
+  })
 
   const mailOptions = {
-    from: 'corahr38@gmail.com',
-    to: to, 
+    from: "corahr38@gmail.com",
+    to: to,
     subject: subject,
     html: `
       <html>
@@ -55,16 +55,16 @@ console.log(subject, name, to , join_url, datetime)
           </div>
         </body>
       </html>
-    `
-  };
+    `,
+  }
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
+      console.error("Error sending email:", error)
     } else {
-      console.log('Email sent:', info.response);
+      console.log("Email sent:", info.response)
     }
-  });
-};
+  })
+}
 
-module.exports = sendEmail;
+module.exports = sendEmail

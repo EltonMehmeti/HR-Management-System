@@ -1,58 +1,68 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "../css/modal.css";
-import CreateJobApplicant from "../components/JobApplicant/CreateJobApplicant";
-import EditJobApplicant from "../components/JobApplicant/EditJobApplicant";
-import ScheduleMetting from "../components/Recruitment/ScheduleMetting";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import "../css/modal.css"
+import CreateJobApplicant from "../components/JobApplicant/CreateJobApplicant"
+import EditJobApplicant from "../components/JobApplicant/EditJobApplicant"
+import ScheduleMetting from "../components/Recruitment/ScheduleMetting"
+
 import {
   FaEdit,
   FaTrashAlt,
   FaCalendarPlus,
   FaTimesCircle,
-} from "react-icons/fa";
+} from "react-icons/fa"
 
 function JobApplicantList() {
-  const [jobApplicants, setJobApplicants] = useState([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for create employee modal
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for edit employee modal
-  const [isScheduleModalOpen, setScheduleModalOpen] = useState(false); // State for edit employee modal
+  const [jobApplicants, setJobApplicants] = useState([])
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // State for create employee modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false) // State for edit employee modal
+  const [isScheduleModalOpen, setScheduleModalOpen] = useState(false) // State for edit employee modal
 
-  const [selectedJobApplicantId, setSelectedJobApplicantId] = useState(null); // State to store the id of the employee being edited
+  const [selectedJobApplicantId, setSelectedJobApplicantId] = useState(null) // State to store the id of the employee being edited
 
   // Define fetchAllEmployees function outside of useEffect hook
   const fetchAllJobAplicants = async () => {
     try {
       const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ"
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      };
+      }
       const res = await axios.get(
         "http://localhost:3001/jobApplicant/get",
         config
-      );
-      setJobApplicants(res.data);
+      )
+      setJobApplicants(res.data)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchAllJobAplicants();
-  }, []);
+    fetchAllJobAplicants()
+  }, [])
 
-  console.log(jobApplicants);
+  console.log(jobApplicants)
 
-  const handleDelete = async (_id) => {
+  const handleDelete = async _id => {
     try {
-      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`);
-      window.location.reload();
+      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`)
+      window.location.reload()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
+
+  const handleReject = async _id => {
+    try {
+      await axios.post(`http://localhost:3001/jobApplicant/post/${_id}`)
+      window.location.reload()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-blue-100 ">
@@ -148,8 +158,8 @@ function JobApplicantList() {
                   <div className="flex">
                     <button
                       onClick={() => {
-                        setIsEditModalOpen(true);
-                        setSelectedJobApplicantId(item._id);
+                        setIsEditModalOpen(true)
+                        setSelectedJobApplicantId(item._id)
                       }}
                       type="button"
                       className="text-white bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2"
@@ -165,8 +175,8 @@ function JobApplicantList() {
                     </button>
                     <button
                       onClick={() => {
-                        setScheduleModalOpen(true);
-                        setSelectedJobApplicantId(item._id);
+                        setScheduleModalOpen(true)
+                        setSelectedJobApplicantId(item._id)
                       }}
                       type="button"
                       className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2"
@@ -174,6 +184,7 @@ function JobApplicantList() {
                       <FaCalendarPlus />
                     </button>
                     <button
+                      onClick={() => handleReject(item._id)}
                       type="button"
                       className="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:focus:ring-orange-800 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2"
                     >
@@ -214,7 +225,7 @@ function JobApplicantList() {
         <div className="modal-backdrop"></div>
       )}
     </div>
-  );
+  )
 }
 
-export default JobApplicantList;
+export default JobApplicantList

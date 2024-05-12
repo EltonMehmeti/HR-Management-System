@@ -15,6 +15,11 @@ const jobApplicantSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  status: {
+    type: String,
+    enum: ["pending", "proceeded", "rejected"],
+    default: "pending",
+  },
 })
 
 const JobApplicant = mongoose.model("JobApplicant", jobApplicantSchema)

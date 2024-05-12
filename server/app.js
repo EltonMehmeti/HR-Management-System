@@ -8,6 +8,7 @@ const employeeRoutes = require("./routes/employee")
 const employeeAuthRoutes = require("./routes/auth/employee")
 const hrPersonnelRoutes = require("./routes/auth/hrPersonnel")
 const superAdminRoutes = require("./routes/auth/superAdmin")
+const hrPersonnelRolesRoute = require("./routes/hrPersonnelRoles")
 const authenticate = require("./middleware/authenticate")
 const app = express()
 const PORT = 3001
@@ -25,6 +26,7 @@ const jobApplicantRoutes = require("./routes/jobApplicant")
 const salary = require("./models/salary")
 const zoomMetting = require("./helper/zoomMeeting")
 const HrPersonnel = require("./models/hrPersonnel")
+const superAdmin = require("./models/superAdmin")
 const axios = require("axios")
 const recruitmentsRoutes = require("./routes/recruitment")
 const authorizeRole = require("./middleware/authorizeRole")
@@ -42,7 +44,7 @@ app.use(bodyParser.json())
 
 async function startServer() {
   try {
-    await sequelize.sync({ logging: console.log, force: true })
+    await sequelize.sync({ logging: console.log, force: false })
     console.log("Database synchronized successfully")
     mongoose
       .connect(
@@ -62,6 +64,7 @@ async function startServer() {
   }
 }
 
+app.use("/hrPersonnel", hrPersonnelRolesRoute)
 app.use("/team", teamRoutes)
 
 app.use(
