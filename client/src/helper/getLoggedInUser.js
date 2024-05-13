@@ -1,11 +1,9 @@
 import React from 'react'
 import Cookies from 'js-cookie'
 const getLoggedInUser = () => {
-    Cookies.get('user')
+    const user = Cookies.get('user')
   
-    return (
-
-  )
+    return user ? JSON.parse(user) : null
 }
 
 export default getLoggedInUser

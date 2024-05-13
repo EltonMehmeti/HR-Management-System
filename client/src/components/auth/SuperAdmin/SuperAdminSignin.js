@@ -23,7 +23,7 @@ export default function SuperAdminSignin() {
         formData
       );
       Cookies.set('token', response.data.token, { expires: 1, secure: true });
-      Cookies.set('user',JSON.stringify(response.data.personnel), { expires: 1, secure: true });
+      Cookies.set('user',JSON.stringify({...response.data.superAdmin, role:'admin'}), { expires: 1, secure: true });
       toast.success("Login successful! Welcome " +formData.email);
       window.location.href = "/dashboard";
       setFormData({
@@ -47,7 +47,7 @@ export default function SuperAdminSignin() {
         </div>
         <form className="md:w-1/3 max-w-sm" onSubmit={handleSubmit}>
           <div className="text-center md:text-left">
-            <label className="mr-1">Sign in </label>
+            <label className="mr-1">Admin Sign in </label>
           </div>
           <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
             {/* <p className="mx-4 mb-0 text-center font-semibold text-slate-500">Or</p> */}
@@ -80,9 +80,7 @@ export default function SuperAdminSignin() {
               Login
             </button>
           </div>
-          <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
-            Don't have an account? <a className="text-red-600 hover:underline hover:underline-offset-4" href="/hr/signup">Register</a>
-          </div>
+ 
         </form>
       </section>
       <ToastContainer />

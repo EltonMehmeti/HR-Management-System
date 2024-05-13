@@ -87,7 +87,7 @@ console.log(firstInterview);
     </Dropdown.Item>
 </Dropdown>
     </span>
-    <img class=" mx-auto md:hidden lg:block sm:hidden h-14 rounded-full sm:mx-0 sm:shrink-0" src="https://tailwindcss.com/img/erin-lindford.jpg" alt="Woman's Face"/>
+    <img class=" mx-auto md:hidden lg:block sm:hidden  h-12 rounded-full sm:mx-0 sm:shrink-0" src="https://tailwindcss.com/img/erin-lindford.jpg" alt="Woman's Face"/>
     <div class="text-center space-y-2 sm:text-left">
         <div class="space-y-0.5">
             <p class="text-lg text-black font-semibold">
