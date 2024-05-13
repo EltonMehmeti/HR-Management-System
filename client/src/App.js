@@ -42,7 +42,7 @@ function App() {
               <Route path="/employee/:id" element={<EmployeeDetails />} />
           </Route>
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
-              <Route path="jobApplicant" element={<JobApplicantList/>} />
+              <Route path="jobApplicant" element={<JobApplicantList  />} />
               <Route path="/recruit" element={<Interviews />} />
             <Route path="calendar" element={<Calendar />} />
             </Route>
