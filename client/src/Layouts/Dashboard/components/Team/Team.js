@@ -152,14 +152,15 @@ const Team = () => {
         <tbody className="divide-y divide-gray-100 border-t border-gray-100">
           {teams.map(team => (
             <tr key={team.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 font-normal text-gray-900">
+                <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {team.name}
               </td>
-              <td className="px-6 py-4">{team.description}</td>
-              <td className="px-6 py-4">
+              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {team.description}</td>
+                <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {team.teamLeader?.name || "No leader assigned"}
               </td>
-              <td className="px-6 py-4">
+              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 <div className="flex">
                   <a
                     onClick={() => handleEdit(team)}
