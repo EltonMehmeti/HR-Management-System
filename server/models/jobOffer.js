@@ -10,7 +10,7 @@ const JobOffer = sequelize.define('jobOffer', {
         allowNull: false,
         primaryKey: true
     },
-   resume: Sequelize.STRING
+   file: Sequelize.STRING
 });
 
 module.exports = JobOffer;

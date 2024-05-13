@@ -36,26 +36,22 @@ app.use(cors({ origin: "http://localhost:3000" }))
 
 app.use(bodyParser.json())
 
+
 // zoomMetting.getMeetings().then((response) => {
 //  console.log(response);
 // }).catch((error) => {
 //   console.error(error);
 // });
 
+  
+
 async function startServer() {
   try {
-    await sequelize.sync({ logging: console.log, force: false })
+    await sequelize.sync({ logging: console.log })
     console.log("Database synchronized successfully")
-    mongoose
-      .connect(
-        "mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/"
-      )
-      .then(() => {
-        console.log("Connected to MongoDB")
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    mongoose.connect('mongodb+srv://eltonmhmt:ghjsC0rBHq35MrPG@cluster0.kg03jet.mongodb.net/').
+    then(() => { console.log('Connected to MongoDB') })
+    .catch((err) => { console.log(err) });
     app.listen(PORT, () => {
       console.log(`Server is running and listening on port ${PORT}`)
     })
@@ -67,22 +63,15 @@ async function startServer() {
 app.use("/hrPersonnel", hrPersonnelRolesRoute)
 app.use("/team", teamRoutes)
 
-app.use(
-  "/employee",
-  authenticate(hrPersonnel),
-  authorizeRole(["data_manager"]),
-  employeeRoutes
-)
-app.use("/auth/employee", employeeAuthRoutes)
-app.use("/auth/hr", hrPersonnelRoutes)
-app.use("/interviewee", authenticate(hrPersonnel), intervieweeRoutes)
-app.use("/jobapplicant", jobApplicantRoutes)
-app.use(
-  "/recruitment",
-  authenticate(hrPersonnel),
-  authorizeRole(["recruiter"]),
-  recruitmentsRoutes
-)
-app.use("/auth/superAdmin", superAdminRoutes)
+app.use('/employee', authenticate(hrPersonnel),authorizeRole(['data_manager']), employeeRoutes);
+app.use('/auth/employee', employeeAuthRoutes);
+app.use('/auth/hr', hrPersonnelRoutes);
+app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
+app.use('/jobapplicant', jobApplicantRoutes);
+app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
+app.use('/auth/superAdmin', superAdminRoutes);
 
-startServer()
+
+
+
+startServer();

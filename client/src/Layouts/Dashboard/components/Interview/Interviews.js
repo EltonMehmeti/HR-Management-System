@@ -41,8 +41,8 @@ const Interviews = () => {
                 Authorization: `Bearer ${token}`
             }
         };
-        // const response = await axios.put(`http://localhost:3001/recruitment/interviews/${id}`, { status: newStatus }, config);
-        // setInterviews(interviews.map(interview => interview.id === id ? response.data : interview));
+        const response = await axios.put(`http://localhost:3001/recruitment/interviews/${id}`, { status: newStatus }, config);
+        setInterviews(interviews.map(interview => interview.id === id ? response.data : interview));
     } catch (error) {
         console.error('Error updating interview status:', error);
     }
@@ -74,9 +74,9 @@ console.log(firstInterview);
     </svg>}  
 >
     <Dropdown.Header>
-        <span className="block text-sm">Move To:</span>
+        <span className="block text-sm">Move To:</span> 
     </Dropdown.Header>
-    <Dropdown.Item onClick={() => { setStatus('job_offer'); setInterviewId(interview.id); editInterviewStatus('job_offer', interview.id); setJobOfferModal(true); setIntervieweeId(interview?.interviewee?.id)}}>
+    <Dropdown.Item onClick={() => { setStatus('job_offer'); setInterviewId(interview.id); setJobOfferModal(true); setIntervieweeId(interview?.interviewee?.id)}}>
         <span className='bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br w-1 rounded-full h-1 mr-2'></span>Job Offer
     </Dropdown.Item>
     <Dropdown.Item onClick={() => { setStatus('hired'); setInterviewId(interview.id); editInterviewStatus('hired', interview.id); }}>
@@ -134,9 +134,26 @@ console.log(firstInterview);
                 {jobOffer?.map((interview)=>{
   return(
 <div class="relative py-8 px-4 mt-1 sm:px-8 border-2 border-gray-200 dark:border-gray-700 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
-    <svg class="absolute top-2 right-2 cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"/>
-    </svg>
+<span class=" absolute top-2 right-2 cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" >
+ 
+ <Dropdown className='w-36' placement='right' label="" dismissOnClick={false} renderTrigger={() =>  
+     <svg className="cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+         <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6h.01M12 12h.01M12 18h.01"/>
+     </svg>}  
+ >
+     <Dropdown.Header>
+         <span className="block text-sm">Move To:</span> 
+     </Dropdown.Header>
+
+     <Dropdown.Item onClick={() => { setStatus('hired'); setInterviewId(interview.id); editInterviewStatus('hired', interview.id); }}>
+         <span className='bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br w-1 rounded-full h-1 mr-2'></span>Hired
+     </Dropdown.Item>
+     <Dropdown.Item onClick={() => { setStatus('rejected'); setInterviewId(interview.id); editInterviewStatus('rejected', interview.id); }}>
+         <span className='bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br w-1 rounded-full h-1 mr-2'></span>Rejected
+     </Dropdown.Item>
+ </Dropdown>
+     </span>
+    
     <img class=" mx-auto md:hidden lg:block sm:hidden h-14 rounded-full sm:mx-0 sm:shrink-0" src="https://tailwindcss.com/img/erin-lindford.jpg" alt="Woman's Face"/>
     <div class="text-center space-y-2 sm:text-left">
         <div class="space-y-0.5">
@@ -177,9 +194,22 @@ console.log(firstInterview);
                 {hired?.map((interview)=>{
   return(
 <div class="relative py-8 mt-1 px-4 sm:px-8 border-2 border-gray-200 dark:border-gray-700 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
-    <svg class="absolute top-2 right-2 cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"/>
-    </svg>
+<span class=" absolute top-2 right-2 cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" >
+ 
+ <Dropdown className='w-36' placement='right' label="" dismissOnClick={false} renderTrigger={() =>  
+     <svg className="cursor-pointer w-6 h-6 sm:top-4 sm:right-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+         <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6h.01M12 12h.01M12 18h.01"/>
+     </svg>}  
+ >
+     <Dropdown.Header>
+         <span className="block text-sm">Move To:</span> 
+     </Dropdown.Header>
+
+     <Dropdown.Item onClick={() => { setStatus('rejected'); setInterviewId(interview.id); editInterviewStatus('rejected', interview.id); }}>
+         <span className='bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br w-1 rounded-full h-1 mr-2'></span>Rejected
+     </Dropdown.Item>
+ </Dropdown>
+     </span>
     <img class=" mx-auto md:hidden lg:block sm:hidden h-14 rounded-full sm:mx-0 sm:shrink-0" src="https://tailwindcss.com/img/erin-lindford.jpg" alt="Woman's Face"/>
     <div class="text-center space-y-2 sm:text-left">
         <div class="space-y-0.5">
@@ -261,7 +291,11 @@ console.log(firstInterview);
         <div className="modal-container">
           <div className="modal-content">
             <JobOffer
-            onClose={()=>setJobOfferModal(false)}
+            onClose={()=>{
+                setJobOfferModal(false)
+                editInterviewStatus(status, interviewId);
+            
+            }}
             onSave={()=>{
                 setJobOfferModal(false);   
             }

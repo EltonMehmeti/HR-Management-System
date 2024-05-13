@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize")
 const sequelize = require("../util/database")
+const JobOffer = require('./jobOffer');
 
 const Interviewee = sequelize.define("interviewee", {
   id: {
@@ -14,9 +15,13 @@ const Interviewee = sequelize.define("interviewee", {
     type: Sequelize.STRING,
     allowNull: true,
   },
-  phone: Sequelize.STRING,
-  resume: Sequelize.STRING,
-  jobTitle: Sequelize.STRING,
-})
-
-module.exports = Interviewee
+  status: {
+    type: Sequelize.ENUM('first_interview', 'job_offer', 'hired', 'rejected'),
+    defaultValue: 'first_interview',
+},
+phone: Sequelize.STRING,
+resume: Sequelize.STRING,
+jobTitle: Sequelize.STRING,
+});
+Interviewee.belongsTo(JobOffer); 
+module.exports = Interviewee;

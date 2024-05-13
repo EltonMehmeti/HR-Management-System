@@ -29,6 +29,11 @@ console.log(user);
       role = "admin"
        return <Unauthorized  link={role} />
     } 
+    if(user.role === "superAdmin")
+      {
+        role = "superAdmin"
+        return <Unauthorized  link={role} />
+      }
     return <Navigate to={`${role}/signin`} />;
   }
 

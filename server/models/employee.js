@@ -23,11 +23,13 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  reportsTo: Sequelize.INTEGER
 })
 
 Employee.belongsToMany(Team, { through: "EmployeeTeam" })
 Team.belongsToMany(Employee, { through: "EmployeeTeam" })
 Team.belongsTo(Employee, { foreignKey: "leaderId", as: "teamLeader" })
 Employee.hasMany(Performance)
+Employee.belongsTo(Employee, { foreignKey: 'reportsTo', as: 'reportingTo' });
 
 module.exports = Employee

@@ -2,6 +2,7 @@ import React from 'react';
 import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable } from "react-icons/hi";
 import { GoOrganization } from "react-icons/go";
 import { RiTeamFill } from "react-icons/ri";
+import { SiGoogledocs } from "react-icons/si";
 
 import { useUser } from '../../helper/UserContext';
 import Cookies from 'js-cookie';
@@ -24,6 +25,15 @@ console.log(role);
       case 'recruiter':
         return (
           <>
+             <li>
+              <a
+                href="/jobapplicant"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <HiShoppingBag className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Job Applicants</span>
+              </a>
+            </li>
             <li>
               <a
                 href="/recruit"
@@ -33,15 +43,7 @@ console.log(role);
                 <span className="flex-1 ms-3 whitespace-nowrap">Recruiting</span>
               </a>
             </li>
-            <li>
-              <a
-                href="/jobapplicant"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <HiShoppingBag className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Job Applicants</span>
-              </a>
-            </li>
+         
           </>
         );
       case 'data_manager':
@@ -74,9 +76,42 @@ console.log(role);
                 <span className="flex-1 ms-3 whitespace-nowrap">Teams</span>
               </a>
             </li>
+            <li>
+              <a
+                href="/docs"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <SiGoogledocs className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Docs</span>
+              </a>
+            </li>
           </>
         );
       case 'employee':
+        return (
+          <>
+          <li>
+            <a
+              href="dashboard"
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <HiChartPie className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+              <span className="ms-3">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="dashboard"
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <GoOrganization  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+              <span className="ms-3">Org</span>
+            </a>
+          </li>
+          </>
+
+        );
+        case 'superAdmin':
         return (
           <>
           <li>
