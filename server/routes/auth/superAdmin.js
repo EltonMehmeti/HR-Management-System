@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -29,6 +30,12 @@ router.post('/login', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
-});
+    const token = generateToken(superAdmin.id)
+    res.status(200).json({ token, superAdmin })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: "Internal server error" })
+  }
+})
 
-module.exports = router;
+module.exports = router
