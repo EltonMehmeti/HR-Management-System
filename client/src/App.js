@@ -16,7 +16,7 @@ import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
 import Team from "./Layouts/Dashboard/components/Team/Team"
 import Calendar from "./Layouts/Dashboard/components/Calendar"
 import SuperAdminSignin from './components/auth/SuperAdmin/SuperAdminSignin';
-import JobApplicantList from './Layouts/Dashboard/components/JobApplicant/JobApplicantList';
+import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
 function App() {
   return (
     <Router>
@@ -42,7 +42,7 @@ function App() {
               <Route path="/employee/:id" element={<EmployeeDetails />} />
           </Route>
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
-              <Route path="jobApplicant" element={<JobApplicantList />} />
+              <Route path="jobApplicant" element={<JobApplicantList/>} />
               <Route path="/recruit" element={<Interviews />} />
             <Route path="calendar" element={<Calendar />} />
             </Route>

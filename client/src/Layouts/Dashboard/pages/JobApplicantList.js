@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CreateJobApplicant from "./CreateJobApplicant";
-import EditJobApplicant from "./EditJobApplicant";
-import ScheduleMetting from "../Recruitment/ScheduleMetting";
+import CreateJobApplicant from "../components/JobApplicant/CreateJobApplicant";
+import EditJobApplicant from "../components/JobApplicant/EditJobApplicant";
 import {
   FaEdit,
   FaTrashAlt,
   FaCalendarPlus,
   FaTimesCircle,
 } from "react-icons/fa";
-
+import ScheduleMetting from "../components/Recruitment/ScheduleMetting";
 function JobApplicantList() {
   const [jobApplicants, setJobApplicants] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for create employee modal
