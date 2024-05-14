@@ -24,7 +24,9 @@ const createJobApplicant = async (req, res) => {
 
 const getAllJobApplicants = async (req, res) => {
   try {
-    const jobApplicants = await JobApplicant.find()
+    const jobApplicants = await JobApplicant.find({
+      status: { $ne: "rejected" },
+    })
     res.status(200).json(jobApplicants)
   } catch (error) {
     res.status(500).json({ message: error.message })

@@ -58,6 +58,10 @@ function JobApplicantList() {
   const handleReject = async _id => {
     try {
       await axios.post(`http://localhost:3001/jobApplicant/post/${_id}`)
+
+      setJobApplicants(prevJobApplicants =>
+        prevJobApplicants.filter(applicant => applicant._id !== _id)
+      )
       window.location.reload()
     } catch (err) {
       console.log(err)
@@ -205,9 +209,9 @@ function JobApplicantList() {
             <CreateJobApplicant
               onClose={() => setIsCreateModalOpen(false)}
               onSave={() => {
-                setIsCreateModalOpen(false);
+                setIsCreateModalOpen(false)
                 // Fetch employees again to update the list after creating a new one
-                fetchAllJobAplicants();
+                fetchAllJobAplicants()
               }}
             />
           </div>
@@ -221,8 +225,8 @@ function JobApplicantList() {
               jobApplicantId={selectedJobApplicantId} // Pass selectedEmployeeId as a prop
               onClose={() => setScheduleModalOpen(false)}
               onSave={() => {
-                setScheduleModalOpen(false);
-                fetchAllJobAplicants();
+                setScheduleModalOpen(false)
+                fetchAllJobAplicants()
               }}
             />
           </div>
@@ -235,8 +239,8 @@ function JobApplicantList() {
               jobApplicantId={selectedJobApplicantId} // Pass selectedEmployeeId as a prop
               onClose={() => setIsEditModalOpen(false)}
               onSave={() => {
-                setIsEditModalOpen(false);
-                fetchAllJobAplicants();
+                setIsEditModalOpen(false)
+                fetchAllJobAplicants()
               }}
             />
           </div>
