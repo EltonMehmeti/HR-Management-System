@@ -24,16 +24,10 @@ function App() {
       <UserProvider>
         <Routes>
           <Route path="/employee/signin" element={<EmpSignin />} />
-          
           <Route path="/admin/signin" element={<SuperAdminSignin />} />
-
-
+          <Route path="/superadmin/signin" element={<SuperAdminSignin />} />
           <Route path="/hr/signin" element={<HrSignin />} />
           <Route path="/hr/signup" element={<HrSignup />} />
-
-          {/* DashboardLayout will contain nested routes */}
-
-          
 
           <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
