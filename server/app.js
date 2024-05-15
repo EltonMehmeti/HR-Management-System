@@ -66,14 +66,15 @@ app.use(
 );
 
 app.use("/hrPersonnel", hrPersonnelRolesRoute)
-app.use("/team", teamRoutes)
-
+app.use("/team",authenticate(hrPersonnel),authorizeRole(['data_manager']), teamRoutes)
 app.use('/employee', authenticate(hrPersonnel),authorizeRole(['data_manager']), employeeRoutes);
-app.use('/auth/employee', employeeAuthRoutes);
-app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant',authenticate(hrPersonnel), authorizeRole(['recruiter']), jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
+
+
+app.use('/auth/hr', hrPersonnelRoutes);
+app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
 

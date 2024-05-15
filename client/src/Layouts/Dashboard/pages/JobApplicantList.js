@@ -9,6 +9,7 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 import ScheduleMetting from "../components/Recruitment/ScheduleMetting";
+import { useUser } from "../../../helper/UserContext";
 function JobApplicantList() {
   const [jobApplicants, setJobApplicants] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for create employee modal
@@ -16,12 +17,11 @@ function JobApplicantList() {
   const [isScheduleModalOpen, setScheduleModalOpen] = useState(false); // State for edit employee modal
 
   const [selectedJobApplicantId, setSelectedJobApplicantId] = useState(null); // State to store the id of the employee being edited
+  const { token } = useUser()
 
   // Define fetchAllEmployees function outside of useEffect hook
   const fetchAllJobAplicants = async () => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -38,14 +38,22 @@ function JobApplicantList() {
   };
 
   useEffect(() => {
+    if (token) {
+
     fetchAllJobAplicants();
-  }, []);
+    }
+  }, [token]);
 
   console.log(jobApplicants);
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`,config);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -53,11 +61,12 @@ function JobApplicantList() {
   };
   const handleReject = async _id => {
     try {
-      await axios.post(`http://localhost:3001/jobApplicant/post/${_id}`)
-
-      setJobApplicants(prevJobApplicants =>
-        prevJobApplicants.filter(applicant => applicant._id !== _id)
-      )
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.post(`http://localhost:3001/jobApplicant/reject/${_id}`,config)
       window.location.reload()
     } catch (err) {
       console.log(err);
