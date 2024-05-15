@@ -21,6 +21,6 @@ router.get("/get/:_id", jobApplicantController.getJobApplicantById)
 
 router.delete("/delete/:_id", jobApplicantController.deleteJobApplicantById)
 
-router.post("/post/:_id", jobApplicantController.rejectJobApplicantById)
+router.post("/reject/:_id", jobApplicantController.rejectJobApplicantById)
 
 module.exports = router
