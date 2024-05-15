@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        const token = generateToken({ id: employee.id, role: 'employee' });
+        const token = generateToken(employee.id);
 
         res.status(200).json({ token, employee });
     } catch (error) {

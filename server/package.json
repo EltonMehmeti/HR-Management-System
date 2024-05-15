@@ -40,5 +40,8 @@
     "pug": "^3.0.2",
     "sequelize": "^6.37.1",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
   }
 }
