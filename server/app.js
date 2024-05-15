@@ -23,6 +23,7 @@ const attendanceRecord = require('./models/attendaceRecord')
 const jobApplicant = require('./models/jobApplicant');
 const intervieweeRoutes = require('./routes/interviewee');  
 const jobApplicantRoutes = require('./routes/jobApplicant');
+const jobSchemaRoutes = require('./routes/jobSchema')
 const salary = require('./models/salary');
 const zoomMetting = require('./helper/zoomMeeting');
 const HrPersonnel = require("./models/hrPersonnel");
@@ -70,6 +71,7 @@ app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant', jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
+app.use('/jobschema', jobSchemaRoutes);
 
 
 

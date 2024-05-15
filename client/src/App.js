@@ -16,6 +16,8 @@ import EmployeeDetails from './Layouts/Dashboard/components/Employee/EmployeeDet
 import Interviews from './Layouts/Dashboard/components/Interview/Interviews';
 import Team from "./Layouts/Dashboard/components/Team/Team"
 import Calendar from "./Layouts/Dashboard/components/Calendar"
+import Job from './Layouts/Dashboard/components/Job/Job';
+
 function App() {
   return (
     <Router>
@@ -30,20 +32,22 @@ function App() {
           {/* DashboardLayout will contain nested routes */}
 
           <Route path="/" element={<DashboardLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
-          
+            <Route path="dashboard" element={<Dashboard />} />
 
-          <Route element={<RequireAuth allowedRole={"data_manager"} />}>
+
+            <Route element={<RequireAuth allowedRole={"data_manager"} />}>
               <Route path="employee" element={<EmployeeList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
-          </Route>
+            </Route>
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
               <Route path="jobApplicant" element={<JobApplicantList />} />
               <Route path="/recruit" element={<Interviews />} />
             </Route>
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
-            <Route path="calendar" element={<Calendar />} />
-          </Route>
+              <Route path="calendar" element={<Calendar />} />
+
+              <Route path="/jobschema" element={<Job />}></Route>
+            </Route>
           </Route>
         </Routes>
       </UserProvider>
