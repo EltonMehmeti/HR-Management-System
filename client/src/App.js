@@ -17,6 +17,7 @@ import Team from "./Layouts/Dashboard/components/Team/Team"
 import Calendar from "./Layouts/Dashboard/components/Calendar"
 import SuperAdminSignin from './components/auth/SuperAdmin/SuperAdminSignin';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
+import HRList from './Layouts/Dashboard/components/SuperAdmin/HR/HRList';
 function App() {
   return (
     <Router>
@@ -37,9 +38,12 @@ function App() {
           <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
           <Route element={<RequireAuth allowedRole={"data_manager"} />}>
-          <Route path="/teams" element={<Team />} />
+              <Route path="/teams" element={<Team />} />
               <Route path="employee" element={<EmployeeList />} />
               <Route path="/employee/:id" element={<EmployeeDetails />} />
+          </Route>
+          <Route element={<RequireAuth allowedRole={"admin"} />}>
+              <Route path="/hrlist" element={<HRList />} />
           </Route>
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
               <Route path="jobApplicant" element={<JobApplicantList  />} />

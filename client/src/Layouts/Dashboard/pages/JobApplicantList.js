@@ -51,7 +51,15 @@ function JobApplicantList() {
       console.log(err);
     }
   };
-
+  const handleReject = async _id => {
+    try {
+      await axios.post(`http://localhost:3001/jobApplicant/post/${_id}`)
+      window.location.reload()
+    } catch (err) {
+      console.log(err);
+      console.log(err)
+    }
+  };
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
       <button
@@ -153,6 +161,7 @@ function JobApplicantList() {
                       <FaCalendarPlus />
                     </button>
                     <button
+                      onClick={() => handleReject(item._id)}
                       type="button"
                       className="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:focus:ring-orange-800 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2"
                     >

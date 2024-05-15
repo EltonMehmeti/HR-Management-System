@@ -12,6 +12,7 @@ const hrPersonnelRolesRoute = require("./routes/hrPersonnelRoles")
 const authenticate = require("./middleware/authenticate")
 const app = express()
 const PORT = 3001
+const path = require("path");
 
 const employee = require("./models/employee")
 const interview = require("./models/interview")
@@ -59,6 +60,10 @@ async function startServer() {
     console.error("Error occurred while synchronizing database:", error)
   }
 }
+app.use(
+  "/images",
+  express.static(path.join(__dirname, "..", "server", "uploads"))
+);
 
 app.use("/hrPersonnel", hrPersonnelRolesRoute)
 app.use("/team", teamRoutes)
@@ -67,7 +72,7 @@ app.use('/employee', authenticate(hrPersonnel),authorizeRole(['data_manager']), 
 app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
-app.use('/jobapplicant', jobApplicantRoutes);
+app.use('/jobapplicant',authenticate(hrPersonnel), authorizeRole(['recruiter']), jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
