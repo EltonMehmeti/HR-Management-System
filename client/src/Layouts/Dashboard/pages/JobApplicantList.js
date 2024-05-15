@@ -44,7 +44,6 @@ function JobApplicantList() {
     }
   }, [token]);
 
-  console.log(jobApplicants);
 
   const handleDelete = async (_id) => {
     try {
@@ -53,26 +52,26 @@ function JobApplicantList() {
           Authorization: `Bearer ${token}`,
         },
       };
-      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`,config);
+      await axios.delete(`http://localhost:3001/jobApplicant/delete/${_id}`,{}, config);
       window.location.reload();
     } catch (err) {
       console.log(err);
     }
   };
-  const handleReject = async _id => {
+  const handleReject = async (_id) => {
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-      await axios.post(`http://localhost:3001/jobApplicant/reject/${_id}`,config)
-      window.location.reload()
+      await axios.post(`http://localhost:3001/jobApplicant/reject/${_id}`, {}, config);
+      window.location.reload();
     } catch (err) {
       console.log(err);
-      console.log(err)
     }
   };
+  
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
       <button
