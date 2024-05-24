@@ -16,7 +16,8 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         } else {
             console.log("Password matched");
-            const token = generateToken(superAdmin.id);
+            superAdmin.role = "admin";
+            const token = generateToken(superAdmin);
             
             res.status(200).json({ token, superAdmin });
         }
