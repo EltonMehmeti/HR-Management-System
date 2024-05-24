@@ -8,29 +8,50 @@ function CreateEmployee({ onClose, onSave }) {
     email: "",
     password: "",
     phone: "",
+    image: "",
     salary: "",
   })
 
   const handleChange = event => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
+    const { name, value, type, files } = event.target;
+  
+    // If the input type is file, get the file object
+    const newValue = type === 'file' ? files[0] : value;
+  
+    // Update the form data with the new value
+    setFormData({ ...formData, [name]: newValue });
   }
+  
+  
   const { token } = useUser();
 
   const handleSave = async () => {
     try {
+      const formDataToSend = new FormData(); // Create a new FormData object
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('salary', formData.salary);
+      formDataToSend.append('image', formData.image); // Append the file to FormData
+  
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`, // Include the authentication token
+          'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
         },
-      }
-      await axios.post("http://localhost:3001/employee", formData, config)
-      onSave()
+      };
+  
+      await axios.post("http://localhost:3001/employee/post", formDataToSend, config); // Send the FormData
+  
+      onSave();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
-
+  
+  
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
       <div className="justify-center items-center rounded-lg  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
@@ -128,6 +149,24 @@ function CreateEmployee({ onClose, onSave }) {
                     placeholder="Phone"
                     name="phone"
                     value={formData.phone}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="image"
+                  >
+                    Image
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="image"
+                    type="file"
+                    accept="image/*" // Accept only image files
+                    name="image"
                     onChange={handleChange}
                   />
                 </div>

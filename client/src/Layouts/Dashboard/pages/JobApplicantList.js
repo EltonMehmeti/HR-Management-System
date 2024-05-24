@@ -139,8 +139,17 @@ function JobApplicantList() {
                   {item.phone}
                 </td>
                 <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {item.resume}
+                  <a
+                    href={`http://localhost:3001/uploads/documents/${item.resume}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                     Resume
+                    </button>
+                  </a>
                 </td>
+
                 <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {item.jobTitle}
                 </td>

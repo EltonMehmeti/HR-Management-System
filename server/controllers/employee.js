@@ -1,6 +1,8 @@
 const Employee = require('../models/employee');
 const bcrypt = require('bcrypt')
 // Controller methods for employee model
+const path = require('path'); 
+const fs = require('fs');
 
 // Get all employees
 const getAllEmployees = async (req, res) => {
@@ -28,25 +30,31 @@ const getEmployeeById = async (req, res) => {
 
 // Create a new employee
 const createEmployee = async (req, res) => {
-    console.log(req.body);
-    const { name, email, phone, teamId, salary,password } = req.body; 
+    const { name, email, phone, teamId, salary, password } = req.body;
+    const imagePath = req.file.path;
+
+    // Check if file was uploaded
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-        try {
-        console.log(req.body)
+    try {
         const employee = await Employee.create({
             name,
             email,
             password: hashedPassword,
             phone,
             teamId,
-            salary
+            salary,
+            image: imagePath,
         });
         res.status(201).json(employee);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: 'Internal server error   ' });
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 

@@ -12,6 +12,7 @@ const superAdminRoutes = require('./routes/auth/superAdmin');
 const authenticate = require('./middleware/authenticate');
 const app = express();
 const PORT = 3001;
+const path = require('path'); 
 
 const employee = require('./models/employee');
 const interview = require('./models/interview');
@@ -71,6 +72,15 @@ app.use('/jobapplicant', jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads" , "images"))
+);
+
+app.use(
+  "/uploads/documents",
+  express.static(path.join(__dirname, "uploads" , "documents"))
+);
 
 
 
