@@ -18,6 +18,7 @@ import Calendar from "./Layouts/Dashboard/components/Calendar"
 import SuperAdminSignin from './components/auth/SuperAdmin/SuperAdminSignin';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
 import HRList from './Layouts/Dashboard/components/SuperAdmin/HR/HRList';
+import OrgChart from './Layouts/Dashboard/components/Org/OrgChart';
 function App() {
   return (
     <Router>
@@ -43,6 +44,9 @@ function App() {
               <Route path="jobApplicant" element={<JobApplicantList  />} />
               <Route path="/recruit" element={<Interviews />} />
             <Route path="calendar" element={<Calendar />} />
+            </Route>
+            <Route element={<RequireAuth allowedRole={"employee"} />}>
+              <Route path="org" element={<OrgChart />} />
             </Route>
           </Route>
         </Routes>

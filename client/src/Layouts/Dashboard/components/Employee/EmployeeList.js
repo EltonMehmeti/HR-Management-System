@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import logo from "../../../../Image/logo (1).png";
-import CreateEmployee from "./CreateEmployee";
-import EditEmployee from "./EditEmployee";
-import axios from "axios";
-import "../../css/modal.css";
-import { Link } from "react-router-dom";
-import { useUser } from "../../../../helper/UserContext";
+  import React, { useEffect, useState } from "react";
+  import logo from "../../../../Image/logo (1).png";
+  import CreateEmployee from "./CreateEmployee";
+  import EditEmployee from "./EditEmployee";
+  import axios from "axios";
+  import "../../css/modal.css";
+  import { Link } from "react-router-dom";
+  import { useUser } from "../../../../helper/UserContext";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
@@ -27,7 +27,7 @@ function EmployeeList() {
       // Map over the response data to append image filenames
       const employeesWithImageFilename = res.data.map((employee) => {
         // Use forward slash (/) instead of backslash (\) for splitting
-        const imageFilename = employee.image.split(/[\\/]/).pop();
+        const imageFilename = employee?.image?.split(/[\\/]/).pop();
         console.log(imageFilename);
         return {
           imageFilename,

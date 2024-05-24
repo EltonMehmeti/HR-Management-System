@@ -31,6 +31,8 @@ const superAdmin = require("./models/superAdmin")
 const axios = require("axios")
 const recruitmentsRoutes = require("./routes/recruitment")
 const authorizeRole = require("./middleware/authorizeRole")
+const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
+const orgRoutes = require("./routes/org")
 require("dotenv").config()
 
 app.use(cors({ origin: "http://localhost:3000" }))
@@ -73,7 +75,7 @@ app.use('/employee', authenticate(hrPersonnel),authorizeRole(['data_manager']), 
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
 app.use('/jobapplicant',authenticate(hrPersonnel), authorizeRole(['recruiter']), jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
-
+app.use('/org', authenticate(employee),authorizeRole(['employee']), orgRoutes);
 
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
