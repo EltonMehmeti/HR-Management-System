@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useUser } from "../../../../helper/UserContext";
 
 function CreateJobApplicant({ onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ function CreateJobApplicant({ onClose, onSave }) {
     resume: null, // Initialize resume as null
     jobTitle: "",
   });
-
+ const {token} = useUser()
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -22,8 +23,6 @@ function CreateJobApplicant({ onClose, onSave }) {
 
   const handleSave = async () => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,

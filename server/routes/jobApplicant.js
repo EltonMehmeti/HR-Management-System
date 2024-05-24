@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const jobApplicantController = require('../controllers/jobApplicant');
@@ -7,10 +8,13 @@ router.post('/post', multerMiddleware.uploadFile, jobApplicantController.createJ
 
 router.put('/update/:_id', multerMiddleware.uploadFile, jobApplicantController.updateJobApplicantById);
 
-router.get('/get', jobApplicantController.getAllJobApplicants);
 
-router.get('/get/:_id', jobApplicantController.getJobApplicantById);
+router.get("/get", jobApplicantController.getAllJobApplicants)
 
-router.delete('/delete/:_id', jobApplicantController.deleteJobApplicantById);
+router.get("/get/:_id", jobApplicantController.getJobApplicantById)
 
-module.exports = router;
+router.delete("/delete/:_id", jobApplicantController.deleteJobApplicantById)
+
+router.post("/reject/:_id", jobApplicantController.rejectJobApplicantById)
+
+module.exports = router

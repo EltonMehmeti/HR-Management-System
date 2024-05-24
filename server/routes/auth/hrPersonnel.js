@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const HrPersonnel = require("../../models/hrPersonnel")
 const router = express.Router()
 const generateToken = require("../../helper/generateToken")
+
 const path = require('path'); 
 const fs = require('fs');
 const multerMiddleware = require('../../middleware/multer'); 
@@ -46,6 +47,8 @@ router.post("/register", multerMiddleware.uploadImage, async (req, res) => {
 });
 
 
+
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body
@@ -70,3 +73,4 @@ router.post("/login", async (req, res) => {
 })
 
 module.exports = router
+

@@ -3,6 +3,7 @@ import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable } from "react-icons
 import { GoOrganization } from "react-icons/go";
 import { RiTeamFill } from "react-icons/ri";
 import { SiGoogledocs } from "react-icons/si";
+import { IoTime } from "react-icons/io5";
 
 import { useUser } from '../../helper/UserContext';
 import Cookies from 'js-cookie';
@@ -13,14 +14,33 @@ function Sidebar() {
   const signout = () => {
     Cookies.remove('user');
     Cookies.remove('token');
-    window.location.href = '/hr/signin';
+  
+    let signInPath = '/signin'; // Default sign-in path
+    
+    if (user && user.role) {
+      switch (user.role) {
+        case "employee":
+          signInPath = "/employee/signin";
+          break;
+        case "recruiter":
+        case "datamanager":
+          signInPath = "/hr/signin";
+          break;
+        case "admin":
+        case "superAdmin":
+          signInPath = "/admin/signin"; // Change this to your admin sign-in path
+          break;
+        default:
+          break;
+      }
+    }
+  
+    window.location.href = signInPath;
   };
 
   const renderSidebarItems = () => {
     if (!user) return null;
-
     const { role } = user;
-console.log(role);
     switch (role) {
       case 'recruiter':
         return (
@@ -100,6 +120,24 @@ console.log(role);
             </a>
           </li>
           <li>
+              <a
+                href="/teams"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <RiTeamFill className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">My Team</span>
+              </a>
+            </li>
+            <li>
+            <a
+              href="/time"
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <IoTime   className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+              <span className="ms-3">Time</span>
+            </a>
+          </li>
+          <li>
             <a
               href="dashboard"
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -108,10 +146,11 @@ console.log(role);
               <span className="ms-3">Org</span>
             </a>
           </li>
+        
           </>
 
         );
-        case 'superAdmin':
+        case 'admin':
         return (
           <>
           <li>
@@ -130,6 +169,15 @@ console.log(role);
             >
               <GoOrganization  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
               <span className="ms-3">Org</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/hr-list"
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <GoOrganization  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+              <span className="ms-3">Hr List</span>
             </a>
           </li>
           </>

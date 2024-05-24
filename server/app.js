@@ -1,42 +1,44 @@
+const teamRoutes = require("./routes/team")
+const express = require("express")
+const bodyParser = require("body-parser")
+const sequelize = require("./util/database")
+const cors = require("cors")
+const mongoose = require("mongoose")
+const employeeRoutes = require("./routes/employee")
+const employeeAuthRoutes = require("./routes/auth/employee")
+const hrPersonnelRoutes = require("./routes/auth/hrPersonnel")
+const superAdminRoutes = require("./routes/auth/superAdmin")
+const hrPersonnelRolesRoute = require("./routes/hrPersonnelRoles")
+const authenticate = require("./middleware/authenticate")
+const app = express()
+const PORT = 3001
+const path = require("path");
 
-  const teamRoutes = require("./routes/team")
-const express = require('express');
-const bodyParser = require('body-parser');
-const sequelize = require('./util/database');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const employeeRoutes = require('./routes/employee');
-const employeeAuthRoutes = require('./routes/auth/employee');
-const hrPersonnelRoutes = require('./routes/auth/hrPersonnel');
-const superAdminRoutes = require('./routes/auth/superAdmin');
-const authenticate = require('./middleware/authenticate');
-const app = express();
-const PORT = 3001;
-const path = require('path'); 
+const employee = require("./models/employee")
+const interview = require("./models/interview")
+const interviewee = require("./models/interviewee")
+const hrPersonnel = require("./models/hrPersonnel")
+const team = require("./models/team")
+const leaveRequest = require("./models/leaveRequest")
+const attendanceRecord = require("./models/attendaceRecord")
+const jobApplicant = require("./models/jobApplicant")
+const intervieweeRoutes = require("./routes/interviewee")
+const jobApplicantRoutes = require("./routes/jobApplicant")
+const salary = require("./models/salary")
+const zoomMetting = require("./helper/zoomMeeting")
+const HrPersonnel = require("./models/hrPersonnel")
+const superAdmin = require("./models/superAdmin")
+const axios = require("axios")
+const recruitmentsRoutes = require("./routes/recruitment")
+const authorizeRole = require("./middleware/authorizeRole")
+require("dotenv").config()
 
-const employee = require('./models/employee');
-const interview = require('./models/interview');
-const interviewee = require('./models/interviewee');
-const hrPersonnel = require('./models/hrPersonnel');  
-const team = require('./models/team');
-const leaveRequest = require('./models/leaveRequest')
-const attendanceRecord = require('./models/attendaceRecord')
-const jobApplicant = require('./models/jobApplicant');
-const intervieweeRoutes = require('./routes/interviewee');  
-const jobApplicantRoutes = require('./routes/jobApplicant');
-const salary = require('./models/salary');
-const zoomMetting = require('./helper/zoomMeeting');
-const HrPersonnel = require("./models/hrPersonnel");
-const axios = require('axios');
-const recruitmentsRoutes = require('./routes/recruitment');
-const authorizeRole = require("./middleware/authorizeRole");
-require('dotenv').config()
+app.use(cors({ origin: "http://localhost:3000" }))
+
+app.use(bodyParser.json())
 
 
 
-app.use(cors({ origin: 'http://localhost:3000' }));
-
-app.use(bodyParser.json());
 
 // zoomMetting.getMeetings().then((response) => {
 //  console.log(response);
@@ -60,16 +62,21 @@ async function startServer() {
     console.error("Error occurred while synchronizing database:", error)
   }
 }
+app.use(
+  "/images",
+  express.static(path.join(__dirname, "..", "server", "uploads"))
+);
 
-
-app.use("/team", teamRoutes)
-
+app.use("/hrPersonnel", hrPersonnelRolesRoute)
+app.use("/team",authenticate(hrPersonnel),authorizeRole(['data_manager']), teamRoutes)
 app.use('/employee', authenticate(hrPersonnel),authorizeRole(['data_manager']), employeeRoutes);
-app.use('/auth/employee', employeeAuthRoutes);
-app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/interviewee', authenticate(hrPersonnel), intervieweeRoutes);
-app.use('/jobapplicant', jobApplicantRoutes);
+app.use('/jobapplicant',authenticate(hrPersonnel), authorizeRole(['recruiter']), jobApplicantRoutes);
 app.use('/recruitment',authenticate(hrPersonnel) ,authorizeRole(['recruiter']), recruitmentsRoutes);
+
+
+app.use('/auth/hr', hrPersonnelRoutes);
+app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
 
 app.use(

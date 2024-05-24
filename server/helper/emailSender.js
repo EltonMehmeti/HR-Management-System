@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = (subject,name, to, join_url,datetime) => {
-console.log(subject, name, to , join_url, datetime)
+const sendEmail = (subject, name, to, join_url, datetime, attachmentPath) => {
+  console.log(subject, name, to , join_url, datetime)
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -58,6 +58,15 @@ console.log(subject, name, to , join_url, datetime)
     `
   };
 
+  if (attachmentPath) {
+    mailOptions.attachments = [
+      {
+        filename: 'attachment.pdf', 
+        path: attachmentPath 
+      }
+    ];
+  }
+
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
@@ -66,5 +75,6 @@ console.log(subject, name, to , join_url, datetime)
     }
   });
 };
+
 
 module.exports = sendEmail;

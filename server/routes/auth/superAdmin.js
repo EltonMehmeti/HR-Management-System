@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const SuperAdminModel = require('../../models/superAdmin');
 const generateToken = require('../../helper/generateToken');
-
-
-
 
 router.post('/login', async (req, res) => {
     try {
@@ -18,10 +14,10 @@ router.post('/login', async (req, res) => {
 
         if (password !== superAdmin.password) {
             return res.status(400).json({ error: 'Invalid email or password' });
-        }
-        else if(password==password){
-            console.log("password matched")
+        } else {
+            console.log("Password matched");
             const token = generateToken(superAdmin.id);
+            
             res.status(200).json({ token, superAdmin });
         }
         
