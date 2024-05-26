@@ -75,6 +75,20 @@ const createInterviewe = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+const getAllInterviews = async (req, res) => {
+    try {
+        const interviews = await Interview.findAll({
+            include: [{
+                model: Interviewee,
+                attributes: ['id', 'name', 'email', 'phone', 'resume', 'jobTitle']
+            }]
+        });
+        res.json(interviews);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 const getInterviewsByRecruiterId = async (req, res) => {
     try {
         const { recruiterId } = req.params;
@@ -131,6 +145,7 @@ const jobOffer = async (req, res) => {
 
 
 module.exports = {
+    getAllInterviews,
     createInterviewe,
     getInterviewsByRecruiterId,
     editInterviewStatus,

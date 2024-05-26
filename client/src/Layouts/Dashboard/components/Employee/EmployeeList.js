@@ -75,17 +75,16 @@ function EmployeeList() {
             key={index}
             className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
-            <Link to={`/employee/${item.id}`} className="no-underline">
+          
               <div className="flex flex-col items-center pb-10 mt-5">
                 <img
                   className="w-24 h-24 mb-3 rounded-full shadow-lg"
                   src={`http://localhost:3001/uploads/${item.imageFilename}`}
                   alt="Employee image"
-                />
-
+                />  <Link to={`/employee/${item.id}`} className="no-underline">
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                   {item.name}
-                </h5>
+                </h5></Link>
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                   {item.role}
                 </div>
@@ -115,7 +114,7 @@ function EmployeeList() {
                   </button>
                 </div>
               </div>
-            </Link>
+            
           </div>
         ))}
         {isCreateModalOpen && (
@@ -135,12 +134,12 @@ function EmployeeList() {
           <div className="modal-container">
             <div className="modal-content">
               <EditEmployee
-                employeeId={selectedEmployeeId}
-                onClose={() => setIsEditModalOpen(false)}
-                onSave={() => {
-                  setIsEditModalOpen(false);
-                  fetchAllEmployees();
-                }}
+               employeeId={selectedEmployeeId}
+               onClose={() => setIsEditModalOpen(false)}
+               onSave={() => {
+                 setIsEditModalOpen(false);
+                 fetchAllEmployees();
+               }}
               />
             </div>
           </div>
