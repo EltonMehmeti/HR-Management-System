@@ -9,7 +9,6 @@ function CreateEmployee({ onClose, onSave }) {
     password: "",
     phone: "",
     image: "",
-    salary: "",
     reportsTo: null,
   })
   const [employees, setEmployees] = useState([]);
@@ -60,7 +59,6 @@ function CreateEmployee({ onClose, onSave }) {
       formDataToSend.append('email', formData.email);
       formDataToSend.append('password', formData.password);
       formDataToSend.append('phone', formData.phone);
-      formDataToSend.append('salary', formData.salary);
       formDataToSend.append('reportsTo', formData.reportsTo);
       formDataToSend.append('image', formData.image); 
       console.log(formDataToSend.get('reportsTo'));
@@ -147,23 +145,6 @@ function CreateEmployee({ onClose, onSave }) {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="salary"
-                  >
-                    Salary
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="salary"
-                    type="text"
-                    placeholder="Salary"
-                    name="salary"
-                    value={formData.salary}
-                    onChange={handleChange}
-                  />
-                </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"

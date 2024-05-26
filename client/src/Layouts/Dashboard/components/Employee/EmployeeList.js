@@ -134,12 +134,12 @@ function EmployeeList() {
           <div className="modal-container">
             <div className="modal-content">
               <EditEmployee
-                employeeId={selectedEmployeeId}
-                onClose={() => setIsEditModalOpen(false)}
-                onSave={() => {
-                  setIsEditModalOpen(false);
-                  fetchAllEmployees();
-                }}
+               employeeId={selectedEmployeeId}
+               onClose={() => setIsEditModalOpen(false)}
+               onSave={() => {
+                 setIsEditModalOpen(false);
+                 fetchAllEmployees();
+               }}
               />
             </div>
           </div>
