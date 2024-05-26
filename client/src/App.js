@@ -20,6 +20,7 @@ import SuperAdminSignin from './components/auth/SuperAdmin/SuperAdminSignin';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
 import HRList from './Layouts/Dashboard/components/SuperAdmin/HR/HRList';
 import OrgChart from './Layouts/Dashboard/components/Org/OrgChart';
+import Payroll from './Layouts/Dashboard/components/Finance/Payroll';
 function App() {
   return (
     <Router>
@@ -50,6 +51,9 @@ function App() {
             </Route>
             <Route element={<RequireAuth allowedRole={"employee"} />}>
               <Route path="org" element={<OrgChart />} />
+            </Route>
+            <Route element={<RequireAuth allowedRole={"finance"} />}>
+              <Route path="finance" element={<Payroll />} />
             </Route>
           </Route>
         </Routes>

@@ -34,6 +34,7 @@ const authorizeRole = require("./middleware/authorizeRole")
 const jobSchemaRoutes = require('./routes/jobSchema')
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
+const payrollRoutes = require("./routes/payroll")
 require("dotenv").config()
 
 app.use(cors({ origin: "http://localhost:3000" }))
@@ -80,6 +81,7 @@ app.use('/org', authenticate(employee),authorizeRole(['employee']), orgRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
+app.use('/payroll',authenticate(hrPersonnel),authorizeRole(['finance']), payrollRoutes);
 app.use('/jobschema', jobSchemaRoutes);
 
 app.use(

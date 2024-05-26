@@ -8,6 +8,7 @@ const authorizeRole = (allowedRoles) => async (req, res, next) => {
         const decodedToken = verifyToken(token);
         validateRoles(decodedToken, allowedRoles);
         req.user = decodedToken; 
+        console.log(decodedToken)
         next();
     } catch (error) {
         console.error(error.message);
