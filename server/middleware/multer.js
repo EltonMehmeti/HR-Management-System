@@ -53,6 +53,18 @@ const uploadFile = (req, res, next) => {
     }
   }).single('resume')(req, res, next);
 };
-
+const uploadSalaryFile = (req, res, next) => {
+  multer({
+    storage: fileStorage,
+    fileFilter: function (req, file, cb) {
+      // Check if file is an Excel file
+      if (file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.mimetype === 'application/vnd.ms-excel') {
+        cb(null, true); // Accept the file
+      } else {
+        cb(new Error('File type not supported. Only Excel files are allowed.'));
+      }
+    }
+  }).single('salaryFile')(req, res, next);
+};
 // Export both middlewares
-module.exports = { uploadImage, uploadFile };
+module.exports = { uploadImage, uploadFile, uploadSalaryFile };

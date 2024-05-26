@@ -33,6 +33,7 @@ const recruitmentsRoutes = require("./routes/recruitment")
 const authorizeRole = require("./middleware/authorizeRole")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
+const payrollRoutes = require("./routes/payroll")
 require("dotenv").config()
 
 app.use(cors({ origin: "http://localhost:3000" }))
@@ -80,7 +81,7 @@ app.use('/org', authenticate(employee),authorizeRole(['employee']), orgRoutes);
 app.use('/auth/hr', hrPersonnelRoutes);
 app.use('/auth/employee', employeeAuthRoutes);
 app.use('/auth/superAdmin', superAdminRoutes);
-
+app.use('/payroll',authenticate(hrPersonnel),authorizeRole(['finance']), payrollRoutes);
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads" , "images"))

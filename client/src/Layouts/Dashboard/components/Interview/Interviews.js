@@ -3,6 +3,8 @@ import { useUser } from '../../../../helper/UserContext';
 import axios from 'axios';
 import { Dropdown } from "flowbite-react";
 import JobOffer from './JobOffer';
+import { IoPerson } from "react-icons/io5";
+
 const Interviews = () => {
   const [interviews, setInterviews] = useState([]);
   const { user, token } = useUser();
@@ -87,7 +89,8 @@ console.log(firstInterview);
     </Dropdown.Item>
 </Dropdown>
     </span>
-    <img class=" mx-auto md:hidden lg:block sm:hidden  h-12 rounded-full sm:mx-0 sm:shrink-0" src="https://tailwindcss.com/img/erin-lindford.jpg" alt="Woman's Face"/>
+    <IoPerson  size={40}/>
+
     <div class="text-center space-y-2 sm:text-left">
         <div class="space-y-0.5">
             <p class="text-lg text-black font-semibold">
