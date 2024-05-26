@@ -1,48 +1,76 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Cookies from 'js-cookie';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function HrSignup() {
   const [formData, setFormData] = useState({
     name: "",
-    role:'',
+    role: "",
     email: "",
     password: "",
+    image: "",
     joiningDate: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = event => {
+    const { name, value, type, files } = event.target;
+  
+    // If the input type is file, get the file object
+    const newValue = type === 'file' ? files[0] : value;
+  
+    // Update the form data with the new value
+    setFormData({ ...formData, [name]: newValue });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("role", formData.role);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("joiningDate", formData.joiningDate);
+      formDataToSend.append("image", formData.image);
+  
       const response = await axios.post(
         "http://localhost:3001/auth/hr/register",
-        formData
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-
+  
+      console.log("Response after form submission:", response);
+  
       console.log("User registered successfully:", response.data);
-
-      Cookies.set('token', response.data.token, { expires: 1, secure: true });
-      Cookies.set('user',JSON.stringify( response.data.personnel), { expires: 1, secure: true });
-      toast.success("Signup successful! Welcome " +formData.email);
+  
+      Cookies.set("token", response.data.token, { expires: 1, secure: true });
+      Cookies.set("user", JSON.stringify(response.data.personnel), {
+        expires: 1,
+        secure: true,
+      });
+      toast.success("Signup successful! Welcome " + formData.email);
       window.location.href = "/dashboard";
-
+  
       setFormData({
         name: "",
-        role:'',
+        role: "",
         email: "",
         password: "",
+        image: "",
         joiningDate: "",
       });
     } catch (error) {
       console.error("Error registering user:", error);
     }
   };
+  
+  
 
   return (
     <div className="bg-blue-400 p-20 relative ">
@@ -120,7 +148,16 @@ export default function HrSignup() {
             value={formData.joiningDate}
             onChange={handleChange}
           />
-          
+
+          <input
+            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
+            id="image"
+            type="file"
+            accept="image/*" // Accept only image files
+            name="image"
+            onChange={handleChange}
+          />
+
           <div className="mt-4 flex justify-between font-semibold text-sm">
             <label className="flex text-slate-500 hover:text-slate-600 cursor-pointer">
               <input className="mr-1" type="checkbox" />

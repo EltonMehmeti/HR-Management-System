@@ -59,10 +59,13 @@ const [formData, setFormData] = useState({
       };
       setFormData(formData => ({ ...formData, recruiterId: user?.id }));
       console.log(formData.recruiterId);
-      await axios.post('http://localhost:3001/recruitment', formData, config);
+      const response = await axios.post('http://localhost:3001/recruitment', formData, config);
+      console.log(response);
+      if (response.status === 201) {
       toast.success("Meeting scheduled successfully");
       toast.success("Mail sent successfully");
       onSave();
+      }
     } catch (err) {
       toast.error(err.response.data.error)
       console.log(err);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useUser } from "../../../../helper/UserContext";
 
 function EditEmployee({ onClose, onSave, employeeId }) {
   const [formData, setFormData] = useState({
@@ -9,12 +10,12 @@ function EditEmployee({ onClose, onSave, employeeId }) {
     phone: "",
     salary: "",
   });
+  const { token } = useUser();
 
   useEffect(() => {
     // Fetch the employee data to populate the form
     const fetchEmployeeData = async () => {
       try {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
         const config = {
           headers: {
             Authorization: `Bearer ${token}`

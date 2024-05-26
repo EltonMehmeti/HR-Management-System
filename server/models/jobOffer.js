@@ -10,14 +10,7 @@ const JobOffer = sequelize.define('jobOffer', {
         allowNull: false,
         primaryKey: true
     },
-    position: Sequelize.STRING,
-    description: Sequelize.TEXT,
-    requirements: Sequelize.TEXT,
-    location: Sequelize.STRING,
-    salary: Sequelize.FLOAT,
-    benefits: Sequelize.TEXT,
-    startDate: Sequelize.DATE,
-    endDate: Sequelize.DATE
+   file: Sequelize.STRING
 });
 
 module.exports = JobOffer;

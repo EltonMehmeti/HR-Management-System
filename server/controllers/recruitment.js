@@ -3,10 +3,12 @@ const Interviewee = require('../models/interviewee');
 const zoomMeeting = require('../helper/zoomMeeting');
 const sendEmail = require('../helper/emailSender');
 const Sequelize = require('sequelize');
+const JobOffer = require('../models/jobOffer');
 
 const createInterviewe = async (req, res) => {
     try {
         const { name, email, phone, resume, jobTitle, recruiterId, title, date, time, duration, agenda } = req.body;
+        console.log(req.body)
 
         const start_time = new Date(`${date}T${time}:00`);
         const end_time = new Date(start_time.getTime() + duration * 60000);
@@ -14,7 +16,7 @@ const createInterviewe = async (req, res) => {
         let interviewee = await Interviewee.findOne({ where: { email } });
 
         if (!interviewee) {
-            interviewee = await Interviewee.create({ name, email, phone, resume, jobTitle });
+            interviewee = await Interviewee.create({ name, email, phone, resume, jobTitle});
             if (!interviewee) {
                 return res.status(500).json({ error: 'Failed to create interviewee' });
             }
@@ -65,11 +67,25 @@ const createInterviewe = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create interview' });
         }
 
-        sendEmail(title, email, join_url);
+        sendEmail(title, name, email,join_url, `${date} ${time}`);
 
         res.status(201).json({ interviewee, interview });
     } catch (error) {
         console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+const getAllInterviews = async (req, res) => {
+    try {
+        const interviews = await Interview.findAll({
+            include: [{
+                model: Interviewee,
+                attributes: ['id', 'name', 'email', 'phone', 'resume', 'jobTitle']
+            }]
+        });
+        res.json(interviews);
+    } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -105,8 +121,33 @@ const editInterviewStatus = async (req, res) => {
     }
 }
 
+const jobOffer = async (req, res) => {
+    try {
+        const { resume, intervieweeId } = req.body;
+        console.log(resume, intervieweeId)
+        const newJobOffer = await JobOffer.create({
+            resume: resume
+        });
+
+        await Interviewee.update({ status:'job_offer' }, {
+            where: { id: intervieweeId }
+        });
+
+        const interviewee = await Interviewee.findByPk(intervieweeId);
+        interviewee.setJobOffer(newJobOffer); // Assuming the association is defined correctly
+
+        res.status(201).json({ message: 'Job offer created successfully.' });
+    } catch (error) {
+        console.error('Error creating job offer:', error);
+        res.status(500).json({ message: 'Error creating job offer.' });
+    }
+};
+
+
 module.exports = {
+    getAllInterviews,
     createInterviewe,
     getInterviewsByRecruiterId,
-    editInterviewStatus
+    editInterviewStatus,
+    jobOffer
 };

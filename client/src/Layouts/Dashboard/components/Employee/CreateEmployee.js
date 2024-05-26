@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useUser } from "../../../../helper/UserContext";
 
@@ -8,29 +8,79 @@ function CreateEmployee({ onClose, onSave }) {
     email: "",
     password: "",
     phone: "",
+    image: "",
     salary: "",
+    reportsTo: null,
   })
-
-  const handleChange = event => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
-  }
+  const [employees, setEmployees] = useState([]);
   const { token } = useUser();
 
-  const handleSave = async () => {
+  const fetchAllEmployees = async () => {
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-      await axios.post("http://localhost:3001/employee", formData, config)
-      onSave()
+      };
+      const res = await axios.get("http://localhost:3001/employee", config);
+      console.log(res.data);
+
+      const employeesWithImageFilename = res.data.map((employee) => {
+        const imageFilename = employee?.image?.split(/[\\/]/).pop();
+        console.log(imageFilename);
+        return {
+          imageFilename,
+          ...employee,
+        };
+      });
+
+      setEmployees(employeesWithImageFilename);
     } catch (err) {
-      console.log(err)
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      fetchAllEmployees();
+    }
+  }, [token]);
+  const handleChange = event => {
+    const { name, value, type, files } = event.target;
+    const newValue = type === 'file' ? files[0] : value;
+    setFormData({ ...formData, [name]: newValue });
+  }
+  
+  
+  console.log(formData.reportsTo);
+
+  const handleSave = async () => {
+    try {
+      const formDataToSend = new FormData(); 
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('salary', formData.salary);
+      formDataToSend.append('reportsTo', formData.reportsTo);
+      formDataToSend.append('image', formData.image); 
+      console.log(formDataToSend.get('reportsTo'));
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'multipart/form-data', 
+        },
+      };
+  
+      await axios.post("http://localhost:3001/employee/post", formDataToSend, config); 
+  
+      onSave();
+    } catch (err) {
+      console.log(err);
     }
   }
-
+  
+  
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
       <div className="justify-center items-center rounded-lg  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
@@ -130,6 +180,48 @@ function CreateEmployee({ onClose, onSave }) {
                     value={formData.phone}
                     onChange={handleChange}
                   />
+                </div>
+              </div>
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="image"
+                  >
+                    Image
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="image"
+                    type="file"
+                    accept="image/*" // Accept only image files
+                    name="image"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="image"
+                  >
+                    Reports To
+                  </label>
+                  <select
+          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          id="reportsTo"
+          name="reportsTo"
+          value={formData.reportsTo}
+          onChange={handleChange}
+        >
+          <option value="">Select a manager</option>
+          {employees.map((employee) => (
+            <option key={employee.id} value={employee.id}>
+              {employee.name}
+            </option>
+          ))}
+        </select>
                 </div>
               </div>
 

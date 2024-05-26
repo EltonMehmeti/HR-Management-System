@@ -1,14 +1,15 @@
 const express = require("express")
 const employeeController = require("../controllers/employee")
+const multerMiddleware = require('../middleware/multer'); 
 
 
 const router = express.Router()
 
-router.get("/", employeeController.getAllEmployees)
+router.get("/",employeeController.getAllEmployees)
 
 router.get("/:id", employeeController.getEmployeeById)
 
-router.post("/", employeeController.createEmployee)
+router.post("/post", multerMiddleware.uploadImage, employeeController.createEmployee);
 
 router.put("/:id", employeeController.updateEmployee)
 

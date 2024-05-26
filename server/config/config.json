@@ -1,10 +1,23 @@
 {
-    "development": {
-      "username": "root",
-      "password": "eltoni123",
-      "database": "HR-Managment-System",
-      "host": "localhost",
-      "dialect": "mysql"
-    }
+  "development": {
+    "username": "root",
+    "password": "eltoni123",
+    "database": "hr-managment-system",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "eltoni123",
+    "database": "hr-managment-system",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "eltoni123",
+    "database": "hr-managment-system",
+    "host": "localhost",
+    "dialect": "mysql"
   }
-  
+}
