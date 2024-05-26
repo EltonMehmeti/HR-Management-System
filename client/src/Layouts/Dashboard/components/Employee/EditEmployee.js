@@ -8,7 +8,6 @@ function EditEmployee({ onClose, onSave, employeeId }) {
     email: "",
     password: "",
     phone: "",
-    salary: "",
   });
   const { token } = useUser();
 
