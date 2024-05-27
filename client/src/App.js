@@ -15,12 +15,14 @@ import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDet
 import Interviews from "./Layouts/Dashboard/components/Interview/Interviews"
 import Team from "./Layouts/Dashboard/components/Team/Team"
 import Calendar from "./Layouts/Dashboard/components/Calendar"
-import SuperAdminSignin from "./components/auth/SuperAdmin/SuperAdminSignin"
-import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList"
-import HRList from "./Layouts/Dashboard/components/SuperAdmin/HR/HRList"
-import OrgChart from "./Layouts/Dashboard/components/Org/OrgChart"
 import Docs from "./Layouts/Dashboard/components/Docs/Docs"
 import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs"
+import Job from './Layouts/Dashboard/components/Job/Job';
+import SuperAdminSignin from './components/auth/SuperAdmin/SuperAdminSignin';
+import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
+import HRList from './Layouts/Dashboard/components/SuperAdmin/HR/HRList';
+import OrgChart from './Layouts/Dashboard/components/Org/OrgChart';
+import Payroll from './Layouts/Dashboard/components/Finance/Payroll';
 
 function App() {
   return (
@@ -48,10 +50,16 @@ function App() {
             <Route element={<RequireAuth allowedRole={"recruiter"} />}>
               <Route path="jobApplicant" element={<JobApplicantList />} />
               <Route path="/recruit" element={<Interviews />} />
-              <Route path="calendar" element={<Calendar />} />
+
+              <Route path="/jobschema" element={<Job />}></Route>
+            <Route path="calendar" element={<Calendar />} />
+
             </Route>
             <Route element={<RequireAuth allowedRole={"employee"} />}>
               <Route path="org" element={<OrgChart />} />
+            </Route>
+            <Route element={<RequireAuth allowedRole={"finance"} />}>
+              <Route path="finance" element={<Payroll />} />
             </Route>
           </Route>
         </Routes>
