@@ -5,9 +5,10 @@ import { useUser } from "../../../../helper/UserContext";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 
 function EmployeeDetails() {
-  const { id } = useParams(); // Accessing route parameters using useParams hook
+  const { id } = useParams();
   const { token } = useUser();
   const [employee, setEmployee] = useState(null);
+  const [manager, setManager] = useState(null);
 
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
@@ -17,28 +18,37 @@ function EmployeeDetails() {
             Authorization: `Bearer ${token}`,
           },
         };
-        const res = await axios.get(
+
+        // Fetch employee details
+        const resEmployee = await axios.get(
           `http://localhost:3001/employee/${id}`,
           config
         );
-
-        console.log("Response data:", res.data); // Debugging log
-
-        // Extract the image filename from the response data
-        const imageFilename = res.data.image.split(/[\\/]/).pop();
-
-        console.log("Image filename:", imageFilename); // Debugging log
-
-        // Construct the image URL
+        
+        const employeeData = resEmployee.data;
+        const imageFilename = employeeData.image ? employeeData.image.split(/[\\/]/).pop() : '';
         const imageURL = `http://localhost:3001/uploads/${imageFilename}`;
 
-        console.log("Image URL:", imageURL); // Debugging log
-
-        // Update the state with the employee details including the image URL
         setEmployee({
-          ...res.data,
+          ...employeeData,
           imageURL: imageURL,
         });
+
+        // Fetch manager details if employee has a manager
+        if (employeeData.reportsTo) {
+          const resManager = await axios.get(
+            `http://localhost:3001/employee/${employeeData.reportsTo}`,
+            config
+          );
+          const managerData = resManager.data;
+          const managerImageFilename = managerData.image ? managerData.image.split(/[\\/]/).pop() : '';
+          const managerImageURL = `http://localhost:3001/uploads/${managerImageFilename}`;
+
+          setManager({
+            ...managerData,
+            imageURL: managerImageURL,
+          });
+        }
       } catch (err) {
         console.log(err);
       }
@@ -48,11 +58,11 @@ function EmployeeDetails() {
   }, [id, token]);
 
   if (!employee) {
-    return <div>Loading...</div>; // Add loading indicator while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className=" p-20">
+    <div className="p-20">
       <div className="flex">
         <img
           className="w-40 h-40 bg-gray-300 rounded-full mb-4"
@@ -60,14 +70,14 @@ function EmployeeDetails() {
           alt=""
         />
         <div className="ml-4">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
             {employee.name}
           </h5>
-          <h5 className="mb-2 text-xl font-bold tracking-tight text-slate-500 ">
-            Front End Developer{" "}
+          <h5 className="mb-2 text-xl font-bold tracking-tight text-slate-500">
+            {employee.jobTitle || "Unknown Job Title"}
           </h5>
-          <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">
-            Location: Prishtinaa
+          <p className="mb-1 font-normal text-gray-700">
+            Location: {employee.location || "Unknown Location"}
           </p>
         </div>
       </div>
@@ -80,12 +90,18 @@ function EmployeeDetails() {
             Reports to
           </p>
           <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex">
-            <img
-              className=" h-12 w-12 rounded-full ring-2 ring-white"
-              src={employee.imageURL}
-              alt="Employee image"
-            />
-            <h2 className="pl-6 mt-3">Joe doe</h2>
+            {manager ? (
+              <>
+                <img
+                  className="h-12 w-12 rounded-full ring-2 ring-white"
+                  src={manager.imageURL}
+                  alt="Manager image"
+                />
+                <h2 className="pl-6 mt-3">{manager.name}</h2>
+              </>
+            ) : (
+              <h2>No Manager</h2>
+            )}
           </dd>
         </div>
         <div className="mt-6 border-t border-gray-100">
@@ -93,26 +109,26 @@ function EmployeeDetails() {
             <div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Employee ID:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
                     {employee.id}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Full name:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
                     {employee.name}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Email address:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
                     {employee.email}
                   </dd>
                 </div>
@@ -122,26 +138,26 @@ function EmployeeDetails() {
             <div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Job Title:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    Backend Developer
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
+                    {employee.jobTitle || 'Unknown Job Title'}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Site:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    Prishtina
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
+                    {employee.location || 'Unknown Location'}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Salary expectation:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
                     $120,000
                   </dd>
                 </div>
@@ -151,27 +167,27 @@ function EmployeeDetails() {
             <div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
-                   Start Date:
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    Start Date:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
                     {employee.createdAt}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
-                    Leavs requests:
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    Leave requests:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    2
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
+                    {employee.leaveRequests ? employee.leaveRequests.length : 0}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 sm:col-span-1">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
                     Is Manager:
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    No
+                  <dd className="mt-1 text-sm leading-6 text-gray-700">
+                    {employee.isManager ? 'Yes' : 'No'}
                   </dd>
                 </div>
               </div>
@@ -182,11 +198,7 @@ function EmployeeDetails() {
                 About
               </dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
-                consequat sint. Sit id mollit nulla mollit nostrud in ea officia
-                proident. Irure nostrud pariatur mollit ad adipisicing
-                reprehenderit deserunt qui eu.
+                {employee.about || 'No additional information available.'}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
