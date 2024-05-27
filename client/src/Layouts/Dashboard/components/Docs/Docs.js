@@ -3,110 +3,135 @@ import axios from "axios"
 import { useModal } from "react-hooks-use-modal"
 import { useUser } from "../../../../helper/UserContext"
 
-const Team = () => {
-  const [teams, setTeams] = useState([])
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [leaderId, setLeaderId] = useState("")
-  const [editingId, setEditingId] = useState(null)
-  const [employees, setEmployees] = useState([])
+const Docs = () => {
   const { token } = useUser()
+  const [formData, setFormData] = useState({
+    name: "",
+    filePath: null,
+    status: "private", // Assuming default status is private
+  })
+  const [docs, setDocs] = useState([])
+  const [editingId, setEditingId] = useState(null)
 
-  const [CreateModal, openCreate, closeCreate, isOpenCreate] = useModal(
-    "root",
-    {
-      preventScroll: true,
-      closeOnOverlayClick: true,
-    }
-  )
+  const [CreateModal, openCreate, closeCreate] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: true,
+  })
 
   const [EditModal, openEdit, closeEdit, isOpenEdit] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: true,
   })
 
-  const fetchEmployees = async () => {
+  const fetchDocs = async () => {
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
-      const res = await axios.get("http://localhost:3001/employee", config)
-      setEmployees(res.data)
-    } catch (err) {
-      console.log(err)
+      const response = await axios.get("http://localhost:3001/docs", config)
+      setDocs(response.data)
+    } catch (error) {
+      console.error("Error fetching docs:", error)
     }
   }
 
   useEffect(() => {
     if (token) {
-      fetchEmployees()
+      fetchDocs()
     }
   }, [token])
-  useEffect(() => {
-    fetchTeams()
-  }, [])
 
-  const fetchTeams = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/team")
-      console.log("Fetched Teams:", response.data)
-      setTeams(response.data)
-    } catch (error) {
-      console.error("Error fetching teams:", error)
-    }
+  console.log(docs)
+
+  const handleChange = event => {
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
+
+  const handleFileChange = event => {
+    const file = event.target.files[0]
+    setFormData({ ...formData, filePath: file })
   }
 
   const handleCreate = async () => {
     try {
-      await axios.post("http://localhost:3001/team", {
-        name,
-        description,
-        leaderId,
-      })
-      setName("")
-      setDescription("")
-      setLeaderId("")
-      fetchTeams()
+      const formDataToSend = new FormData()
+      formDataToSend.append("name", formData.name)
+      formDataToSend.append("filePath", formData.filePath)
+      formDataToSend.append("status", formData.status)
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+
+      await axios.post("http://localhost:3001/docs", formDataToSend, config)
+      fetchDocs()
       closeCreate()
     } catch (error) {
-      console.error("Error creating team:", error)
+      console.error("Error creating document:", error)
     }
   }
 
-  const handleEdit = team => {
-    setName(team.name)
-    setDescription(team.description)
-    setLeaderId(team.leaderId)
-    setEditingId(team.id)
+  const handleEdit = doc => {
+    // Set the formData state to the values of the document being edited
+    setFormData({
+      name: doc.name,
+      filePath: doc.filePath,
+      status: doc.status,
+    })
+    setEditingId(doc.id)
+    // Open the edit modal
     openEdit()
   }
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:3001/team/${editingId}`, {
-        name,
-        description,
-        leaderId,
-      })
-      setName("")
-      setDescription("")
-      setLeaderId("")
+      const formDataToSend = new FormData()
+      formDataToSend.append("name", formData.name)
+      formDataToSend.append("filePath", formData.filePath)
+      formDataToSend.append("status", formData.status)
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+
+      await axios.put(
+        `http://localhost:3001/docs/${editingId}`, // Replace docId with the ID of the document being edited
+        formDataToSend,
+        config
+      )
       setEditingId(null)
-      fetchTeams()
+      fetchDocs()
+
+      // After successful update, close the edit modal and fetch the updated list of documents
       closeEdit()
     } catch (error) {
-      console.error("Error updating team:", error)
+      console.error("Error updating document:", error)
     }
   }
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost:3001/team/${id}`)
-      fetchTeams()
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+
+      await axios.delete(`http://localhost:3001/docs/${id}`, config)
+
+      // After successful deletion, fetch the updated list of documents
+      fetchDocs()
     } catch (error) {
-      console.error("Error deleting team:", error)
+      console.error("Error deleting document:", error)
     }
   }
 
@@ -115,22 +140,22 @@ const Team = () => {
       <button
         onClick={openCreate}
         type="button"
-        class="flex items-center justify-center text-white m-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+        className="flex items-center justify-center text-white m-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
       >
         <svg
-          class="h-4 w-4 mr-2"
+          className="h-4 w-4 mr-2"
           fill="currentColor"
-          viewbox="0 0 20 20"
+          viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
           <path
-            clip-rule="evenodd"
-            fill-rule="evenodd"
+            clipRule="evenodd"
+            fillRule="evenodd"
             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
           />
         </svg>
-        Create a Team
+        Create a Document
       </button>
       <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
         <thead className="bg-gray-50">
@@ -139,10 +164,10 @@ const Team = () => {
               Name
             </th>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
-              Description
+              File Path
             </th>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
-              Team Leader
+              Status
             </th>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
               Actions
@@ -150,22 +175,30 @@ const Team = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-          {teams.map(team => (
-            <tr key={team.id} className="hover:bg-gray-50">
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {team.name}
+          {docs.map(doc => (
+            <tr key={doc.id} className="hover:bg-gray-50">
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {doc.name}
               </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {team.description}
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <a
+                  href={`http://localhost:3001/uploads/documents/${doc.filePath}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Docs
+                  </button>
+                </a>
               </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {team.teamLeader?.name || "No leader assigned"}
+              <td className="px-6 py-4font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {doc.status}
               </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 <div className="flex">
                   <a
-                    onClick={() => handleEdit(team)}
-                    className="cursor-pointer mr-3 text-indigo-600 hover:text-indigo-900"
+                    onClick={() => handleEdit(doc)}
+                    className="cursor-pointer mr-2 text-indigo-600 hover:text-indigo-900"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -184,9 +217,8 @@ const Team = () => {
                       />
                     </svg>
                   </a>
-
                   <a
-                    onClick={() => handleDelete(team.id)}
+                    onClick={() => handleDelete(doc.id)}
                     className="cursor-pointer text-red-600 hover:text-red-900"
                   >
                     <svg
@@ -214,7 +246,7 @@ const Team = () => {
       <CreateModal>
         <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
           <h3 className="mb-4 text-lg font-semibold text-gray-900">
-            Create Team
+            Create Document
           </h3>
           <form
             onSubmit={e => {
@@ -224,57 +256,55 @@ const Team = () => {
           >
             <div className="mb-4">
               <label
-                htmlFor="team-name"
+                htmlFor="name"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Name
               </label>
               <input
-                id="team-name"
+                id="name"
                 type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Team Name"
+                placeholder="Document Name"
                 required
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="team-description"
+                htmlFor="filePath"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Description
+                File Path
               </label>
-              <textarea
-                id="team-description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
+              <input
+                id="filePath"
+                type="file"
+                name="filePath"
+                onChange={handleFileChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="A brief description of the team"
                 required
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="team-leader"
+                htmlFor="status"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Team Leader
+                Status
               </label>
               <select
-                id="team-leader"
-                value={leaderId}
-                onChange={e => setLeaderId(e.target.value)}
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 required
               >
-                <option value="">Select a Leader</option>
-                {employees.map(employee => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.name}
-                  </option>
-                ))}
+                <option value="private">Private</option>
+                <option value="public">Public</option>
               </select>
             </div>
             <div className="flex items-center justify-end space-x-4">
@@ -289,7 +319,7 @@ const Team = () => {
                 type="submit"
                 className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
-                Create Team
+                Create Document
               </button>
             </div>
           </form>
@@ -298,7 +328,7 @@ const Team = () => {
       <EditModal>
         <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
           <h3 className="mb-4 text-lg font-semibold text-gray-900">
-            Edit Team
+            Edit Document
           </h3>
           <form
             onSubmit={e => {
@@ -308,64 +338,61 @@ const Team = () => {
           >
             <div className="mb-4">
               <label
-                htmlFor="team-name"
+                htmlFor="doc-name"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Name
               </label>
               <input
-                id="team-name"
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                id="doc-name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Team Name"
+                placeholder="Document Name"
                 required
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="team-description"
+                htmlFor="doc-file-path"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Description
+                File Path
               </label>
-              <textarea
-                id="team-description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="A brief description of the team"
-                required
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="resume"
+                type="file" // Change type to file for file input
+                name="filePath"
+                onChange={handleFileChange} // Use handleFileChange to update the file state
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="team-leader"
+                htmlFor="doc-status"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Team Leader
+                Status
               </label>
               <select
-                id="team-leader"
-                value={leaderId}
-                onChange={e => setLeaderId(e.target.value)}
+                id="doc-status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 required
               >
-                <option value="">Select a Leader</option>
-                {employees.map(employee => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.name}
-                  </option>
-                ))}
+                <option value="private">Private</option>
+                <option value="public">Public</option>
               </select>
             </div>
             <div className="flex items-center justify-end space-x-4">
               <button
                 type="button"
                 onClick={closeEdit}
-                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus
+            :outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 Cancel
               </button>
@@ -373,7 +400,7 @@ const Team = () => {
                 type="submit"
                 className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
-                Edit Team
+                Edit Document
               </button>
             </div>
           </form>
@@ -383,4 +410,4 @@ const Team = () => {
   )
 }
 
-export default Team
+export default Docs
