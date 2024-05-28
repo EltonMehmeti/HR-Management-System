@@ -9,6 +9,7 @@ function EditEmployee({ onClose, onSave, employeeId }) {
     password: "",
     phone: "",
   });
+  
   const { token } = useUser();
 
   useEffect(() => {
@@ -36,11 +37,11 @@ function EditEmployee({ onClose, onSave, employeeId }) {
 
   const handleSave = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`
         }
+      
       };
       await axios.put(`http://localhost:3001/employee/${employeeId}`, formData, config);
       onSave();
