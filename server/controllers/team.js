@@ -1,5 +1,8 @@
 const Team = require("../models/team")
 const Employee = require("../models/employee")
+const axios  = require("axios")
+require("dotenv").config()
+
 //Get all Teams
 const getAllTeams = async (req, res) => {
   try {
@@ -12,6 +15,7 @@ const getAllTeams = async (req, res) => {
         },
       ],
     })
+
     res.json(teams)
   } catch (error) {
     console.log(error)
@@ -41,17 +45,46 @@ const getTeamById = async (req, res) => {
   }
 }
 
-//Create new Team
 const createTeam = async (req, res) => {
-  console.log(req.body)
-  const { name, description, leaderId } = req.body
+  console.log(req.body);
+  const { name, description, leaderId } = req.body;
+  
   try {
-    const team = await Team.create({ name, description, leaderId })
-    res.status(201).json(team)
+    const team = await Team.create({ name, description, leaderId });
+
+    const employee = await Employee.findByPk(leaderId);
+    if (!employee) {
+      return res.status(404).json({ error: "Leader not found" });
+    }
+
+    try {
+      const response = await axios.post('https://api.chatengine.io/chats/', 
+        {
+          title: team.name,
+          is_direct_chat: false
+        },
+        {
+          headers: {
+            'Project-ID': process.env.PROJECT_ID,
+            'User-Name': employee.name,
+            'User-Secret': employee.password  
+          }
+        }
+      );
+
+
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error creating chat team:', error);
+      return res.status(500).json({ error: "Error creating chat team" });
+    }
+
+    res.status(201).json(team);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" })
+    console.error('Error creating team:', error);
+    res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 //Update a Team
 const updateTeam = async (req, res) => {
@@ -82,18 +115,20 @@ const updateTeam = async (req, res) => {
 
 //Delete a Team
 const deleteTeam = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
   try {
-    const deletedTeam = await Team.findByPk(id)
+    const deletedTeam = await Team.findByPk(id);
     if (!deletedTeam) {
-      return res.status(404).json({ error: "Team not found" })
+      return res.status(404).json({ error: "Team not found" });
     }
-    await Team.destroy({ where: { id } })
-    res.json({ message: "Team deleted successfully" })
+    await Team.destroy({ where: { id } });
+    res.json({ message: "Team deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" })
+    console.error('Error deleting team or chat:', error);
+    res.status(500).json({ error: "Internal server error" });
   }
-}
+};
+
 
 module.exports = {
   getAllTeams,
