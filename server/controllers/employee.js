@@ -1,6 +1,7 @@
 const Employee = require('../models/employee');
 const bcrypt = require('bcrypt')
-
+const axios = require('axios');
+require('dotenv').config();
 const getAllEmployees = async (req, res) => {
     try {
         const employees = await Employee.findAll(); 
@@ -48,6 +49,20 @@ const createEmployee = async (req, res) => {
             salary,
             image: imagePath,
         });
+
+        const response = await axios.post("https://api.chatengine.io/users/", {
+            username: name,
+            first_name: employee.email,
+            last_name: name, 
+            secret: employee.name + "123", 
+        }, {
+            headers: {
+                'PRIVATE-KEY': process.env.PRIVATE_KEY
+            }
+        });
+
+        console.log(response.data); // Log the response data from ChatEngine
+
         res.status(201).json(employee);
     } catch (error) {
         console.log(error);
@@ -99,6 +114,12 @@ const deleteEmployee = async (req, res) => {
             return res.status(404).json({ error: 'Employee not found' });
         }
         await Employee.destroy({ where: { id } });
+        const response = await axios.delete(`https://api.chatengine.io/users/${id}/`, {
+            headers: {
+                'PRIVATE-KEY': process.env.PRIVATE_KEY
+            }
+        });
+        console.log(response.data); // Log the response data from ChatEngine
         res.json({ message: 'Employee deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
