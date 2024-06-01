@@ -54,7 +54,7 @@ const createEmployee = async (req, res) => {
             username: name,
             first_name: employee.email,
             last_name: name, 
-            secret: employee.password 
+            secret: employee.name + "123", 
         }, {
             headers: {
                 'PRIVATE-KEY': process.env.PRIVATE_KEY

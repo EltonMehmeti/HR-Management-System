@@ -26,13 +26,13 @@ router.post('/login', async (req, res) => {
             phone: employee.phone,
             role: 'employee',
         };
-
+        console.log(process.env.PROJECT_ID);
         try {
             const response = await axios.get("https://api.chatengine.io/users/me/", {
                 headers: {
                   "Project-ID": process.env.PROJECT_ID,
                   "User-Name": employee.name, // Use email as username
-                  "User-Secret": employee.password, // Use password as secret
+                  "User-Secret": employee.name + "123", // Use password as secret
                 },
             });
             

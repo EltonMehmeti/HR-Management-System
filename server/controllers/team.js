@@ -56,6 +56,7 @@ const createTeam = async (req, res) => {
     if (!employee) {
       return res.status(404).json({ error: "Leader not found" });
     }
+    console.log(process.env.PROJECT_ID);
 
     try {
       const response = await axios.post('https://api.chatengine.io/chats/', 
@@ -67,7 +68,7 @@ const createTeam = async (req, res) => {
           headers: {
             'Project-ID': process.env.PROJECT_ID,
             'User-Name': employee.name,
-            'User-Secret': employee.password  
+            'User-Secret': employee.name + '123'  
           }
         }
       );
@@ -115,9 +116,10 @@ const updateTeam = async (req, res) => {
 
 //Delete a Team
 const deleteTeam = async (req, res) => {
-  const { id } = req.params;
+  const { id } = Number(req.params);
   try {
     const deletedTeam = await Team.findByPk(id);
+
     if (!deletedTeam) {
       return res.status(404).json({ error: "Team not found" });
     }

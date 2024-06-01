@@ -1,17 +1,31 @@
-import { ChatEngine } from 'react-chat-engine'
-import {useJwt} from "react-jwt";
-import env from 'react-dotenv';
+import React, { useState, useEffect } from 'react';
+import { ChatEngine } from 'react-chat-engine';
+import { useUser } from '../../../../helper/UserContext';
 
-const Chat = (props) => {
-const { decodedToken, isExpired } = useJwt(props?.token);
-console.log(decodedToken, isExpired,props?.user)
-const pk = '340652c6-75a3-4190-ab08-cb80e3ae3869'
+const Chat = () => {
+  const { user, token } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  const pk = 'c6d90f7b-0c23-4c3b-9631-65e696e8689e';
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div style={{ height: '100vh', width: '100vw' }}>
+    <div >
       <ChatEngine
-         publicKey={pk}
-         userName={'Blendi Miftari'} // adam
-        userSecret={'blendi123'} // pass1234
+        height='100vh'
+        publicKey={pk}
+        userName={user?.name} // adam
+        userSecret={user?.name + '123'} // pass1234
+        isTyping={false}
       />
     </div>
   );
