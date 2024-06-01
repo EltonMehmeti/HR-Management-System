@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useUser } from "../../../../helper/UserContext";
+import React, { useState } from "react"
+import axios from "axios"
+import { useUser } from "../../../../helper/UserContext"
 
 function CreateJobApplicant({ onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -9,17 +9,17 @@ function CreateJobApplicant({ onClose, onSave }) {
     phone: "",
     resume: null, // Initialize resume as null
     jobTitle: "",
-  });
- const {token} = useUser()
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  })
+  const { token } = useUser()
+  const handleChange = event => {
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFormData({ ...formData, resume: file });
-  };
+  const handleFileChange = event => {
+    const file = event.target.files[0]
+    setFormData({ ...formData, resume: file })
+  }
 
   const handleSave = async () => {
     try {
@@ -28,25 +28,25 @@ function CreateJobApplicant({ onClose, onSave }) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data", // Ensure content type is set to multipart/form-data for file upload
         },
-      };
+      }
 
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("resume", formData.resume);
-      formDataToSend.append("jobTitle",formData.jobTitle) // Append the file to FormData
+      const formDataToSend = new FormData()
+      formDataToSend.append("name", formData.name)
+      formDataToSend.append("email", formData.email)
+      formDataToSend.append("phone", formData.phone)
+      formDataToSend.append("resume", formData.resume)
+      formDataToSend.append("jobTitle", formData.jobTitle) // Append the file to FormData
 
       await axios.post(
         "http://localhost:3001/jobApplicant/post",
         formDataToSend,
         config
-      );
-      onSave();
+      )
+      onSave()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
@@ -165,7 +165,7 @@ function CreateJobApplicant({ onClose, onSave }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CreateJobApplicant;
+export default CreateJobApplicant

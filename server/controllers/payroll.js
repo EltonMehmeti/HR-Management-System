@@ -1,6 +1,6 @@
 const path = require('path');
 const xlsx = require('xlsx');
-const Salary = require('../models/Salary');
+const Salary = require('../models/salary');
 const Sequelize = require('sequelize');
 const HrPersonnel = require('../models/hrPersonnel');
 const Employee = require('../models/employee');

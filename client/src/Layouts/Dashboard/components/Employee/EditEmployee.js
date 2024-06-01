@@ -9,6 +9,7 @@ function EditEmployee({ onClose, onSave, employeeId }) {
     password: "",
     phone: "",
   });
+  
   const { token } = useUser();
 
   useEffect(() => {
@@ -36,11 +37,11 @@ function EditEmployee({ onClose, onSave, employeeId }) {
 
   const handleSave = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`
         }
+      
       };
       await axios.put(`http://localhost:3001/employee/${employeeId}`, formData, config);
       onSave();
@@ -116,23 +117,7 @@ function EditEmployee({ onClose, onSave, employeeId }) {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="salary"
-                  >
-                    Salary
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="salary"
-                    type="text"
-                    placeholder="Salary"
-                    name="salary"
-                    value={formData.salary}
-                    onChange={handleChange}
-                  />
-                </div>
+              
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
