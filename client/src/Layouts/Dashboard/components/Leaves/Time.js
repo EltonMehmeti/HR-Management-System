@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LeaveTypes from './LeaveTypes';
-import Request from './Request';
+import Request from './RequestModal';
 import { useUser } from "../../../../helper/UserContext";
 
 export default function Time() {

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../../../../helper/UserContext";
+import RequestModal from "./RequestModal";
 
 const LeaveTypes = () => {
   const [leaveTypes, setLeaveTypes] = useState([]);
-  const { token, user } = useUser(); // Assuming useUser hook provides token and user details
+  const [showModal, setShowModal] = useState(false);
+  const [selectedLeaveType, setSelectedLeaveType] = useState(null);
+  const { token } = useUser(); // Assuming useUser hook provides token and user details
 
   const fetchLeaveTypes = async () => {
     try {
@@ -27,8 +30,8 @@ const LeaveTypes = () => {
   }, [token]);
 
   const handleRequestLeave = (leaveType) => {
-    // Logic to open a request leave form or redirect to a request leave page
-    console.log("Request leave button clicked for:", leaveType);
+    setSelectedLeaveType(leaveType);
+    setShowModal(true);
   };
 
   return (
@@ -51,6 +54,11 @@ const LeaveTypes = () => {
           </button>
         </div>
       ))}
+      <RequestModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        leaveType={selectedLeaveType}
+      />
     </div>
   );
 };
