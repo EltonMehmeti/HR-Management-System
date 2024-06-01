@@ -24,6 +24,7 @@ import Docs from "./Layouts/Dashboard/components/Docs/Docs";
 import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs";
 import Job from "./Layouts/Dashboard/components/Job/Job";
 import EmployeeTeam from "./Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam";
+import Time from "./Layouts/Dashboard/components/Leaves/Time";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
             <Route element={<RequireAuth allowedRole={"employee"} />}>
               <Route path="org" element={<OrgChart />} />
               <Route path="employee-team" element={<EmployeeTeam />} />
+              <Route path="time" element={<Time/>} />
             </Route>
             <Route element={<RequireAuth allowedRole={"finance"} />}>
               <Route path="finance" element={<Payroll />} />
