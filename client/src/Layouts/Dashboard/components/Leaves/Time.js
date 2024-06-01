@@ -19,7 +19,7 @@ export default function Time() {
         </div>
       
         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-          <li className="mr-2">
+          <li className="mr-2 ">
             <button
               onClick={() => setActiveTab('LeaveTypes')}
               className={`inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group ${
@@ -59,7 +59,7 @@ export default function Time() {
           </li>
         </ul>
       </div>
-      <div className="p-4">
+      <div className="p-4 ml-6">
         {activeTab === 'LeaveTypes' && <LeaveTypes token={token} user={user} />}
         {activeTab === 'Request' && <Request />}
       </div>
