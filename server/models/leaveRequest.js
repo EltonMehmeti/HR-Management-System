@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const Employee = require('./employee');
 const HRPersonnel = require('./hrPersonnel');
+const LeaveType = require('./leaveType');
 
 const LeaveRequest = sequelize.define('leaveRequest', {
     requestID: {
@@ -11,7 +12,6 @@ const LeaveRequest = sequelize.define('leaveRequest', {
         allowNull: false,
         primaryKey: true
     },
-    leaveType: Sequelize.STRING,
     startDate: Sequelize.DATE,
     endDate: Sequelize.DATE,
     reason: Sequelize.STRING,
@@ -21,5 +21,6 @@ const LeaveRequest = sequelize.define('leaveRequest', {
 
 LeaveRequest.belongsTo(Employee, { foreignKey: 'employeeID' }); // Many-to-one relationship with Employee
 LeaveRequest.belongsTo(HRPersonnel, { foreignKey: 'hrPersonnelID' }); // Many-to-one relationship with HRPersonnel
+LeaveRequest.belongsTo(LeaveType, { foreignKey: 'leaveTypeID' }); // Many-to-one relationship with LeaveType
 
 module.exports = LeaveRequest;
