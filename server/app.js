@@ -8,6 +8,7 @@ const employeeRoutes = require("./routes/employee")
 const employeeAuthRoutes = require("./routes/auth/employee")
 const hrPersonnelRoutes = require("./routes/auth/hrPersonnel")
 const superAdminRoutes = require("./routes/auth/superAdmin")
+const leaveTypesRoutes = require("./routes/leaveTypes");
 const hrPersonnelRolesRoute = require("./routes/hrPersonnelRoles")
 const docsRoutes = require("./routes/docs")
 const publicDocsRoutes = require("./routes/publicDocs")
@@ -123,6 +124,7 @@ app.use("/org", authenticate(employee), authorizeRole(["employee"]), orgRoutes)
 app.use("/auth/hr", hrPersonnelRoutes)
 app.use("/auth/employee", employeeAuthRoutes)
 app.use("/auth/superAdmin", superAdminRoutes)
+app.use('/leaveTypes', leaveTypesRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads", "images")))
 
