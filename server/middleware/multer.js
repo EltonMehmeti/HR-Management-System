@@ -53,6 +53,17 @@ const uploadFile = (req, res, next) => {
   }).single("resume")(req, res, next)
 }
 
+const uploadFile2 = multer({
+  storage: fileStorage,
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype === "application/pdf") {
+      cb(null, true); // Accept the file
+    } else {
+      cb(new Error("File type not supported. Only PDF files are allowed."));
+    }
+  },
+}).single("file");
+
 const uploadDocs = (req, res, next) => {
   multer({
     storage: fileStorage,
@@ -89,4 +100,4 @@ const uploadSalaryFile = (req, res, next) => {
   }).single("salaryFile")(req, res, next)
 }
 // Export both middlewares
-module.exports = { uploadImage, uploadDocs, uploadFile, uploadSalaryFile }
+module.exports = { uploadImage, uploadDocs, uploadFile,uploadFile2, uploadSalaryFile }

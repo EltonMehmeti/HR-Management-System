@@ -4,7 +4,7 @@ const Sequelize = require("sequelize")
 const sequelize = require("../util/database")
 const Team = require("./team")
 const Performance = require("./performance")
-
+const Salary = require("./salary")
 const Employee = sequelize.define("employee", {
   id: {
     type: Sequelize.INTEGER,
@@ -23,13 +23,14 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: true,
   },
-  reportsTo: Sequelize.INTEGER
+  reportsTo: Sequelize.INTEGER,
 })
 
-Employee.belongsToMany(Team, { through: "EmployeeTeam" })
-Team.belongsToMany(Employee, { through: "EmployeeTeam" })
+Employee.belongsToMany(Team, { through: "EmployeeTeam", as: "members" })
+Team.belongsToMany(Employee, { through: "EmployeeTeam", as: "members" })
 Team.belongsTo(Employee, { foreignKey: "leaderId", as: "teamLeader" })
 Employee.hasMany(Performance)
-Employee.belongsTo(Employee, { foreignKey: 'reportsTo', as: 'reportingTo' });
+Employee.belongsTo(Employee, { foreignKey: "reportsTo", as: "reportingTo" })
+Employee.hasMany(Salary, { as: "salaries", foreignKey: "employeeId" }); 
 
 module.exports = Employee

@@ -1,9 +1,8 @@
 const nodemailer = require("nodemailer")
 
-const sendEmail = (name, to) => {
+const rejectionEmail = (name, to) => {
   const subject = "Job Application Rejection"
-  const rejectionMessage = `Dear ${name},\n\nWe regret to inform you that your application for the position has been rejected. 
-  We appreciate your interest in our company and wish you the best in your future endeavors.\n\nSincerely,\nThe Hiring Team`
+  const rejectionMessage = `Dear ${name},\nWe regret to inform you that your application for the position has been rejected.\nWe appreciate your interest in our company and wish you the best in your future endeavors.\n\nSincerely,\nThe Hiring Team`
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -29,4 +28,4 @@ const sendEmail = (name, to) => {
   })
 }
 
-module.exports = sendEmail
+module.exports = rejectionEmail

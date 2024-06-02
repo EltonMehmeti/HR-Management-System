@@ -2,15 +2,32 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { useModal } from "react-hooks-use-modal"
 import { useUser } from "../../../../helper/UserContext"
+import addIcon from "../../images/add.png"
 
 const Team = () => {
   const [teams, setTeams] = useState([])
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [leaderId, setLeaderId] = useState("")
+  const [memberIds, setMemberIds] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [employees, setEmployees] = useState([])
   const { token } = useUser()
+  const [isMemberSelectVisible, setIsMemberSelectVisible] = useState(false)
+
+  const toggleMemberSelect = () => {
+    setIsMemberSelectVisible(!isMemberSelectVisible)
+  }
+
+  const toggleMemberSelection = employeeId => {
+    setMemberIds(prevIds => {
+      if (prevIds.includes(employeeId)) {
+        return prevIds.filter(id => id !== employeeId)
+      } else {
+        return [...prevIds, employeeId]
+      }
+    })
+  }
 
   const [CreateModal, openCreate, closeCreate, isOpenCreate] = useModal(
     "root",
@@ -46,23 +63,21 @@ const Team = () => {
     }
   }, [token])
 
-
   const fetchTeams = async () => {
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      };
-  
-      const response = await axios.get("http://localhost:3001/team", config);
-      console.log("Fetched Teams:", response.data);
-      setTeams(response.data);
+      }
+
+      const response = await axios.get("http://localhost:3001/team", config)
+      console.log("Fetched Teams:", response.data)
+      setTeams(response.data)
     } catch (error) {
-      console.error("Error fetching teams:", error);
+      console.error("Error fetching teams:", error)
     }
-  };
-  
+  }
 
   const handleCreate = async () => {
     try {
@@ -72,16 +87,27 @@ const Team = () => {
           "Content-Type": "application/json", // Ensure content type is set to application/json
         },
       }
-      console.log(name, description, leaderId);
-
-      await axios.post("http://localhost:3001/team", {
+      console.log("Data being sent:", {
         name,
         description,
         leaderId,
-      }, config)
+        memberIds,
+      })
+
+      await axios.post(
+        "http://localhost:3001/team",
+        {
+          name,
+          description,
+          leaderId,
+          memberIds,
+        },
+        config
+      )
       setName("")
       setDescription("")
       setLeaderId("")
+      setMemberIds([])
       fetchTeams()
       closeCreate()
     } catch (error) {
@@ -105,14 +131,20 @@ const Team = () => {
           "Content-Type": "application/json", // Ensure content type is set to application/json
         },
       }
-      await axios.put(`http://localhost:3001/team/${editingId}`, {
-        name,
-        description,
-        leaderId,
-      },config)
+      await axios.put(
+        `http://localhost:3001/team/${editingId}`,
+        {
+          name,
+          description,
+          leaderId,
+          memberIds,
+        },
+        config
+      )
       setName("")
       setDescription("")
       setLeaderId("")
+      setMemberIds([])
       setEditingId(null)
       fetchTeams()
       closeEdit()
@@ -128,7 +160,7 @@ const Team = () => {
           Authorization: `Bearer ${token}`,
         },
       }
-      await axios.delete(`http://localhost:3001/team/${id}`,config)
+      await axios.delete(`http://localhost:3001/team/${id}`, config)
       fetchTeams()
     } catch (error) {
       console.error("Error deleting team:", error)
@@ -169,24 +201,33 @@ const Team = () => {
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
               Team Leader
             </th>
+            <th scope="col" className="font-medium text-gray-900">
+              Team Members
+            </th>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+        <tbody className="divide-y  divide-gray-100 border-t border-gray-100">
           {teams.map(team => (
             <tr key={team.id} className="hover:bg-gray-50">
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {team.name}
               </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {team.description}
               </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {team.teamLeader?.name || "No leader assigned"}
               </td>
               <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {team.members && team.members.length > 0
+                  ? team.members.map(member => member.name).join(", ")
+                  : "No members assigned"}
+              </td>
+
+              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 <div className="flex">
                   <a
                     onClick={() => handleEdit(team)}
@@ -236,9 +277,9 @@ const Team = () => {
         </tbody>
       </table>
       <CreateModal>
-        <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">
-            Create Team
+        <div className="overflow-auto rounded-2xl bg-white p-6 shadow-md w-96 relative">
+          <h3 className="absolute left-6 top-6 text-xl font-bold text-gray-900">
+            Create team
           </h3>
           <form
             onSubmit={e => {
@@ -246,27 +287,27 @@ const Team = () => {
               handleCreate()
             }}
           >
-            <div className="mb-4">
+            <div className="mb-4 mt-16">
               <label
                 htmlFor="team-name"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
-                Name
+                Team name
               </label>
               <input
                 id="team-name"
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Team Name"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-md bg-gray-100"
+                placeholder="Name your team"
                 required
               />
             </div>
             <div className="mb-4">
               <label
                 htmlFor="team-description"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
                 Description
               </label>
@@ -274,26 +315,66 @@ const Team = () => {
                 id="team-description"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="A brief description of the team"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-md bg-gray-100"
+                placeholder="Enter a team description"
                 required
               />
             </div>
             <div className="mb-4">
+              <div
+                className="flex items-center mb-2 text-md font-medium text-blue-600 cursor-pointer"
+                onClick={toggleMemberSelect}
+              >
+                <img src={addIcon} alt="Add icon" className="w-5 h-5 mr-3" />
+                Add members
+                <svg
+                  className="w-5 h-5 ml-auto"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              {isMemberSelectVisible && (
+                <div>
+                  <ul className="h-35 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+                    {employees.map(employee => (
+                      <li key={employee.id} className="cursor-pointer">
+                        <div
+                          className={`flex items-center p-2 rounded ${
+                            memberIds.includes(employee.id)
+                              ? "bg-blue-100 dark:bg-blue-600"
+                              : "hover:bg-gray-100 dark:hover:bg-gray-600"
+                          }`}
+                          onClick={() => toggleMemberSelection(employee.id)}
+                        >
+                          <span className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                            {employee.name}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className="mb-4">
               <label
                 htmlFor="team-leader"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
-                Team Leader
+                Team leader
               </label>
               <select
                 id="team-leader"
                 value={leaderId}
                 onChange={e => setLeaderId(e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                required
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-md bg-gray-100"
               >
-                <option value="">Select a Leader</option>
                 {employees.map(employee => (
                   <option key={employee.id} value={employee.id}>
                     {employee.name}
@@ -305,24 +386,24 @@ const Team = () => {
               <button
                 type="button"
                 onClick={closeCreate}
-                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent  px-4 py-2 text-md font-medium text-blue-700 hover:bg-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-md font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
-                Create Team
+                Create
               </button>
             </div>
           </form>
         </div>
       </CreateModal>
       <EditModal>
-        <div className="overflow-auto rounded-lg bg-white p-6 shadow-md">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">
-            Edit Team
+        <div className="overflow-auto rounded-2xl bg-white p-6 shadow-md w-96 relative">
+          <h3 className="absolute left-6 top-6 text-xl font-bold text-gray-900">
+            Edit team
           </h3>
           <form
             onSubmit={e => {
@@ -330,12 +411,12 @@ const Team = () => {
               handleUpdate()
             }}
           >
-            <div className="mb-4">
+            <div className="mb-4 mt-16">
               <label
                 htmlFor="team-name"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
-                Name
+                Team Name
               </label>
               <input
                 id="team-name"
@@ -350,7 +431,7 @@ const Team = () => {
             <div className="mb-4">
               <label
                 htmlFor="team-description"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
                 Description
               </label>
@@ -364,9 +445,52 @@ const Team = () => {
               />
             </div>
             <div className="mb-4">
+              <div
+                className="flex items-center mb-2 text-md font-medium text-blue-600 cursor-pointer"
+                onClick={toggleMemberSelect}
+              >
+                <img src={addIcon} alt="Add icon" className="w-5 h-5 mr-3" />
+                Add members
+                <svg
+                  className="w-5 h-5 ml-auto"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              {isMemberSelectVisible && (
+                <div>
+                  <ul className="h-35 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+                    {employees.map(employee => (
+                      <li key={employee.id} className="cursor-pointer">
+                        <div
+                          className={`flex items-center p-2 rounded ${
+                            memberIds.includes(employee.id)
+                              ? "bg-blue-100 dark:bg-blue-600"
+                              : "hover:bg-gray-100 dark:hover:bg-gray-600"
+                          }`}
+                          onClick={() => toggleMemberSelection(employee.id)}
+                        >
+                          <span className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                            {employee.name}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4">
               <label
-                htmlFor="team-leader"
-                className="block mb-2 text-sm font-medium text-gray-900"
+                htmlFor="team-description"
+                className="block mb-2 text-md font-medium text-gray-900"
               >
                 Team Leader
               </label>
@@ -385,11 +509,12 @@ const Team = () => {
                 ))}
               </select>
             </div>
+
             <div className="flex items-center justify-end space-x-4">
               <button
                 type="button"
                 onClick={closeEdit}
-                className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent  px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 Cancel
               </button>

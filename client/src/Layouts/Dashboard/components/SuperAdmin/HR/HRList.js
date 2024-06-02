@@ -148,7 +148,6 @@ const HRList = () => {
                 <option value="admin">Admin</option>
                 <option value="data_manager">Data Manager</option>
                 <option value="recruiter">Recruiter</option>
-                <option value="finance">Finance</option>
               </select>
             </div>
             <div className="flex items-center justify-end space-x-4">

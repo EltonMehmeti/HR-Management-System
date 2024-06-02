@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useUser } from "../../../../helper/UserContext"
 
 function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
+  const { token } = useUser()
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,12 +12,11 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
     resume: null, // Initialize resume as null
     jobTitle: "",
   });
-
+const [ jobs, setJobs ] = useState([])
   useEffect(() => {
     const fetchJobApplicantData = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
+
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -32,8 +34,25 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
       }
     };
     fetchJobApplicantData();
+    fetchJobs();
   }, [jobApplicantId]);
-
+  const fetchJobs = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await axios.get(
+        "http://localhost:3001/job/",
+        config
+      );
+      console.log("test" + res.data);
+      setJobs(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -47,8 +66,6 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
 
   const handleSave = async () => {
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRFU1QiLCJpYXQiOjE3MTI0MDA3MjV9._02HtBYzx9oSuiAnNRe_FRT-0Oo9Pl74s0SEMuYJ5gQ";
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -161,15 +178,19 @@ function EditJobApplicant({ onClose, onSave, jobApplicantId }) {
                   >
                     Job Title
                   </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="jobTitle"
-                    type="text"
-                    placeholder="Job Title"
-                    name="jobTitle"
-                    value={formData.jobTitle}
-                    onChange={handleChange}
-                  />
+                  <select
+  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+  name="jobTitle"
+  value={formData.jobTitle}
+  onChange={handleChange} // Use handleChange to update the job title
+>
+  <option value="">Select Job</option> {/* Add a default option */}
+  {jobs.map((job) => (
+    <option key={job._id} value={job.title}> {/* Set value to job title */}
+      {job.title}
+    </option>
+  ))}
+</select>
                 </div>
               </div>
 

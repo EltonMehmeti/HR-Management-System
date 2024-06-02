@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-import { useModal } from "react-hooks-use-modal"
-import { useUser } from "../../../../helper/UserContext"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useModal } from "react-hooks-use-modal";
+import { useUser } from "../../../../helper/UserContext";
 
 const Docs = () => {
-  const { token } = useUser()
+  const { token } = useUser();
   const [formData, setFormData] = useState({
     name: "",
     filePath: null,
     status: "private", // Assuming default status is private
-  })
-  const [docs, setDocs] = useState([])
-  const [editingId, setEditingId] = useState(null)
+  });
+  const [docs, setDocs] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [CreateModal, openCreate, closeCreate] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: true,
-  })
+  });
 
   const [EditModal, openEdit, closeEdit, isOpenEdit] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: true,
-  })
+  });
 
   const fetchDocs = async () => {
     try {
@@ -29,22 +30,30 @@ const Docs = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-      const response = await axios.get("http://localhost:3001/docs", config)
-      setDocs(response.data)
+      };
+      const response = await axios.get("http://localhost:3001/docs", config);
+      setDocs(response.data);
     } catch (error) {
-      console.error("Error fetching docs:", error)
+      console.error("Error fetching docs:", error);
     }
-  }
+  };
 
   useEffect(() => {
     if (token) {
-      fetchDocs()
+      fetchDocs();
     }
-  }, [token])
+  }, [token]);
 
-  console.log(docs)
+  console.log(docs);
 
+  // Search functionality
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredDocs = docs.filter((doc) =>
+    doc.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handleChange = event => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
@@ -137,6 +146,8 @@ const Docs = () => {
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+      <div className="flex flex-row justify-between items-center">
+
       <button
         onClick={openCreate}
         type="button"
@@ -157,6 +168,21 @@ const Docs = () => {
         </svg>
         Create a Document
       </button>
+        <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input
+             value={searchQuery}
+             onChange={handleSearch}
+        type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+    </div>
+
       <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
         <thead className="bg-gray-50">
           <tr>
