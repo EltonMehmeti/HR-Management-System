@@ -23,6 +23,7 @@ import Payroll from './Layouts/Dashboard/components/Finance/Payroll';
 import Docs from "./Layouts/Dashboard/components/Docs/Docs";
 import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs";
 import Job from "./Layouts/Dashboard/components/Job/Job";
+
 import EmployeeTeam from './Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam';
 
 function App() {

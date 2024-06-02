@@ -74,7 +74,8 @@ const createEmployee = async (req, res) => {
 // Update an employee
 const updateEmployee = async (req, res) => {
     const { id } = req.params;
-    const { name, email, phone, teamId, salary, password } = req.body; // Include password here if needed
+    const { name, email, phone, teamId, salary, password,reportsTo} = req.body; // Include password here if needed
+    const imagePath = req.file ? req.file.path : null;
     try {
         const employee = await Employee.findByPk(id);
         if (!employee) {
@@ -95,6 +96,8 @@ const updateEmployee = async (req, res) => {
             teamId: teamId || employee.teamId,
             salary: salary || employee.salary,
             password: hashedPassword || employee.password, // Update password only if provided
+            reportsTo: reportsTo || employee.reportsTo,
+            image: imagePath || employee.image, // Update image path only if provided
         });
 
         res.json(employee);

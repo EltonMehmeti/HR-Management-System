@@ -11,7 +11,7 @@ router.get("/:id", employeeController.getEmployeeById)
 
 router.post("/post", multerMiddleware.uploadImage, employeeController.createEmployee);
 
-router.put("/:id", employeeController.updateEmployee)
+router.put("/:id", multerMiddleware.uploadImage,employeeController.updateEmployee)
 
 router.delete("/:id", employeeController.deleteEmployee)
 
