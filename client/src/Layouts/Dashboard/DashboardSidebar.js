@@ -206,9 +206,9 @@ function Sidebar() {
   }
 
   return (
-    <div className="flex">
-      <aside className="top-0 left-0 z-40 w-34 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-        <div className="h-full px-3 py-4">
+    <div className="flex ">
+      <aside className="top-0 left-0 z-40 w-34 overflow-y-auto bg-gray-50  dark:bg-gray-800">
+        <div className="h-full px-3 py-4 ">
           <ul className="space-y-2 font-medium">
             <li className="flex flex-row gap-4 items-center">
               <img src={logo} className="w-10 py-2" alt="logo" />

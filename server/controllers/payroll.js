@@ -1,13 +1,14 @@
 const path = require('path');
 const xlsx = require('xlsx');
 const Salary = require('../models/salary');
-const Sequelize = require('sequelize');
-const HrPersonnel = require('../models/hrPersonnel');
 const Employee = require('../models/employee');
+const Team = require('../models/team');
+const { Sequelize, Op } = require("sequelize");
 
+// Insert salary data from Excel
 const insertSalaryDataFromExcel = async (req, res) => {
     const filePath = path.join(__dirname, '../uploads/documents', req.file.filename);
-    
+
     try {
         const workbook = xlsx.readFile(filePath, { cellDates: true });
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -31,14 +32,13 @@ const insertSalaryDataFromExcel = async (req, res) => {
     }
 };
 
-
 // Analytics: Calculate average salary and total payroll expenses
 const getPayrollAnalytics = async (req, res) => {
     try {
         const salaries = await Salary.findAll();
         const totalSalaries = salaries.reduce((acc, curr) => acc + curr.amount, 0);
         const averageSalary = totalSalaries / salaries.length;
-        
+
         res.status(200).json({
             averageSalary,
             totalPayrollExpenses: totalSalaries
@@ -52,13 +52,13 @@ const getPayrollAnalytics = async (req, res) => {
 // Overview: Get recent payroll uploads
 const getPayrollOverview = async (req, res) => {
     try {
-        // Fetch recent payroll uploads from the database
         const recentUploads = await Salary.findAll({
             attributes: ['transactionDate', 'amount'],
             order: [['transactionDate', 'DESC']],
-            limit: 5 // Limit to 5 recent uploads for demonstration
+            limit: 5
         });
-        console.log('Recent uploads:', recentUploads);  
+
+        console.log('Recent uploads:', recentUploads);
         res.status(200).json(recentUploads);
     } catch (error) {
         console.error('Error retrieving payroll overview:', error);
@@ -66,18 +66,20 @@ const getPayrollOverview = async (req, res) => {
     }
 };
 
-
-
-
-
+// Get top earners
 const getTopEarners = async (req, res) => {
     try {
-        const topEarners = await Salary.findAll({
-            attributes: ['employeeId', [Sequelize.fn('SUM', Sequelize.col('amount')), 'totalAmount']],
-            include: [{ model: Employee, as: 'employee' }],
-            group: ['employeeId'],
+        const topEarners = await Employee.findAll({
+            attributes: [
+                'id',
+                'name',
+                'email',
+                'phone',
+                [Sequelize.literal('(SELECT SUM(amount) FROM salaries WHERE employeeId = employee.id)'), 'totalAmount']
+            ],
+            include: [],
             order: [[Sequelize.literal('totalAmount'), 'DESC']],
-            limit: 10 // Limit to top 10 earners for demonstration
+            limit: 10
         });
         res.status(200).json(topEarners);
     } catch (error) {
@@ -86,27 +88,49 @@ const getTopEarners = async (req, res) => {
     }
 };
 
-// Top Paying Teams
-const getTopPayingTeams = async (req, res) => {
+
+
+// Get salary trends over time
+const getSalaryTrends = async (req, res) => {
     try {
-        const topPayingTeams = await Salary.findAll({
-            attributes: ['hrPersonnelId', [Sequelize.fn('SUM', Sequelize.col('amount')), 'totalAmount']],
-            include: [{ model: HrPersonnel, as: 'hrPersonnel' }],
-            group: ['hrPersonnelId'],
-            order: [[Sequelize.literal('totalAmount'), 'DESC']],
-            limit: 5 // Limit to top 5 paying teams for demonstration
+        const salaryTrends = await Salary.findAll({
+            attributes: [
+                [Sequelize.fn('DATE_FORMAT', Sequelize.col('transactionDate'), '%Y-%m'), 'month'],
+                [Sequelize.fn('SUM', Sequelize.col('amount')), 'totalAmount']
+            ],
+            group: ['month'],
+            order: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('transactionDate'), '%Y-%m'), 'ASC']]
         });
-        res.status(200).json(topPayingTeams);
+
+        res.status(200).json(salaryTrends);
     } catch (error) {
-        console.error('Error retrieving top paying teams:', error);
-        res.status(500).send('Error retrieving top paying teams');
+        console.error('Error retrieving salary trends:', error);
+        res.status(500).send('Error retrieving salary trends');
     }
 };
-
+// In your controller (payroll.js)
+const getEmployeesWithSalaries = async (req, res) => {
+    try {
+        const employeesWithSalaries = await Employee.findAll({
+            include: [
+                {
+                    model: Salary,
+                    as: 'salaries' // Alias for the association
+                }
+            ]
+        });
+        res.status(200).json(employeesWithSalaries);
+    } catch (error) {
+        console.error('Error retrieving employees with salaries:', error);
+        res.status(500).send('Error retrieving employees with salaries');
+    }
+};
+    
 module.exports = {
     getPayrollAnalytics,
     getPayrollOverview,
     insertSalaryDataFromExcel,
     getTopEarners,
-    getTopPayingTeams
+    getSalaryTrends,
+    getEmployeesWithSalaries 
 };
