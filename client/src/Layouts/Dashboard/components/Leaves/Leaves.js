@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from '../../../../helper/UserContext';
+import LeaveTypeModal from './LeaveTypeModal'; // Import LeaveTypeModal component
 
 const Leaves = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const { token } = useUser(); // Assuming useUser hook provides token
 
   useEffect(() => {
@@ -40,9 +42,29 @@ const Leaves = () => {
     }
   };
 
+  const createLeaveType = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      // You can adjust the endpoint and request body according to your server implementation
+      await axios.post('http://localhost:3001/leaveTypes', { name: 'New Leave Type' }, config);
+      // Optionally, you can fetch leave types again to update the state with the newly created leave type
+      // fetchLeaveTypes();
+    } catch (err) {
+      console.error('Error creating leave type:', err);
+    }
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">All Leave Requests</h1>
+      <button onClick={() => setIsModalOpen(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
+        Create Leave Type
+      </button>
+      <LeaveTypeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> {/* Render LeaveTypeModal */}
       {leaveRequests.length === 0 ? (
         <p>No leave requests found.</p>
       ) : (

@@ -10,5 +10,14 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+// POST create a new leave type
+router.post('/', async (req, res) => {
+  try {
+    const { name, days } = req.body;
+    const newLeaveType = await LeaveType.create({ name, days });
+    res.status(201).json(newLeaveType);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 module.exports = router;
