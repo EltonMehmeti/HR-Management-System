@@ -33,7 +33,7 @@ const superAdmin = require("./models/superAdmin")
 const axios = require("axios")
 const recruitmentsRoutes = require("./routes/recruitment")
 const authorizeRole = require("./middleware/authorizeRole")
-const jobSchemaRoutes = require('./routes/jobSchema')
+const jobSchemaRoutes = require("./routes/jobSchema")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
 const payrollRoutes = require("./routes/payroll")
@@ -42,7 +42,6 @@ require("dotenv").config()
 app.use(cors({ origin: "http://localhost:3000" }))
 
 app.use(bodyParser.json())
-
 
 // zoomMetting.getMeetings().then((response) => {
 //  console.log(response);
@@ -96,16 +95,20 @@ app.use(
   docsRoutes
 )
 
-
 app.use("/public-docs", publicDocsRoutes)
-app.use('/auth/hr', hrPersonnelRoutes);
-app.use('/auth/employee', employeeAuthRoutes);
-app.use('/auth/superAdmin', superAdminRoutes);
-app.use('/payroll',authenticate(hrPersonnel),authorizeRole(['finance']), payrollRoutes);
-app.use('/jobschema', jobSchemaRoutes);
-
+app.use("/auth/hr", hrPersonnelRoutes)
+app.use("/auth/employee", employeeAuthRoutes)
+app.use("/auth/superAdmin", superAdminRoutes)
+app.use(
+  "/payroll",
+  authenticate(hrPersonnel),
+  authorizeRole(["finance"]),
+  payrollRoutes
+)
+app.use("/jobschema", jobSchemaRoutes)
 
 app.use("/interviewee", authenticate(hrPersonnel), intervieweeRoutes)
+
 app.use(
   "/jobapplicant",
   authenticate(hrPersonnel),
