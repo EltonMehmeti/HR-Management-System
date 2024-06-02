@@ -76,7 +76,7 @@ const OrgChart = () => {
             <TreeNode
                 key={employee.id}
                 label={
-                    <div className={`w-${widthPercentage} p-4 border border-gray-200 rounded-lg shadow-lg`}>
+                    <div className={`w-${widthPercentage} p-4 border border-gray-200 rounded-lg -lg`}>
                         <img
                             src={`http://localhost:3001/uploads/${employee.imageFilename}`}
                             alt={employee.name}
@@ -88,7 +88,7 @@ const OrgChart = () => {
                         </div>
                         {employee.children && employee.children.length > 0 && (
                             <button
-                                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
+                                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md -md hover:bg-blue-600"
                                 onClick={() => handleToggleExpand(employee.id)}
                             >
                                 {expandedNodes[employee.id] ? "Collapse" : "Expand"}
@@ -106,7 +106,7 @@ const OrgChart = () => {
     return (
         <div className="overflow-y-scroll max-w-full">
             <Tree label={
-                <div className="w-full items-center justify-center p-4 border border-gray-200 rounded-lg shadow-lg">
+                <div className="w-full items-center justify-center p-4 border border-gray-200 rounded-lg ">
                     <img
                         src={`http://localhost:3001/uploads/${data?.imageFilename}`}
                         alt={data?.name}

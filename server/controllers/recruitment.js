@@ -115,7 +115,7 @@ const editInterviewStatus = async (req, res) => {
         const interview = await Interview.findByPk(interviewId, {
             include: [{
                 model: Interviewee,
-                attributes: ['email'] 
+                attributes: ['email','name'] 
             }]
         });
 
@@ -124,17 +124,17 @@ const editInterviewStatus = async (req, res) => {
         }
 
         const oldStatus = interview.status;
-        
+        console.log(oldStatus, status)
         interview.status = status;
         await interview.save();
         if (status !== 'job_offer') {
-            const { name, email, join_url, datetime } = interview; 
+       
             const subject = `Interview Status Changed to ${status}`;
             
             if (status === 'rejected') {
-                rejectionEmail(name, interview.interviewee.email);
+                rejectionEmail(interview.interviewee.name, interview.interviewee.email);
             } else if (status === 'hired') {
-                hiredEmail(name, interview.interviewee.email);
+                hiredEmail(interview.interviewee.name, interview.interviewee.email);
             }
         }
         
