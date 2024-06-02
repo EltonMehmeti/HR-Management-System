@@ -23,11 +23,6 @@ import Payroll from './Layouts/Dashboard/components/Finance/Payroll';
 import Docs from "./Layouts/Dashboard/components/Docs/Docs"
 import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs"
 import Job from "./Layouts/Dashboard/components/Job/Job"
-import SuperAdminSignin from "./components/auth/SuperAdmin/SuperAdminSignin"
-import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList"
-import HRList from "./Layouts/Dashboard/components/SuperAdmin/HR/HRList"
-import OrgChart from "./Layouts/Dashboard/components/Org/OrgChart"
-import Payroll from "./Layouts/Dashboard/components/Finance/Payroll"
 import EmployeeTeam from './Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam';
 
 function App() {
