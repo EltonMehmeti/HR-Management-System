@@ -10,12 +10,10 @@ export default function Time() {
 
   useEffect(() => {
     if (user) {
-      const imageFilename = user.imageURL ? user.imageURL.split(/[\\/]/).pop() : '';
-      const imageURL = `http://localhost:3001/uploads/${imageFilename}`;
-      setUserDetails({ ...user, imageURL: imageURL });
+      setUserDetails(user );
     }
   }, [user]);
-
+console.log(userDetails)
   return (
     <div>
       <div className="border-b border-gray-200 dark:border-gray-700 m-10">
@@ -23,7 +21,7 @@ export default function Time() {
           {userDetails && userDetails.imageURL && (
             <img
               className="h-16 w-16 rounded-full ring-2 ring-white"
-              src={userDetails.imageURL}
+              src={`http://localhost:3001/uploads/${userDetails.imageURL}`}
               alt="User Avatar"
             />
           )}
