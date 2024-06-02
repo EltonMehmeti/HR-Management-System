@@ -1,12 +1,8 @@
-const Job = require('../models/jobSchema');
+const Job = require('../models/job');
 
 // Create a new job
-
 exports.createJob = async (req, res) => {
     try {
-        
-
-        // Create a new job instance
         const newJob = await Job.create({
             title: req.body.title,
             description: req.body.description,
@@ -15,14 +11,11 @@ exports.createJob = async (req, res) => {
             requirements: req.body.requirements,
         });
 
-        // Respond with the newly created job
         res.status(201).json(newJob);
     } catch (error) {
-        // If an error occurs, respond with an error message
         res.status(500).json({ error: error.message });
     }
 };
-
 
 // Get all jobs
 exports.getAllJobs = async (req, res) => {

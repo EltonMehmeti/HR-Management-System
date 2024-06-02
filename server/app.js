@@ -33,7 +33,7 @@ const superAdmin = require("./models/superAdmin")
 const axios = require("axios")
 const recruitmentsRoutes = require("./routes/recruitment")
 const authorizeRole = require("./middleware/authorizeRole")
-const jobSchemaRoutes = require("./routes/jobSchema")
+const jobsRoutes = require("./routes/job")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
 const payrollRoutes = require("./routes/payroll")
@@ -102,10 +102,10 @@ app.use("/auth/superAdmin", superAdminRoutes)
 app.use(
   "/payroll",
   authenticate(hrPersonnel),
-  authorizeRole(["finance"]),
+  authorizeRole(["data_manager"]),
   payrollRoutes
 )
-app.use("/jobschema", jobSchemaRoutes)
+app.use("/job", jobsRoutes)
 
 app.use("/interviewee", authenticate(hrPersonnel), intervieweeRoutes)
 

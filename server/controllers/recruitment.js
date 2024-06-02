@@ -1,9 +1,13 @@
 const Interview = require('../models/interview');
 const Interviewee = require('../models/interviewee');
 const zoomMeeting = require('../helper/zoomMeeting');
-const sendEmail = require('../helper/emailSender');
+const interviewEmail = require('../helper/interviewEmail');
+const rejectionEmail  = require('../helper/rejectionEmail');
+const hiredEmail = require('../helper/hiredEmail');
 const Sequelize = require('sequelize');
 const JobOffer = require('../models/jobOffer');
+const sendJobOfferEmail = require('../helper/jobOfferEmail');
+const path = require('path');
 
 const createInterviewe = async (req, res) => {
     try {
@@ -67,7 +71,7 @@ const createInterviewe = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create interview' });
         }
 
-        sendEmail(title, name, email,join_url, `${date} ${time}`);
+        interviewEmail(title, name, email,join_url, `${date} ${time}`);
 
         res.status(201).json({ interviewee, interview });
     } catch (error) {
@@ -109,39 +113,71 @@ const editInterviewStatus = async (req, res) => {
     try {
         const { interviewId } = req.params;
         const { status } = req.body;
-        const interview = await Interview.findByPk(interviewId);
+        
+        const interview = await Interview.findByPk(interviewId, {
+            include: [{
+                model: Interviewee,
+                attributes: ['email'] 
+            }]
+        });
+
         if (!interview) {
             return res.status(404).json({ error: 'Interview not found' });
         }
+
+        const oldStatus = interview.status;
+        
         interview.status = status;
         await interview.save();
+        if (status !== 'job_offer') {
+            const { name, email, join_url, datetime } = interview; 
+            const subject = `Interview Status Changed to ${status}`;
+            
+            if (status === 'rejected') {
+                rejectionEmail(name, interview.interviewee.email);
+            } else if (status === 'hired') {
+                hiredEmail(name, interview.interviewee.email);
+            }
+        }
+        
+
         res.json(interview);
     } catch (error) {
+        console.error('Error updating interview status:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
 const jobOffer = async (req, res) => {
     try {
-        const { resume, intervieweeId } = req.body;
-        console.log(resume, intervieweeId)
-        const newJobOffer = await JobOffer.create({
-            resume: resume
-        });
-
-        await Interviewee.update({ status:'job_offer' }, {
-            where: { id: intervieweeId }
-        });
-
-        const interviewee = await Interviewee.findByPk(intervieweeId);
-        interviewee.setJobOffer(newJobOffer); // Assuming the association is defined correctly
-
-        res.status(201).json({ message: 'Job offer created successfully.' });
+      const { intervieweeId } = req.body;
+      const file = req.file.path; // Ensure this matches the field name in FormData
+      console.log(file, intervieweeId);
+  
+      const newJobOffer = await JobOffer.create({
+        file: file
+      });
+  
+      await Interviewee.update({ status: 'job_offer' }, {
+        where: { id: intervieweeId }
+      });
+  
+      const interviewee = await Interviewee.findByPk(intervieweeId);
+      interviewee.setJobOffer(newJobOffer);
+  
+      const subject = 'Congratulations! Job Offer from Our Company';
+      const email = interviewee.email;
+      const name = interviewee.name;
+      const attachmentPath = path.resolve(file);
+      sendJobOfferEmail(subject, name, email, attachmentPath);
+  
+      res.status(201).json({ message: 'Job offer created successfully.' });
     } catch (error) {
-        console.error('Error creating job offer:', error);
-        res.status(500).json({ message: 'Error creating job offer.' });
+      console.error('Error creating job offer:', error);
+      res.status(500).json({ message: 'Error creating job offer.' });
     }
-};
+  };
+  
 
 
 module.exports = {
