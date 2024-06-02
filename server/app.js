@@ -22,7 +22,7 @@ const interview = require("./models/interview")
 const interviewee = require("./models/interviewee")
 const hrPersonnel = require("./models/hrPersonnel")
 const team = require("./models/team")
-const leaveRequest = require("./models/leaveRequest")
+const leaveRequestRoutes = require("./routes/leaveRequest")
 const attendanceRecord = require("./models/attendaceRecord")
 const jobApplicant = require("./models/jobApplicant")
 const intervieweeRoutes = require("./routes/interviewee")
@@ -125,6 +125,7 @@ app.use("/auth/hr", hrPersonnelRoutes)
 app.use("/auth/employee", employeeAuthRoutes)
 app.use("/auth/superAdmin", superAdminRoutes)
 app.use('/leaveTypes', leaveTypesRoutes);
+app.use('/leaveRequests', leaveRequestRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads", "images")))
 
