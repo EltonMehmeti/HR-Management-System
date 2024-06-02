@@ -1,6 +1,6 @@
 const JobApplicant = require("../models/jobApplicant")
 const upload = require("../middleware/multer")
-const sendRejectionEmail = require("../helper/rejectionEmail")
+const rejecttionEmail = require("../helper/rejectionEmail")
 
 const createJobApplicant = async (req, res) => {
   try {
@@ -100,7 +100,7 @@ const rejectJobApplicantById = async (req, res) => {
       { new: true }
     )
     if (jobApplicant) {
-      await sendRejectionEmail(jobApplicant.name, jobApplicant.email)
+      await rejectionEmail(jobApplicant.name, jobApplicant.email)
       res.status(200).json({ message: "Rejection email sent" })
     } else {
       res.status(404).json({ message: "Job applicant not found" })

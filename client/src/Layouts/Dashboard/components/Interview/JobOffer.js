@@ -3,11 +3,11 @@ import axios from 'axios'; // Import Axios library
 import { useUser } from '../../../../helper/UserContext';
 
 const JobOffer = ({ onClose, intervieweeId }) => {
-  const [resume, setResume] = useState(null);
+  const [file, setFile] = useState(null);
   const {  token } = useUser();
 
   const handleSave = async () => {
-    console.log(intervieweeId , resume)
+    console.log(intervieweeId , file)
     try {
         if (!token) return; 
         const config = {
@@ -16,10 +16,10 @@ const JobOffer = ({ onClose, intervieweeId }) => {
             }
         };
       const formData = new FormData();
-      formData.append('resume', resume);
+      formData.append('file', file);
       formData.append('intervieweeId', intervieweeId);
       const response = await axios.post('http://localhost:3001/recruitment/interviewee/jobOffer', {
-        resume:resume,
+        file:file,
         intervieweeId:intervieweeId
       }, config);
 
@@ -33,10 +33,20 @@ const JobOffer = ({ onClose, intervieweeId }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setResume(file.name); // Assuming you want to save the file name as the path
+      setFile(file.name); // Assuming you want to save the file name as the path
     }
   };
-
+  const onCloseHandler = () => {
+    // Check if the file is set
+    if (!file) {
+      // Perform necessary action if file is not set
+      // For example, show a warning message
+    alert("Please upload a file")
+    } else {
+      // If the file is set, call onClose
+      onClose();
+    }
+  };
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
       <div className="justify-center items-center rounded-lg  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
@@ -49,15 +59,15 @@ const JobOffer = ({ onClose, intervieweeId }) => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="resume"
+                    htmlFor="file"
                   >
                     Job Offer
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="resume"
+                    id="file"
                     type="file"
-                    name="resume"
+                    name="file"
                     onChange={handleFileChange} // Call handleFileChange when the file input changes
                   />
                 </div>

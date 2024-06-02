@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useUser } from "../../../../helper/UserContext"
 
@@ -11,6 +11,7 @@ function CreateJobApplicant({ onClose, onSave }) {
     jobTitle: "",
   })
   const { token } = useUser()
+const [ jobs, setJobs ] = useState([])  
   const handleChange = event => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
@@ -47,7 +48,28 @@ function CreateJobApplicant({ onClose, onSave }) {
       console.log(err)
     }
   }
-
+  const fetchJobs = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await axios.get(
+        "http://localhost:3001/job/",
+        config
+      );
+      console.log("test" + res.data);
+      setJobs(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      fetchJobs();
+    }
+  }, [token]);
   return (
     <div className="fixed inset-0 flex items-center justify-center z- p-8">
       <div className="justify-center items-center rounded-lg  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
@@ -133,15 +155,18 @@ function CreateJobApplicant({ onClose, onSave }) {
                   >
                     Job Title
                   </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="jobTitle"
-                    type="text"
-                    placeholder="Job Title"
-                    name="jobTitle"
-                    value={formData.jobTitle}
-                    onChange={handleChange}
-                  />
+             <select
+                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              handleChange={handleChange}
+             >
+                <option>Jobs</option>
+                {jobs.map((job) => (
+                  <option key={job._id} value={job._id}>
+                    {job.title}
+                  </option>
+                ))}
+
+             </select>
                 </div>
               </div>
               <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">

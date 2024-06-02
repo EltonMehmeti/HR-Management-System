@@ -1,7 +1,9 @@
 const Interview = require('../models/interview');
 const Interviewee = require('../models/interviewee');
 const zoomMeeting = require('../helper/zoomMeeting');
-const sendEmail = require('../helper/emailSender');
+const interviewEmail = require('../helper/interviewEmail');
+const rejectionEmail  = require('../helper/rejectionEmail');
+const hiredEmail = require('../helper/hiredEmail');
 const Sequelize = require('sequelize');
 const JobOffer = require('../models/jobOffer');
 
@@ -67,7 +69,7 @@ const createInterviewe = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create interview' });
         }
 
-        sendEmail(title, name, email,join_url, `${date} ${time}`);
+        interviewEmail(title, name, email,join_url, `${date} ${time}`);
 
         res.status(201).json({ interviewee, interview });
     } catch (error) {
@@ -109,17 +111,40 @@ const editInterviewStatus = async (req, res) => {
     try {
         const { interviewId } = req.params;
         const { status } = req.body;
-        const interview = await Interview.findByPk(interviewId);
+        
+        const interview = await Interview.findByPk(interviewId, {
+            include: [{
+                model: Interviewee,
+                attributes: ['email'] 
+            }]
+        });
+
         if (!interview) {
             return res.status(404).json({ error: 'Interview not found' });
         }
+
+        const oldStatus = interview.status;
+        
         interview.status = status;
         await interview.save();
+        if (status !== 'job_offer') {
+            const { name, email, join_url, datetime } = interview; 
+            const subject = `Interview Status Changed to ${status}`;
+            
+            if (status === 'rejected') {
+                rejectionEmail(name, interview.interviewee.email);
+            } else if (status === 'hired') {
+                hiredEmail(name, interview.interviewee.email);
+            }
+        }
+        
+
         res.json(interview);
     } catch (error) {
+        console.error('Error updating interview status:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
 const jobOffer = async (req, res) => {
     try {
