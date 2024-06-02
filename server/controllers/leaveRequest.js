@@ -36,15 +36,34 @@ const createLeaveRequest = async (req, res) => {
 };
 
 
+// Assuming you have sequelize models set up
 const getAllLeaveRequests = async (req, res) => {
     try {
-        const leaveRequests = await LeaveRequest.findAll();
-        res.json(leaveRequests);
+        const leaveRequests = await LeaveRequest.findAll({
+            include: [
+                { model: Employee, attributes: ['name'] },
+                { model: LeaveType, attributes: ['name'] }
+            ]
+        });
+        
+        const formattedLeaveRequests = leaveRequests.map(request => ({
+            id: request.requestID,
+            startDate: request.startDate,
+            endDate: request.endDate,
+            reason: request.reason,
+            status: request.status,
+            comments: request.comments,
+            Employee: request.Employee,
+            LeaveType: request.LeaveType
+        }));
+
+        res.json(formattedLeaveRequests);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 const getLeaveRequestById = async (req, res) => {
     try {
@@ -96,11 +115,31 @@ const getAllLeaveRequestsEmployee = async (req, res) => {
     }
 };
 
+const updateLeaveRequestStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status, comments } = req.body;
+        const leaveRequest = await LeaveRequest.findByPk(id);
+        if (!leaveRequest) {
+            return res.status(404).json({ error: 'Leave request not found' });
+        }
+        leaveRequest.status = status;
+        leaveRequest.comments = comments || leaveRequest.comments;
+        await leaveRequest.save();
+        res.json(leaveRequest);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 module.exports = {
     createLeaveRequest,
     getAllLeaveRequests,
     getLeaveRequestById,
     updateLeaveRequest,
     deleteLeaveRequest,
-    getAllLeaveRequestsEmployee
+    getAllLeaveRequestsEmployee,
+    updateLeaveRequestStatus
 };

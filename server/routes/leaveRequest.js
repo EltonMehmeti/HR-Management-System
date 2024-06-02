@@ -8,16 +8,11 @@ router.post('/', leaveRequestController.createLeaveRequest);
 // Get all leave requests
 router.get('/', leaveRequestController.getAllLeaveRequests);
 
-// Get a leave request by ID
-//router.get('/:id', leaveRequestController.getLeaveRequestById);
-
-// Update a leave request
-router.put('/:id', leaveRequestController.updateLeaveRequest);
-
 // Delete a leave request
 router.delete('/:id', leaveRequestController.deleteLeaveRequest);
 
-
 router.get('/:employeeID', leaveRequestController.getAllLeaveRequestsEmployee);
+
+router.put('/:id/status', leaveRequestController.updateLeaveRequestStatus);
 
 module.exports = router;
