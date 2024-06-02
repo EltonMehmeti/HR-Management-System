@@ -1,6 +1,6 @@
 const JobApplicant = require("../models/jobApplicant")
 const upload = require("../middleware/multer")
-const rejecttionEmail = require("../helper/rejectionEmail")
+const rejecttionEmail = require("../helper/hiredEmail")
 
 const createJobApplicant = async (req, res) => {
   try {

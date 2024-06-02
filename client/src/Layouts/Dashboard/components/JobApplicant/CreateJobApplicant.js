@@ -155,18 +155,20 @@ const [ jobs, setJobs ] = useState([])
                   >
                     Job Title
                   </label>
-             <select
-                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              handleChange={handleChange}
-             >
-                <option>Jobs</option>
-                {jobs.map((job) => (
-                  <option key={job._id} value={job._id}>
-                    {job.title}
-                  </option>
-                ))}
+                  <select
+  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+  name="jobTitle"
+  value={formData.jobTitle}
+  onChange={handleChange} // Use handleChange to update the job title
+>
+  <option value="">Select Job</option> {/* Add a default option */}
+  {jobs.map((job) => (
+    <option key={job._id} value={job.title}> {/* Set value to job title */}
+      {job.title}
+    </option>
+  ))}
+</select>
 
-             </select>
                 </div>
               </div>
               <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
