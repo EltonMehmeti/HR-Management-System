@@ -75,7 +75,7 @@ const Leaves = () => {
           >
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {request.LeaveType?.name || 'No Leave Type'} - {request.Employee?.name || 'No Employee'}
+                {request.leaveType?.name || 'No Leave Type'} - {request.employee?.name || 'No Employee'}
               </h2>
               <p className="text-gray-500 dark:text-gray-400">
                 {`From: ${new Date(request.startDate).toLocaleDateString()} To: ${new Date(request.endDate).toLocaleDateString()}`}

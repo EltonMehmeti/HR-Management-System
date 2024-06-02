@@ -41,10 +41,13 @@ const getAllLeaveRequests = async (req, res) => {
     try {
         const leaveRequests = await LeaveRequest.findAll({
             include: [
-                { model: Employee, attributes: ['name'] }, // Include employee and specify 'name' attribute
-                { model: LeaveType, attributes: ['name'] } // Include leave type and specify 'name' attribute
+                { model: Employee, attributes: ['name'] },
+                { model: LeaveType, attributes: ['name'] }
             ]
         });
+
+        // Log the full leaveRequest object for debugging
+        leaveRequests.forEach(request => console.log(request.toJSON()));
 
         // Format the data to include only the necessary fields
         const formattedLeaveRequests = leaveRequests.map(request => ({
@@ -54,12 +57,11 @@ const getAllLeaveRequests = async (req, res) => {
             reason: request.reason,
             status: request.status,
             comments: request.comments,
-            Employee: request.Employee, // Include employee data
-            LeaveType: request.LeaveType, // Include leave type data
+            employeeName: request.Employee ? request.Employee.name : null,
+            leaveTypeName: request.LeaveType ? request.LeaveType.name : null
         }));
-    
-
-        res.json(formattedLeaveRequests);
+            console.log(formattedLeaveRequests);
+        res.json(leaveRequests);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
