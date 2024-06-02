@@ -7,7 +7,7 @@ const LeaveTypes = () => {
   const [leaveTypes, setLeaveTypes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedLeaveType, setSelectedLeaveType] = useState(null);
-  const { token } = useUser(); // Assuming useUser hook provides token and user details
+  const { token, user } = useUser(); // Assuming useUser hook provides token and user details
 
   const fetchLeaveTypes = async () => {
     try {
@@ -54,11 +54,14 @@ const LeaveTypes = () => {
           </button>
         </div>
       ))}
-      <RequestModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        leaveType={selectedLeaveType}
-      />
+      {selectedLeaveType && (
+        <RequestModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          leaveType={selectedLeaveType}
+          employeeID={user.id} // Assuming user ID is available in the user context
+        />
+      )}
     </div>
   );
 };
