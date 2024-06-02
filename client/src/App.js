@@ -3,6 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./Layouts/Dashboard/pages/Dashboard";
 import "./index.css";
 
+import EmpSignin from "./components/auth/Employee/Signin";
+import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList";
+import DashboardLayout from "./Layouts/Dashboard/DashboardLayout";
+
+import HrSignin from "./components/auth/HR/Signin";
+import HrSignup from "./components/auth/HR/Signup";
 import EmpSignin from "./Layouts/auth/Employee/Signin";
 import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList";
 import DashboardLayout from "./Layouts/Dashboard/DashboardLayout";
@@ -15,6 +21,17 @@ import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDet
 import Interviews from "./Layouts/Dashboard/components/Interview/Interviews";
 import Team from "./Layouts/Dashboard/components/Team/Team";
 import Calendar from "./Layouts/Dashboard/components/Calendar";
+import SuperAdminSignin from "./components/auth/SuperAdmin/SuperAdminSignin";
+import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList";
+import HRList from "./Layouts/Dashboard/components/SuperAdmin/HR/HRList";
+import OrgChart from "./Layouts/Dashboard/components/Org/OrgChart";
+import Payroll from "./Layouts/Dashboard/components/Finance/Payroll";
+import Docs from "./Layouts/Dashboard/components/Docs/Docs";
+import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs";
+import Job from "./Layouts/Dashboard/components/Job/Job";
+import EmployeeTeam from "./Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam";
+import Time from "./Layouts/Dashboard/components/Leaves/Time";
+import Leaves from "./Layouts/Dashboard/components/Leaves/Leaves";
 import SuperAdminSignin from './Layouts/auth/SuperAdmin/SuperAdminSignin';
 import JobApplicantList from './Layouts/Dashboard/pages/JobApplicantList';
 import HRList from './Layouts/Dashboard/components/SuperAdmin/HR/HRList';
@@ -62,6 +79,7 @@ function App() {
             <Route element={<RequireAuth allowedRoles={['employee']} />}>
               <Route path="org" element={<OrgChart />} />
               <Route path="employee-team" element={<EmployeeTeam />} />
+              <Route path="time" element={<Time/>} />
             </Route>@
           </Route>
         </Routes>
