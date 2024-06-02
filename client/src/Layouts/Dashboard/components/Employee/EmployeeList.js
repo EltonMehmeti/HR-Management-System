@@ -64,8 +64,8 @@ function EmployeeList() {
     setFilteredEmployees(filtered);
   };
   return (
-    <div>
-      <div className="flex flex-row justify-between items-center">
+    <div className="bg-[#d9d9fb] ">
+      <div className=" flex flex-row justify-between items-center">
 
       <button
         onClick={() => setIsCreateModalOpen(true)}

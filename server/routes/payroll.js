@@ -7,6 +7,7 @@ router.post('/upload', uploadSalaryFile, payrollController.insertSalaryDataFromE
 router.get('/analytics', payrollController.getPayrollAnalytics);
 router.get('/overview',  payrollController.getPayrollOverview);
 router.get('/top-earners', payrollController.getTopEarners);
-router.get('/top-teams', payrollController.getTopPayingTeams);
+router.get('/trends', payrollController.getSalaryTrends);
+router.get('/employee-salaries', payrollController.getEmployeesWithSalaries);
 
 module.exports = router;
