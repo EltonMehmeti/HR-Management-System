@@ -4,53 +4,50 @@ import { useUser } from '../../../../helper/UserContext';
 
 const JobOffer = ({ onClose, intervieweeId }) => {
   const [file, setFile] = useState(null);
-  const {  token } = useUser();
+  const { token } = useUser();
 
   const handleSave = async () => {
-    console.log(intervieweeId , file)
     try {
-        if (!token) return; 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        };
+      if (!token) return;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      };
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', file); // Ensure this matches the field name in Multer
       formData.append('intervieweeId', intervieweeId);
-      const response = await axios.post('http://localhost:3001/recruitment/interviewee/jobOffer', {
-        file:file,
-        intervieweeId:intervieweeId
-      }, config);
-
+  
+      const response = await axios.post('http://localhost:3001/recruitment/interviewee/jobOffer', formData, config);
+  
       console.log('Job offer created:', response.data);
       onClose();
     } catch (error) {
       console.error('Error creating job offer:', error);
     }
   };
+  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setFile(file.name); // Assuming you want to save the file name as the path
+      setFile(file); // Save the actual file object
     }
   };
+
   const onCloseHandler = () => {
-    // Check if the file is set
     if (!file) {
-      // Perform necessary action if file is not set
-      // For example, show a warning message
-    alert("Please upload a file")
+      alert('Please upload a file');
     } else {
-      // If the file is set, call onClose
       onClose();
     }
   };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center z- p-8">
-      <div className="justify-center items-center rounded-lg  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
-        <div className="relative w-auto my-6 mx-auto max-w-3xl ">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-8">
+      <div className="justify-center items-center rounded-lg flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="relative w-auto my-6 mx-auto max-w-3xl">
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-blue-50 p-10 outline-none focus:outline-none">
             <h2 className="text-xl font-semibold mb-4">Upload a Job Offer</h2>
 
@@ -68,12 +65,12 @@ const JobOffer = ({ onClose, intervieweeId }) => {
                     id="file"
                     type="file"
                     name="file"
-                    onChange={handleFileChange} // Call handleFileChange when the file input changes
+                    onChange={handleFileChange}
                   />
                 </div>
               </div>
 
-              <div className="flex items-center bg-blue-50  justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+              <div className="flex items-center bg-blue-50 justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                 <button
                   onClick={onClose}
                   className="text-blue-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"

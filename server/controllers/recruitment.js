@@ -6,6 +6,8 @@ const rejectionEmail  = require('../helper/rejectionEmail');
 const hiredEmail = require('../helper/hiredEmail');
 const Sequelize = require('sequelize');
 const JobOffer = require('../models/jobOffer');
+const sendJobOfferEmail = require('../helper/jobOfferEmail');
+const path = require('path');
 
 const createInterviewe = async (req, res) => {
     try {
@@ -148,25 +150,34 @@ const editInterviewStatus = async (req, res) => {
 
 const jobOffer = async (req, res) => {
     try {
-        const { resume, intervieweeId } = req.body;
-        console.log(resume, intervieweeId)
-        const newJobOffer = await JobOffer.create({
-            resume: resume
-        });
-
-        await Interviewee.update({ status:'job_offer' }, {
-            where: { id: intervieweeId }
-        });
-
-        const interviewee = await Interviewee.findByPk(intervieweeId);
-        interviewee.setJobOffer(newJobOffer); // Assuming the association is defined correctly
-
-        res.status(201).json({ message: 'Job offer created successfully.' });
+      const { intervieweeId } = req.body;
+      const file = req.file.path; // Ensure this matches the field name in FormData
+      console.log(file, intervieweeId);
+  
+      const newJobOffer = await JobOffer.create({
+        file: file
+      });
+  
+      await Interviewee.update({ status: 'job_offer' }, {
+        where: { id: intervieweeId }
+      });
+  
+      const interviewee = await Interviewee.findByPk(intervieweeId);
+      interviewee.setJobOffer(newJobOffer);
+  
+      const subject = 'Congratulations! Job Offer from Our Company';
+      const email = interviewee.email;
+      const name = interviewee.name;
+      const attachmentPath = path.resolve(file);
+      sendJobOfferEmail(subject, name, email, attachmentPath);
+  
+      res.status(201).json({ message: 'Job offer created successfully.' });
     } catch (error) {
-        console.error('Error creating job offer:', error);
-        res.status(500).json({ message: 'Error creating job offer.' });
+      console.error('Error creating job offer:', error);
+      res.status(500).json({ message: 'Error creating job offer.' });
     }
-};
+  };
+  
 
 
 module.exports = {
