@@ -1,31 +1,49 @@
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-import docIcon from "../../images/doc.png"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import docIcon from "../../images/doc.png";
 
 const PublicDocs = () => {
-  const [docs, setDocs] = useState([])
+  const [docs, setDocs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchPublicDocs = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/public-docs")
-        setDocs(response.data)
+        const response = await axios.get("http://localhost:3001/public-docs");
+        setDocs(response.data);
       } catch (error) {
-        console.error("Error fetching public documents:", error.message)
+        console.error("Error fetching public documents:", error.message);
       }
-    }
+    };
 
-    fetchPublicDocs()
-  }, [])
+    fetchPublicDocs();
+  }, []);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const filteredDocs = docs.filter((doc) =>
+    doc.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="min-h-screen bg-white-100   flex flex-col justify-center ">
+    <div className="min-h-screen bg-white-100 flex flex-col justify-center ">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-center mb-10">
           Public Documents
         </h1>
+        <div className="flex justify-center mb-4">
+          <input
+            type="text"
+            placeholder="Search documents"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:grid-cols-6 gap-4">
-          {docs.map(doc => (
+          {filteredDocs.map((doc) => (
             <div
               key={doc.id}
               className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between"
@@ -51,7 +69,7 @@ const PublicDocs = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PublicDocs
+export default PublicDocs;

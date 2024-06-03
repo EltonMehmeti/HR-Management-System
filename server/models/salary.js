@@ -1,4 +1,4 @@
-// Salary.js
+// salary.js
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const Employee = require('./employee');
@@ -22,7 +22,6 @@ const Salary = sequelize.define('salary', {
     }
 });
 
-Salary.belongsTo(Employee, { as: 'employee', foreignKey: 'employeeId' });
 Salary.belongsTo(HrPersonnel, { as: 'hrPersonnel', foreignKey: 'hrPersonnelId' });
 
 module.exports = Salary;

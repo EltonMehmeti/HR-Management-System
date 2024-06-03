@@ -5,14 +5,14 @@ import Sidebar from './DashboardSidebar';
 
 function DashboardLayout() {
     return (
-        <div className='bg-[#e9e9eb] relative min-h-screen flex flex-col md:flex-row'>
+        <div className='dashboard-layout flex bg-[#d9d9fb] min-h-screen '>
             {/* Sidebar */}
+
             <Sidebar />
             {/* Main content */}
-            <div className="flex-grow flex flex-col">
+            <div className="flex-grow flex flex-col bg-[#d9d9fb] h-auto overflow-y-auto">
                 <DashboardView/>
                 <Outlet />
-
             </div>
         </div>
     );

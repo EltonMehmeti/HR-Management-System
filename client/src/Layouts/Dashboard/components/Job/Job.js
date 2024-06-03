@@ -5,6 +5,7 @@ import { useUser } from "../../../../helper/UserContext";
 
 const Job = () => {
   const [jobs, setJobs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -32,16 +33,23 @@ const Job = () => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/jobschema");
+      const response = await axios.get("http://localhost:3001/job", {
+        params: { search: searchQuery }, // Pass search query as parameter to API
+      });
       setJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
   };
 
+  // Function to handle search query change
+  const handleSearchQueryChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const handleCreate = async () => {
     try {
-      await axios.post("http://localhost:3001/jobschema", {
+      await axios.post("http://localhost:3001/job", {
         title,
         description,
         location,
@@ -72,7 +80,7 @@ const Job = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:3001/jobschema/${editingId}`, {
+      await axios.put(`http://localhost:3001/job/${editingId}`, {
         title,
         description,
         location,
@@ -94,15 +102,27 @@ const Job = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/jobschema/${id}`);
+      await axios.delete(`http://localhost:3001/job/${id}`);
       fetchJobs();
     } catch (error) {
       console.error("Error deleting job:", error);
     }
   };
+  const handleSearch = () => {
+    const filteredJobs = jobs.filter(job =>
+      job.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setJobs(filteredJobs);
+  };
 
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    fetchJobs(); // Reset jobs to original list
+  };
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+
+      <div className="flex flex-row  justify-between items-center">
       <button
         onClick={openCreate}
         type="button"
@@ -110,8 +130,25 @@ const Job = () => {
       >
         Create a Job
       </button>
+      <div className="flex flex-row">
+    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg onClick={handleClearSearch} class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input    value={searchQuery}           onChange={(e) => setSearchQuery(e.target.value)}
+ type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+        <button onClick={handleSearch}  class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+   
+      
+          </div>
+      </div>
       <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
         <thead className="bg-gray-50">
+    
           <tr>
             <th scope="col" className="px-6 py-4 font-medium text-gray-900">
               Title

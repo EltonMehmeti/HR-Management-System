@@ -3,29 +3,33 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Dashboard from "./Layouts/Dashboard/pages/Dashboard"
 import "./index.css"
 
-import EmpSignin from "./Layouts/auth/Employee/Signin"
-import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList"
-import DashboardLayout from "./Layouts/Dashboard/DashboardLayout"
 
-import HrSignin from "./Layouts/auth/HR/Signin"
-import HrSignup from "./Layouts/auth/HR/Signup"
-import { UserProvider } from "./helper/UserContext"
-import RequireAuth from "./helper/RequireAuth"
-import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDetails"
-import Interviews from "./Layouts/Dashboard/components/Interview/Interviews"
-import Team from "./Layouts/Dashboard/components/Team/Team"
-import Calendar from "./Layouts/Dashboard/components/Calendar"
-import SuperAdminSignin from "./Layouts/auth/SuperAdmin/SuperAdminSignin"
-import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList"
-import HRList from "./Layouts/Dashboard/components/SuperAdmin/HR/HRList"
-import OrgChart from "./Layouts/Dashboard/components/Org/OrgChart"
-import Payroll from "./Layouts/Dashboard/components/Finance/Payroll"
-import Docs from "./Layouts/Dashboard/components/Docs/Docs"
-import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs"
-import Job from "./Layouts/Dashboard/components/Job/Job"
+import EmpSignin from "./Layouts/auth/Employee/Signin";
+import HrSignin from "./Layouts/auth/HR/Signin";
+import HrSignup from "./Layouts/auth/HR/Signup";
+import SuperAdminSignin from "./Layouts/auth/SuperAdmin/SuperAdminSignin";
+
+import EmployeeList from "./Layouts/Dashboard/components/Employee/EmployeeList";
+import EmployeeDetails from "./Layouts/Dashboard/components/Employee/EmployeeDetails";
+import DashboardLayout from "./Layouts/Dashboard/DashboardLayout";
+import Interviews from "./Layouts/Dashboard/components/Interview/Interviews";
+import Team from "./Layouts/Dashboard/components/Team/Team";
+import Calendar from "./Layouts/Dashboard/components/Calendar";
+import JobApplicantList from "./Layouts/Dashboard/pages/JobApplicantList";
+import HRList from "./Layouts/Dashboard/components/SuperAdmin/HR/HRList";
+import OrgChart from "./Layouts/Dashboard/components/Org/OrgChart";
+import Payroll from "./Layouts/Dashboard/components/Finance/Payroll";
+import Docs from "./Layouts/Dashboard/components/Docs/Docs";
+import PublicDocs from "./Layouts/Dashboard/components/Docs/PublicDocs";
+import Job from "./Layouts/Dashboard/components/Job/Job";
+import EmployeeTeam from "./Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam";
+import Time from "./Layouts/Dashboard/components/Leaves/Time";
+import Leaves from "./Layouts/Dashboard/components/Leaves/Leaves";
 import Interviewee from "./Layouts/Dashboard/components/Interviewee/Interviewee"
 
-import EmployeeTeam from "./Layouts/Dashboard/components/EmployeeTeam/EmployeeTeam"
+import { UserProvider } from "./helper/UserContext";
+import RequireAuth from "./helper/RequireAuth";
+
 
 function App() {
   return (
@@ -50,6 +54,7 @@ function App() {
               <Route path="employee/:id" element={<EmployeeDetails />} />
               <Route path="finance" element={<Payroll />} />
               <Route path="docs" element={<Docs />} />
+              <Route path="/leaves" element={<Leaves />} />
             </Route>
             <Route element={<RequireAuth allowedRoles={["admin"]} />}>
               <Route path="hr-list" element={<HRList />} />
@@ -64,8 +69,9 @@ function App() {
             <Route element={<RequireAuth allowedRoles={["employee"]} />}>
               <Route path="org" element={<OrgChart />} />
               <Route path="employee-team" element={<EmployeeTeam />} />
+              <Route path="time" element={<Time />} />
             </Route>
-            @
+
           </Route>
         </Routes>
       </UserProvider>
