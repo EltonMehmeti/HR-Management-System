@@ -4,17 +4,17 @@ import Stats from '../components/Stats/data_Stats';
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <RoleBasedComponent roles={['admin']}>
-        <div>Admin and Data Manager specific content</div>
-      </RoleBasedComponent>
-      <RoleBasedComponent roles={['employee']}>
-        <div>Employee specific content</div>
-      </RoleBasedComponent>
-      <RoleBasedComponent roles={['recruiter']}>
-        <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
-          <div className="w-96 rounded-xl bg-white p-8" id="widget">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-12">
+      <div className="container mx-auto px-4">
+        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <RoleBasedComponent roles={['admin']}>
+          <div>Admin and Data Manager specific content</div>
+        </RoleBasedComponent>
+        <RoleBasedComponent roles={['employee']}>
+          <div>Employee specific content</div>
+        </RoleBasedComponent>
+        <RoleBasedComponent roles={['recruiter']}>
+          <div className="w-full max-w-4xl rounded-xl bg-white p-8 mb-6" id="widget">
             <h6 className="text-xs text-gray-400">Total earnings</h6>
             <div className="mt-2 flex text-xl font-semibold">
               <span>$27,956</span>
@@ -50,12 +50,14 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-        </div>
-      </RoleBasedComponent>
+        </RoleBasedComponent>
 
-      <RoleBasedComponent roles={['data_manager']}>
-        <div><Stats /></div>
-      </RoleBasedComponent>
+        <RoleBasedComponent roles={['data_manager']}>
+          <div className="w-full max-w-4xl rounded-xl bg-white p-8" id="widget">
+            <Stats />
+          </div>
+        </RoleBasedComponent>
+      </div>
     </div>
   );
 };

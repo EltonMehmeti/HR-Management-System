@@ -35,16 +35,35 @@ const Stats = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h1>Statistics Dashboard</h1>
-      <ul>
-        <li>Total Employees: {stats.totalEmployees}</li>
-        <li>Total Leaves: {stats.totalLeaves}</li>
-        <li>Total Payments: {stats.totalPayments}</li>
-        <li>Total Teams: {stats.totalTeams}</li>
-        <li>Total Documents: {stats.totalDocs}</li>
-        <li>Average Payment: {stats.averagePayment}</li>
-      </ul>
+    <div className="flex min-h-screen w-full flex-col items-start justify-start bg-gray-50 py-6 sm:py-12">
+      <div className="w-full max-w-6xl rounded-xl bg-white p-8 mx-auto" id="widget">
+        <h6 className="text-xs text-gray-400">Employee Stats</h6>
+        <div className="mt-2 text-xl font-semibold">
+          <span>Total Employees: {stats.totalEmployees}</span>
+        </div>
+        <div className="mt-8 grid grid-cols-3 gap-6">
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-xs text-gray-500">Total Leaves</div>
+            <div className="text-xl font-bold">{stats.totalLeaves}</div>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-xs text-gray-500">Total Payments</div>
+            <div className="text-xl font-bold">{stats.totalPayments}</div>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-xs text-gray-500">Total Teams</div>
+            <div className="text-xl font-bold">{stats.totalTeams}</div>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-xs text-gray-500">Total Documents</div>
+            <div className="text-xl font-bold">{stats.totalDocs}</div>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-xs text-gray-500">Average Payment</div>
+            <div className="text-xl font-bold">${stats.averagePayment}</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
