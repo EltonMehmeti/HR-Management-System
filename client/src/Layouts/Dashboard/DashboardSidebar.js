@@ -1,16 +1,23 @@
+import React from "react"
+import {
+  HiChartPie,
+  HiInbox,
+  HiShoppingBag,
+  HiUser,
+  HiTable,
+  HiDocumentText,
+  HiOutlineClipboardList,
+} from "react-icons/hi" // Import HiDocumentText icon
 
-import React from 'react';
-import { HiChartPie, HiInbox, HiShoppingBag, HiUser, HiTable, HiDocumentText } from "react-icons/hi"; // Import HiDocumentText icon
-
-import { GoOrganization } from "react-icons/go";
-import { RiTeamFill } from "react-icons/ri";
-import { SiGoogledocs } from "react-icons/si";
-import { IoTime } from "react-icons/io5";
-import { CiBank } from "react-icons/ci";
-import { FaCalendarAlt,FaSignOutAlt } from "react-icons/fa";
-import { useUser } from '../../helper/UserContext';
-import Cookies from 'js-cookie';
-import logo from './images/logo.png' // Import the logo image
+import { GoOrganization } from "react-icons/go"
+import { RiTeamFill } from "react-icons/ri"
+import { SiGoogledocs } from "react-icons/si"
+import { IoTime } from "react-icons/io5"
+import { CiBank } from "react-icons/ci"
+import { FaCalendarAlt, FaSignOutAlt } from "react-icons/fa"
+import { useUser } from "../../helper/UserContext"
+import Cookies from "js-cookie"
+import logo from "./images/logo.png" // Import the logo image
 
 function Sidebar() {
   const { user } = useUser()
@@ -28,12 +35,12 @@ function Sidebar() {
           break
         case "recruiter":
         case "datamanager":
-          signInPath = "/hr/signin";
-          break;
+          signInPath = "/hr/signin"
+          break
         case "admin":
         case "superAdmin":
-          signInPath = "/admin/signin";
-          break;
+          signInPath = "/admin/signin"
+          break
         default:
           break
       }
@@ -49,13 +56,13 @@ function Sidebar() {
       case "recruiter":
         return (
           <>
-           <li>
+            <li>
               <a
                 href="/calendar"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <FaCalendarAlt  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-             
+                <FaCalendarAlt className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+
                 <span className="flex-1 ms-3 whitespace-nowrap">Calendar</span>
               </a>
             </li>
@@ -81,19 +88,30 @@ function Sidebar() {
                 </span>
               </a>
             </li>
-          
 
             <li>
               <a
-                href="/jobs"  // Change this line to link to the Jobschema page
+                href="/jobs" // Change this line to link to the Jobschema page
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <HiDocumentText className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" /> {/* Change the icon here */}
+                <HiDocumentText className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />{" "}
+                {/* Change the icon here */}
                 <span className="flex-1 ms-3 whitespace-nowrap">Jobs</span>
               </a>
             </li>
 
-
+            <li>
+              <a
+                href="/interviewee" // Change this line to link to the Jobschema page
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <HiOutlineClipboardList className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />{" "}
+                {/* Change the icon here */}
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Interviewee
+                </span>
+              </a>
+            </li>
           </>
         )
       case "data_manager":
@@ -127,7 +145,10 @@ function Sidebar() {
               </a>
             </li>
             <li>
-              <a  href="/finance" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <a
+                href="/finance"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
                 <CiBank className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="flex-1 ms-3 whitespace-nowrap">Payroll</span>
               </a>
@@ -142,13 +163,11 @@ function Sidebar() {
               </a>
             </li>
           </>
-        );
-      case 'employee':
+        )
+      case "employee":
         return (
           <>
-
-        
-          <li>
+            <li>
               <a
                 href="/employee-team"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -212,52 +231,53 @@ function Sidebar() {
           <ul className="space-y-2 font-medium">
             <li className="flex flex-row gap-4 items-center">
               <img src={logo} className="w-10 py-2" alt="logo" />
-              <h1 className="font-bold">Cora<span className="text-[#7b68ff]">HR</span></h1>
-
+              <h1 className="font-bold">
+                Cora<span className="text-[#7b68ff]">HR</span>
+              </h1>
             </li>
             <li>
-            <a
-              href="dashboard"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <HiChartPie className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-              <span className="ms-3">Dashboard</span>
-            </a>
-          </li>
+              <a
+                href="dashboard"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <HiChartPie className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="ms-3">Dashboard</span>
+              </a>
+            </li>
 
             {renderSidebarItems()}
             {user && (
               <>
-              <li>
-              <a
-                href="/public-docs"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <SiGoogledocs className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap">
-                  Public Docs
-                </span>
-              </a>
-            </li>
-              <li>
-                <span
-                  onClick={signout}
-                  className="flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                <li>
+                  <a
+                    href="/public-docs"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                   >
-                  <FaSignOutAlt  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <SiGoogledocs className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      Public Docs
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <span
+                    onClick={signout}
+                    className="flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  >
+                    <FaSignOutAlt className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 
-                  <span className="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
-
-                </span>
-              </li>
-            </>
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      Sign Out
+                    </span>
+                  </span>
+                </li>
+              </>
             )}
           </ul>
         </div>
       </aside>
     </div>
-  );
-
+  )
 }
 
 export default Sidebar
