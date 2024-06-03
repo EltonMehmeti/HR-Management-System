@@ -1,11 +1,8 @@
 import {
     Card,
     CardBody,
-    CardHeader,
-    Typography,
   } from "@material-tailwind/react";
   import Chart from "react-apexcharts";
-  import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
   
   const SalaryChart = ({ salaries }) => {
     const chartConfig = {

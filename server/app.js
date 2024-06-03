@@ -17,6 +17,8 @@ const app = express()
 const PORT = 3001
 const path = require("path")
 
+const data_stats= require('./routes/data_stats');
+
 const employee = require("./models/employee")
 const interview = require("./models/interview")
 const interviewee = require("./models/interviewee")
@@ -37,7 +39,8 @@ const authorizeRole = require("./middleware/authorizeRole")
 const jobsRoutes = require("./routes/job")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
-const payrollRoutes = require("./routes/payroll")
+const payrollRoutes = require("./routes/payroll");
+
 require("dotenv").config()
 
 app.use(cors({ origin: "http://localhost:3000" }))
@@ -129,6 +132,7 @@ app.use("/auth/employee", employeeAuthRoutes)
 app.use("/auth/superAdmin", superAdminRoutes)
 app.use('/leaveTypes', leaveTypesRoutes);
 app.use('/leaveRequests', leaveRequestRoutes);
+app.use('/data_stats',data_stats);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads", "images")))
 
