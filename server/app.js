@@ -20,6 +20,11 @@ const path = require("path")
 const employee = require("./models/employee")
 const interview = require("./models/interview")
 const interviewee = require("./models/interviewee")
+
+const group = require("./models/group")
+const member = require("./models/member")
+const explorer = require("./models/explorer")
+const expedition = require("./models/expedition")
 const hrPersonnel = require("./models/hrPersonnel")
 const team = require("./models/team")
 const leaveRequestRoutes = require("./routes/leaveRequest")
@@ -38,6 +43,12 @@ const jobsRoutes = require("./routes/job")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
 const payrollRoutes = require("./routes/payroll")
+const groupRoutes = require('./routes/group')
+const mebmerRoutes = require('./routes/member')
+
+const explorerRoutes = require('./routes/explorer')
+const expeditionRoutes = require('./routes/expedition')
+
 require("dotenv").config()
 
 app.use(cors({ origin: "http://localhost:3000" }))
@@ -52,7 +63,7 @@ app.use(bodyParser.json())
 
 async function startServer() {
   try {
-    await sequelize.sync({ logging: console.log })
+    await sequelize.sync({ logging: console.log})
     console.log("Database synchronized successfully")
     mongoose
       .connect(
@@ -100,6 +111,13 @@ app.use("/public-docs", publicDocsRoutes)
 app.use("/auth/hr", hrPersonnelRoutes)
 app.use("/auth/employee", employeeAuthRoutes)
 app.use("/auth/superAdmin", superAdminRoutes)
+app.use("/group", groupRoutes)
+app.use("/member",mebmerRoutes);
+
+app.use("/expedition", expeditionRoutes)
+app.use("/explorer",explorerRoutes);
+
+
 app.use(
   "/payroll",
   authenticate(hrPersonnel),

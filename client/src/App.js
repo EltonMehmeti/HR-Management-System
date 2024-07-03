@@ -29,6 +29,9 @@ import Interviewee from "./Layouts/Dashboard/components/Interviewee/Interviewee"
 
 import { UserProvider } from "./helper/UserContext";
 import RequireAuth from "./helper/RequireAuth";
+import Group from "./Layouts/Dashboard/test/Group";
+import MemberManagement from "./Layouts/Dashboard/test/Member";
+import Explorer from "../src/Layouts/Dashboard/test/Explorer"
 
 
 function App() {
@@ -71,7 +74,8 @@ function App() {
               <Route path="employee-team" element={<EmployeeTeam />} />
               <Route path="time" element={<Time />} />
             </Route>
-
+            {/* <Route path="group" element={<Group />} /> */}
+            <Route path="explorer" element={<Explorer />} />
           </Route>
         </Routes>
       </UserProvider>
