@@ -29,6 +29,11 @@ import Interviewee from "./Layouts/Dashboard/components/Interviewee/Interviewee"
 
 import { UserProvider } from "./helper/UserContext";
 import RequireAuth from "./helper/RequireAuth";
+import AddPuntor from "./Puntor/AddPuntor";
+import AddContract from "./Contract/AddContract";
+import Contract from "./Contract/Contract";
+import Puntor from "./Puntor/Puntor";
+import UpdateContract from "./Contract/UpdateContract";
 
 
 function App() {
@@ -71,7 +76,11 @@ function App() {
               <Route path="employee-team" element={<EmployeeTeam />} />
               <Route path="time" element={<Time />} />
             </Route>
-
+            <Route path="addpuntor" element={<AddPuntor />} />
+            <Route path="addcontract" element={<AddContract />} />
+            <Route path="contract" element={<Contract />} />
+            <Route path="update" element={<UpdateContract />} />
+            <Route path="puntor" element={<Puntor />} />
           </Route>
         </Routes>
       </UserProvider>

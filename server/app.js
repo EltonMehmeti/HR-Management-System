@@ -40,6 +40,8 @@ const jobsRoutes = require("./routes/job")
 const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport")
 const orgRoutes = require("./routes/org")
 const payrollRoutes = require("./routes/payroll");
+const puntor = require("./routes/puntor");
+const contract = require("./routes/contract");
 
 require("dotenv").config()
 
@@ -133,7 +135,8 @@ app.use("/auth/superAdmin", superAdminRoutes)
 app.use('/leaveTypes', leaveTypesRoutes);
 app.use('/leaveRequests', leaveRequestRoutes);
 app.use('/data_stats',data_stats);
-
+app.use('/puntor',puntor);
+app.use('/contract',contract);
 app.use("/uploads", express.static(path.join(__dirname, "uploads", "images")))
 
 app.use(
